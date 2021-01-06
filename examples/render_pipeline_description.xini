@@ -1,0 +1,12 @@
+[RenderPipeline]
+Shader="screenspace.glsl"
+
+VertexAttributes=["gPos", Vec3, "uvCoords", Vec2]
+PositionName="gPos"
+TextureCoordinateAttribute="uvCoords"
+
+InstanceAttributes=["transform", Mat2x2]
+
+DepthAttachment=Float16
+StencilAttachment=None
+ColorAttachments=[""]
