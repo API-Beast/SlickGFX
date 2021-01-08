@@ -1,14 +1,14 @@
 #pragma once
 
-#include "../Resources/MatrixN.h"
-#include "../Resources/VectorN.h"
-#include "GL/flextGL.h"
+#include <sGFX/Resources/MatrixN.hpp>
+#include <sGFX/Resources/VectorN.hpp>
 
 namespace sGFX
 {
 	enum class TextureFormat
 	{
 		None,
+		Lum_u8,
 		Lum_f16,
 		Lum_f32,
 		RGB_u8,
@@ -17,7 +17,7 @@ namespace sGFX
 		RGBA_u8,
 		RGBA_f16,
 		RGBA_f32
-	}
+	};
 
 	enum class DataFormat
 	{
@@ -43,7 +43,7 @@ namespace sGFX
 		Mat22,
 		Mat33,
 		Mat44
-	}
+	};
 
 	using Vec2F = VectorN<2, float>;
 	using Vec3F = VectorN<3, float>;
@@ -57,20 +57,14 @@ namespace sGFX
 	using Mat3x3 = MatrixN<3, 3, float>;
 	using Mat4x4 = MatrixN<4, 4, float>;
 
-	struct Framebuffer
-	{
-		int internal_name;
-		Texture getAttachment(GLenum which);
-	}
-
 	struct ShaderProgram
 	{
-		int internal_name;
-	}
+		int id = 0;
+	};
 
 	struct AttributeBuffer
 	{
-		int internal_name;
-	}
+		int id = 0;
+	};
 
 }

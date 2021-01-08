@@ -1,14 +1,13 @@
 #pragma once
 #include <type_traits>
+#include <cmath>
+
+namespace sGFX
+{
 
 template<int N, typename T>
 struct [[slick::tuple]] VectorN
 {
-	constexpr VectorN(T scalar = T())
-	{
-		for(int i = 0; i <N; i++)
-			elements[i] = scalar;
-	};
 	template <typename... Args, typename = typename std::enable_if<sizeof...(Args) == N>::type>
 	constexpr VectorN(Args&&... args) : elements{args...}{};
 	constexpr VectorN(T scalar){ for(int i; i < N; i++) elements[i] = scalar; };
@@ -40,13 +39,13 @@ struct [[slick::tuple]] VectorN
 	constexpr VectorN<N, T>& operator*=(T scalar){     for_each([](T& a, T b){ return a *= b; }, scalar); return *this; };
 	constexpr VectorN<N, T>& operator/=(T scalar){     for_each([](T& a, T b){ return a /= b; }, scalar); return *this; };
 
-	constexpr bool operator==(const ClassName& other){ return all([](T a, T b){ return a == b; }, other);  };
-	constexpr bool operator!=(const ClassName& other){ return !operator==(other); };
+	constexpr bool operator==(const VectorN<N, T>& other){ return all([](T a, T b){ return a == b; }, other);  };
+	constexpr bool operator!=(const VectorN<N, T>& other){ return !operator==(other); };
 	// Lexicographical comparison
-	constexpr bool operator <(const ClassName& other){ return conditional_first([](T a, T b){ return a != b; }, [](T a, T b){ return a < b; }, other); };
-	constexpr bool operator >(const ClassName& other){ return !operator<=(other); };
-	constexpr bool operator>=(const ClassName& other){ return !operator<(other); };
-	constexpr bool operator<=(const ClassName& other){ return operator<(other) || operator==(other);  };
+	constexpr bool operator <(const VectorN<N, T>& other){ return conditional_first([](T a, T b){ return a != b; }, [](T a, T b){ return a < b; }, other); };
+	constexpr bool operator >(const VectorN<N, T>& other){ return !operator<=(other); };
+	constexpr bool operator>=(const VectorN<N, T>& other){ return !operator<(other); };
+	constexpr bool operator<=(const VectorN<N, T>& other){ return operator<(other) || operator==(other);  };
 
 	/* Vector specific functions */
 	constexpr T square_length()         { return sum([](T a){ return a*a; });      };
@@ -91,12 +90,12 @@ constexpr VectorN<N, T> VectorN<N, T>::visit(Func f, Args&&... args)
 
 template<int N, typename T>
 template<typename Func, typename... Args>
-constexpr VectorN<N, T> VectorN<N, T>::sum(Func f, Args&&... args)
+constexpr T VectorN<N, T>::sum(Func f, Args&&... args)
 {
 	using namespace VectorN_detail;
 	T result = static_cast<T>(0);
 	for(int i = 0; i < N; i++)
-		T += f(elements[i], subscript<N, T>(args, i)...);
+		result += f(elements[i], subscript<N, T>(args, i)...);
 	return result;
 }
 
@@ -122,7 +121,7 @@ constexpr bool VectorN<N, T>::all(Func f, Args&&... args)
 
 template<int N, typename T>
 template<typename Func, typename... Args>
-constexpr bool VectorN<N, T>::any(Func f, Args&&... args) {
+constexpr bool VectorN<N, T>::any(Func f, Args&&... args)
 {
 	using namespace VectorN_detail;
 	bool result = false;
@@ -133,11 +132,13 @@ constexpr bool VectorN<N, T>::any(Func f, Args&&... args) {
 
 template<int N, typename T>
 template<typename FuncA, typename FuncB, typename... Args>
-constexpr bool VectorN<N, T>::conditional_first(FuncA condition, FuncB evaluation, Args&&... args) {
+constexpr bool VectorN<N, T>::conditional_first(FuncA condition, FuncB evaluation, Args&&... args)
 {
 	using namespace VectorN_detail;
 	for(int i = 0; i < N; i++)
 		if(condition(elements[i], subscript(args, i)...))
 			return evaluation(elements[i], subscript<N, T>(args, i)...);
 	return false;
+}
+
 }

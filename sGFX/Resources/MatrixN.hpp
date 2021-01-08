@@ -1,14 +1,17 @@
 #pragma once
-#include "VectorN.h"
+#include "VectorN.hpp"
+
+namespace sGFX
+{
 
 template<int NInput, int NOutput, typename T>
 struct [[slick::tuple]] MatrixN
 {
 	VectorN<NInput, T> rows[NOutput];
 
-	static constexpr Matrix<NInput, NOutput, T> identity()
+	static constexpr MatrixN<NInput, NOutput, T> identity()
 	{
-		Matrix<NInput, NOutput, T> result;
+		MatrixN<NInput, NOutput, T> result;
 		for(int i = 0; i<NOutput; i++)
 		{
 			result.rows[i] = VectorN<NInput, T>(0);
@@ -29,6 +32,8 @@ struct [[slick::tuple]] MatrixN
 	constexpr MatrixN<NInput, NOutput, T> multiply(MatrixN<NInput, NOutput, T> other)
 	{
 		MatrixN<NInput, NOutput, T> out;
-		
+		return out;
 	};
+};
+
 }
