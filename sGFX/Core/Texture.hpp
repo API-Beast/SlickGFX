@@ -12,6 +12,6 @@ namespace sGFX
 		void generate_mip_maps();
 
 		operator bool(){ return id; };
-		bool operator==(ShaderProgram other){ return id == other.id; };
+		bool operator==(Texture other){ return id == other.id; };
 	};
 }

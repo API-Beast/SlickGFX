@@ -6,9 +6,9 @@
 
 namespace sGFX
 {
-	RenderPass::RenderPass(const RenderPassSpec& _spec, int width, int height) 
+	void RenderPass::create_from_spec(const RenderPassSpec& _spec, int width, int height) 
 	{
-		const char context_name[] = "RenderPass()";
+		const char context_name[] = "create_from_spec()";
 		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, __LINE__, sizeof(context_name), context_name);
 
 		this->spec = _spec;
@@ -16,11 +16,6 @@ namespace sGFX
 		recreate_shader();
 		recreate_framebuffer(width, height);
 		recreate_attribute_buffers(spec.max_vertices, spec.max_indices, spec.max_instances);
-
-		// TODO: Bind vertex attributes
-		// TODO: Bind instance attributes (vertex attributes with divisor)
-		//glVertexAttrib4f(0, 0.0, 0.0, 0.0, 0.0);
-		//glVertexAttrib4f(1, 0.0, 0.0, 0.0, 0.0);
 
 		glPopDebugGroup();
 	}
@@ -220,12 +215,14 @@ namespace sGFX
 			preserve_data = false;
 		}
 		
-		glCreateBuffers(3, buffers);
 		int buffer_size[3] = {strides[0] * max_vertices, strides[1] * max_instances, strides[2] * max_indices};
 		for(int i = 0; i++; i<3)
 		{
+			//printf("%d", buffer_size[i]);
 			if(buffer_size[i] <= 0)
 				continue;
+
+			glCreateBuffers(1, &buffers[i]);
 			glNamedBufferStorage(buffers[i], buffer_size[i], NULL, GL_DYNAMIC_DRAW);
 			if(preserve_data && old_buffers[i])
 			{
@@ -280,14 +277,10 @@ namespace sGFX
 		const char context_name[] = "draw()";
 		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, __LINE__, sizeof(context_name), context_name);
 		
-		static bool initialized = false;
-		if(!initialized)
-		{
-			glBindVertexArray(vertex_array_id);
-			glUseProgram(shader.id);
-			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo.id);
-			initialized = true;
-		}
+		glViewport(0, 0, fbo.size[0], fbo.size[1]);
+		glBindVertexArray(vertex_array_id);
+		glUseProgram(shader.id);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo.id);
 
 		if(indices.id)
 			glDrawElementsInstancedBaseVertexBaseInstance(GL_TRIANGLE_STRIP, num_indices, GL_UNSIGNED_INT, (void*)(sizeof(GLuint) * index_offset), num_instances, vertex_offset, instance_offset);

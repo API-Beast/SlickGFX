@@ -4,6 +4,7 @@
 #include "Types.hpp"
 #include "Framebuffer.hpp"
 #include "Mesh.hpp"
+#include "ShaderProgram.hpp"
 #include <vector>
 #include <map>
 #include <initializer_list>
@@ -67,12 +68,13 @@ struct AttributeSpec
 
 struct RenderPass
 {
-	RenderPass(const RenderPassSpec& spec, int width, int height);
+	RenderPass(){};
 	~RenderPass();
 
 	void draw(int num_indices, int num_instances, int index_offset = 0, int instance_offset = 0, int vertex_offset = 0);
 	void draw(const GPU_MeshData&);
 
+	void create_from_spec(const RenderPassSpec& spec, int width, int height);
 	void recreate_shader();
 	void recreate_framebuffer(int width, int height);
 	void recreate_attribute_buffers(int max_vertices = -1, int max_indices = -1, int max_instances = -1, bool preserve_data = false);

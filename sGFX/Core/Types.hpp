@@ -80,17 +80,9 @@ namespace sGFX
 	using Mat33 = MatrixN<3, 3, float>;
 	using Mat44 = MatrixN<4, 4, float>;
 
-	struct ShaderProgram
-	{
-		int id = 0;
-
-		operator bool(){ return id; };
-		bool operator==(const ShaderProgram& other){ return id == other.id; };
-	};
-
 	struct AttributeBuffer
 	{
-		int id = 0;
+		uint32_t id = 0;
 		int capacity = 0;
 		int format_hash = 0;
 		int stride = 0;
@@ -100,7 +92,7 @@ namespace sGFX
 		bool replace_data(int offset, uint8_t* data, int length);
 
 		operator bool(){ return id; };
-		bool operator==(const ShaderProgram& other){ return id == other.id; };
+		bool operator==(const AttributeBuffer& other){ return id == other.id; };
 	};
 
 }

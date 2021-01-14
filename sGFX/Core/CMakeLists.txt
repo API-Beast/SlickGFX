@@ -1,4 +1,4 @@
-set(SOURCES RenderPass.cpp Framebuffer.cpp GL.cpp Texture.cpp Types.cpp)
+set(SOURCES RenderPass.cpp Framebuffer.cpp GL.cpp Texture.cpp Types.cpp ShaderProgram.cpp)
 list(TRANSFORM SOURCES REPLACE \.cpp \.hpp OUTPUT_VARIABLE HEADERS)
 
 add_library(sGFXCore STATIC ${SOURCES} ${HEADERS} GL/flextGL.c GL/flextGL.h GL/khrplatform.h)
