@@ -5,12 +5,7 @@ namespace sGFX
 {
 	void Texture::generate_mip_maps() 
 	{
-		
-	}
-	
-	void Texture::reset_size(int width, int height) 
-	{
-		
+		glGenerateTextureMipmap(id);
 	}
 	
 	void Texture::clear(Vec4F color) 

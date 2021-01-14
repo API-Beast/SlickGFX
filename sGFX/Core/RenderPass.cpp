@@ -2,14 +2,46 @@
 #include "RenderPass.hpp"
 
 #include <cstdio>
-
+#include <cassert>
 
 namespace sGFX
 {
-	RenderPass::RenderPass(const RenderPassSpec& spec, int width, int height) 
+	RenderPass::RenderPass(const RenderPassSpec& _spec, int width, int height) 
 	{
 		const char context_name[] = "RenderPass()";
-		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 9089, sizeof(context_name), context_name);
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, __LINE__, sizeof(context_name), context_name);
+
+		this->spec = _spec;
+
+		recreate_shader();
+		recreate_framebuffer(width, height);
+		recreate_attribute_buffers(spec.max_vertices, spec.max_indices, spec.max_instances);
+
+		// TODO: Bind vertex attributes
+		// TODO: Bind instance attributes (vertex attributes with divisor)
+		//glVertexAttrib4f(0, 0.0, 0.0, 0.0, 0.0);
+		//glVertexAttrib4f(1, 0.0, 0.0, 0.0, 0.0);
+
+		glPopDebugGroup();
+	}
+	
+	RenderPass::~RenderPass() 
+	{
+		if(vertex_array_id) glDeleteVertexArrays(1, &vertex_array_id);
+		if(shader) glDeleteProgram(shader.id);
+		fbo.free_data();
+	}
+
+	void RenderPass::recreate_shader() 
+	{
+		const char context_name[] = "recreate_shader()";
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, __LINE__, sizeof(context_name), context_name);
+
+		if(shader)
+		{
+			glDeleteProgram(shader.id);
+			shader.id = 0;
+		}
 
 		char* sources_frag[] = {(char*)spec.shader_fragment.data()};
 		char* sources_vert[] = {(char*)spec.shader_vertex.data()};
@@ -22,7 +54,6 @@ namespace sGFX
 		GLsizei infoLogSize = 0;
 		static char infoLog[1024 * 24];
 
-		//glShaderSource(frag_shader, 2, sources_frag, frag_sources_lengths);
 		glShaderSource(frag_shader, 1, sources_frag, frag_sources_lengths);
 		glCompileShader(frag_shader);
 		glAttachShader(program, frag_shader);
@@ -33,7 +64,6 @@ namespace sGFX
 			glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_ERROR, 0, GL_DEBUG_SEVERITY_HIGH, infoLogSize, infoLog);
 		}
 
-		//glShaderSource(vert_shader, 2, sources_vert, vert_sources_lengths);
 		glShaderSource(vert_shader, 1, sources_vert, vert_sources_lengths);
 		glCompileShader(vert_shader);
 		glAttachShader(program, vert_shader);
@@ -51,6 +81,22 @@ namespace sGFX
 			glGetProgramInfoLog(program, sizeof(infoLog), &infoLogSize, infoLog);
 			glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_ERROR, 0, GL_DEBUG_SEVERITY_HIGH, infoLogSize, infoLog);
 		}
+
+		// Flag for deletion, will only happen if the program actually get deleted
+		glDeleteShader(frag_shader);
+		glDeleteShader(vert_shader);
+
+		shader = {program};
+
+		glPopDebugGroup();
+	}
+
+	void RenderPass::recreate_framebuffer(int width, int height)
+	{
+		const char context_name[] = "recreate_framebuffer()";
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, __LINE__, sizeof(context_name), context_name);
+
+		fbo.free_data();
 
 		// Frame buffer
 		GLuint fbo_name = 0;
@@ -110,65 +156,130 @@ namespace sGFX
 		for(int i = 0; i<buffers.size(); i++)
 			buffers[i] = GL_COLOR_ATTACHMENT0 + i;
 		glNamedFramebufferDrawBuffers(fbo_name, buffers.size(), buffers.data());
-		
-		// Attribute buffers
-		GLuint index_buff = 0;
-		GLuint vert_buff  = 0;
-		GLuint inst_buff  = 0;
-
-		int max_indices = spec.max_vertices * 8;
-		int sizeof_vertex = sizeof(float) * 4;
-		int sizeof_instance = sizeof(float) * 4;
-
-		index_format = DataFormat::Uint16;
-		if(spec.max_vertices > 32767)
-			index_format = DataFormat::Uint32;
-
-		glCreateBuffers(1, &vert_buff);
-		glNamedBufferData(vert_buff, spec.max_vertices * sizeof_vertex, NULL, GL_DYNAMIC_DRAW);
-
-		glCreateBuffers(1, &inst_buff);
-		glNamedBufferData(inst_buff, spec.max_instances * sizeof_instance, NULL, GL_DYNAMIC_DRAW);
-
-		glCreateBuffers(1, &index_buff);
-		if(index_format == DataFormat::Uint16)
-			glNamedBufferData(index_buff, max_indices * sizeof(GLushort), NULL, GL_DYNAMIC_DRAW);
-		else if(index_format == DataFormat::Uint32)
-			glNamedBufferData(index_buff, max_indices * sizeof(GLuint), NULL, GL_DYNAMIC_DRAW);
-
-		shader = {program};
-		indices = {index_buff};
-		vertex_attributes = {vert_buff};
-		instance_attributes = {inst_buff};
-
-		glCreateVertexArrays(1, &vertex_array_id);
-		glVertexArrayElementBuffer(vertex_array_id, indices.id);
-		// TODO: Bind vertex attributes
-		// TODO: Bind instance attributes (vertex attributes with divisor)
-		glVertexAttrib4f(0, 0.0, 0.0, 0.0, 0.0);
-		glVertexAttrib4f(1, 0.0, 0.0, 0.0, 0.0);
 
 		glPopDebugGroup();
 	}
 
+	void RenderPass::recreate_attribute_buffers(int max_vertices, int max_indices, int max_instances, bool preserve_data)
+	{
+		const char context_name[] = "recreate_attribute_buffers()";
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, __LINE__, sizeof(context_name), context_name);
+
+		if(vertex_array_id)
+			glDeleteVertexArrays(1, &vertex_array_id);
+		glCreateVertexArrays(1, &vertex_array_id);
+
+		vattribute_specs.clear();
+
+		if(max_vertices  == -1) max_vertices  = spec.max_vertices;
+		if(max_instances == -1) max_instances = spec.max_instances;
+		if(max_indices   == -1) max_indices   = spec.max_indices;
+
+		GLuint      buffers[3] = {0, 0, 0};
+		GLuint  old_buffers[3] = {vertex_attributes.id, instance_attributes.id, indices.id};
+		int old_buffer_size[3] = {vertex_attributes.write_offset, instance_attributes.write_offset, indices.write_offset};
+		GLintptr    offsets[3] = {0, 0, 0};
+
+		uint32_t format_hashes[3] = {0, 0, GL_UNSIGNED_INT};
+
+		GLsizei strides[3] = {0, 0, sizeof(GLuint)};
+		decltype(spec.vertex_attributes)* attrib_lists[2] = {&(spec.vertex_attributes), &(spec.instance_attributes)}; 
+
+		GLuint vattrib_id = 0;
+		for(int i = 0; i < 2; i++)
+		{
+			int offset = 0;
+			bool is_instance_attrib = (i == 1);
+			int buffer_vattrib_first_id = vattrib_id;
+			for(auto& vattrib : *(attrib_lists[i]))
+			{
+				DataFormatStruct fmt(vattrib.format);
+				int vattrib_first_id = vattrib_id;
+				for(int j = 0; j < fmt.detail.num_columns * vattrib.array_elements; j++)
+				{
+					glVertexArrayAttribFormat(vertex_array_id, vattrib_id, fmt.detail.num_elements, fmt.get_gl_type_enum(), GL_FALSE, offset);
+					glVertexArrayBindingDivisor(vertex_array_id, vattrib_id, is_instance_attrib);
+					glVertexArrayAttribBinding(vertex_array_id, vattrib_id, i);
+					offset += fmt.detail.size * fmt.detail.num_elements;
+					vattrib_id++;
+				}
+				vattribute_specs.insert({vattrib.hint, {vattrib.format, vattrib_first_id, vattrib.array_elements, offset}});
+				format_hashes[i] += (((vattrib_id - buffer_vattrib_first_id + 1) * fmt.detail.size) << 2) + (fmt.detail.num_elements << 1) + fmt.detail.num_columns;
+			}
+			strides[i] = offset;
+		}
+
+		bool compatible = true;
+		compatible &= (format_hashes[0] == vertex_attributes.format_hash);
+		compatible &= (format_hashes[1] == instance_attributes.format_hash);
+		compatible &= (format_hashes[2] == indices.format_hash);
+		if(preserve_data && !compatible)
+		{	
+			const char error_message[] = "Attribute format has changed, can't preserve data!";
+			glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_ERROR, 9002, GL_DEBUG_SEVERITY_MEDIUM, sizeof(error_message), error_message);
+			preserve_data = false;
+		}
+		
+		glCreateBuffers(3, buffers);
+		int buffer_size[3] = {strides[0] * max_vertices, strides[1] * max_instances, strides[2] * max_indices};
+		for(int i = 0; i++; i<3)
+		{
+			if(buffer_size[i] <= 0)
+				continue;
+			glNamedBufferStorage(buffers[i], buffer_size[i], NULL, GL_DYNAMIC_DRAW);
+			if(preserve_data && old_buffers[i])
+			{
+				int to_write = old_buffer_size[0];
+				if(buffer_size[0] < to_write)
+				{
+					// This can be intentional, but we notify in case it is not.
+					const char warning_message[] = "Buffer to copy to is smaller than buffer to copy from, existing meshes could become invalid.";
+					glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR, 9001, GL_DEBUG_SEVERITY_NOTIFICATION, sizeof(warning_message), warning_message);
+					to_write = buffer_size[0];
+				}
+				glCopyNamedBufferSubData(old_buffers[i], buffers[i], 0, 0, to_write);
+			}
+		}
+		glVertexArrayVertexBuffers(vertex_array_id, 0, 2, buffers, offsets, strides);
+		glDeleteBuffers(3, old_buffers);
+
+		vertex_attributes   = {buffers[0], buffer_size[0], format_hashes[0], strides[0]};
+		instance_attributes = {buffers[1], buffer_size[1], format_hashes[1], strides[1]};
+		indices             = {buffers[2], buffer_size[2], format_hashes[2], strides[2]};
+		glVertexArrayElementBuffer(vertex_array_id, indices.id);
+
+		glPopDebugGroup();
+	}
+	
+	GPU_InstanceData RenderPass::upload_raw_instances(uint8_t* data, size_t length) 
+	{
+		const char context_name[] = "upload_raw_instances()";
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, __LINE__, sizeof(context_name), context_name);
+
+		if((!instance_attributes) && length > 0)
+		{
+			const char warning_message[] = "Trying to upload instance data to RenderPass without instance attribute buffer.";
+			glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR, 9005, GL_DEBUG_SEVERITY_NOTIFICATION, sizeof(warning_message), warning_message);
+			return {};
+		}
+
+		GPU_InstanceData retVal;
+		retVal.attribute_offset = instance_attributes.write_offset;
+		retVal.num_instances = length / instance_attributes.stride;
+		retVal.instance_format_hash = instance_attributes.format_hash;
+		assert((length % instance_attributes.stride) == 0); // Illformed data
+
+		instance_attributes.upload_data(data, length);
+
+		glPopDebugGroup();
+		return retVal;
+	}
+
 	void RenderPass::draw(int num_indices, int num_instances, int index_offset, int instance_offset, int vertex_offset)
 	{
-		const char context_name[] = "RenderPass::draw()";
-		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 9241, sizeof(context_name), context_name);
-
-		GLenum itype = GL_UNSIGNED_SHORT;
-		int isize = sizeof(GLushort);
-		if(index_format == DataFormat::Uint32)
-		{
-			itype = GL_UNSIGNED_INT;
-			isize = sizeof(GLuint);
-		}
-		else if(index_format == DataFormat::Uint8)
-		{
-			itype = GL_UNSIGNED_BYTE;
-			isize = sizeof(GLubyte);
-		}
-
+		const char context_name[] = "draw()";
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, __LINE__, sizeof(context_name), context_name);
+		
 		static bool initialized = false;
 		if(!initialized)
 		{
@@ -178,8 +289,10 @@ namespace sGFX
 			initialized = true;
 		}
 
-		glDrawArraysInstancedBaseInstance(GL_TRIANGLE_STRIP, index_offset, num_indices, 1, instance_offset);
-		//glDrawElementsInstancedBaseVertexBaseInstance(GL_TRIANGLE_STRIP, num_indices, itype, (void*)(isize * index_offset), num_instances, vertex_offset, instance_offset);
+		if(indices.id)
+			glDrawElementsInstancedBaseVertexBaseInstance(GL_TRIANGLE_STRIP, num_indices, GL_UNSIGNED_INT, (void*)(sizeof(GLuint) * index_offset), num_instances, vertex_offset, instance_offset);
+		else
+			glDrawArraysInstancedBaseInstance(GL_TRIANGLE_STRIP, index_offset, num_indices, 1, instance_offset);
 
 		glPopDebugGroup();
 	}

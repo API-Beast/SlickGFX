@@ -80,20 +80,23 @@ void DebugOpenGL(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei
 
 	if(current_context_id != last_printed_context_id && current_context.size() > 0)
 	{
-		printf("[OpenGL] In ");
-		for(int i = 0; i < current_context.size(); i++)
+		int max_stack_depth = 4;
+		if(current_context.size() < max_stack_depth)
+			max_stack_depth = current_context.size();
+
+		for(int i = 0; i < max_stack_depth; i++)
 		{
-			printf("%s", current_context[i].c_str());
-			if(i < (current_context.size()-1))
-				printf(" ❭ ");
+			if(i == 0)
+				printf("[OpenGL] In %s\n", current_context[i].c_str());
+			else
+				printf("[    ->] called by %s\n", current_context[i].c_str());
 		}
-		printf("\n");
 		last_printed_context_id = current_context_id;
 	}
 	if(current_context.size() == 0)
 		printf("[OpenGL]");
 	else
-		printf("[    >>]");
+		printf("[------]");
 	printf(" %s%s %s%s: %.*s\n", _color, _severity, _type, _color_reset, length, msg);
 };
 

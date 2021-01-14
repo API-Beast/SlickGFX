@@ -3,8 +3,10 @@
 
 #include "Types.hpp"
 #include "Framebuffer.hpp"
+#include "Mesh.hpp"
 #include <vector>
 #include <map>
+#include <initializer_list>
 
 namespace sGFX
 {
@@ -51,7 +53,7 @@ struct [[slick::object]] RenderPassSpec
 
 	// These determine the size of the buffers
 	int max_vertices  = 32767; // Going over 32k will use 32 bit indices.
-	// Max indices will be always 8 times the max vertices
+	int max_indices   = 32767 * 8;
 	int max_instances = 256;
 };
 
@@ -60,15 +62,27 @@ struct AttributeSpec
 	DataFormat format;
 	int index;
 	int array_elements;
-	int byte_stride;
 	int byte_offset;
-};
+}; 
 
 struct RenderPass
 {
 	RenderPass(const RenderPassSpec& spec, int width, int height);
-	void draw(int num_indices, int num_instances, int index_offset = 0, int instance_offset = 0, int vertex_offset = 0);
+	~RenderPass();
 
+	void draw(int num_indices, int num_instances, int index_offset = 0, int instance_offset = 0, int vertex_offset = 0);
+	void draw(const GPU_MeshData&);
+
+	void recreate_shader();
+	void recreate_framebuffer(int width, int height);
+	void recreate_attribute_buffers(int max_vertices = -1, int max_indices = -1, int max_instances = -1, bool preserve_data = false);
+
+	/*GPU_MeshData     upload(const CPU_MeshData& data);
+	GPU_InstanceData upload(const CPU_InstanceData& data);
+	GPU_MeshData     upload_raw_vertices (uint8_t* data, size_t length, uint32_t* indices = nullptr, size_t index_length = 0);*/
+	GPU_InstanceData upload_raw_instances(uint8_t* data, size_t length);
+
+	RenderPassSpec spec;
 	ShaderProgram shader;
 	Framebuffer fbo;
 	AttributeBuffer indices;
@@ -76,8 +90,7 @@ struct RenderPass
 	AttributeBuffer instance_attributes;
 	unsigned int vertex_array_id;
 
-	DataFormat index_format = DataFormat::Uint16;
-	std::multimap<UsageHint,   AttributeSpec> attribute_specs;
+	std::multimap<UsageHint,   AttributeSpec> vattribute_specs;
 };
 
 }

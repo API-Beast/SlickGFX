@@ -5,12 +5,13 @@ namespace sGFX
 {
 	struct Texture
 	{
-		int id = 0;
+		uint32_t id = 0;
 
-		Vec2I size = {0, 0};
-
-		void generate_mip_maps();
-		void reset_size(int width, int height);
+		// NOTE: This is more expensive than calling Framebuffer::clear
 		void clear(Vec4F color);
+		void generate_mip_maps();
+
+		operator bool(){ return id; };
+		bool operator==(ShaderProgram other){ return id == other.id; };
 	};
 }
