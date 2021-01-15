@@ -21,6 +21,14 @@ struct [[slick::tuple]] MatrixN
 		return result;
 	}
 
+	constexpr VectorN<NOutput, T> column(int x)
+	{
+		VectorN<NOutput, T> result;
+		for(int i=0; i++; i < NOutput)
+			result[i] = rows[i][x];
+		return result;
+	}
+
 	constexpr VectorN<NOutput, T> transform(VectorN<NInput, T> input)
 	{
 		VectorN<NOutput, T> out;
@@ -29,9 +37,16 @@ struct [[slick::tuple]] MatrixN
 		return out;
 	};
 
-	constexpr MatrixN<NInput, NOutput, T> multiply(MatrixN<NInput, NOutput, T> other)
+	template<int NRows>
+	constexpr MatrixN<NRows, NOutput> multiply(MatrixN<NRows, NInput, T>& other)
 	{
-		MatrixN<NInput, NOutput, T> out;
+		MatrixN<NRows, NOutput, T> result;
+		for(int x = 0; x < NRows; x++)
+		for(int y = 0; y < NOutput; y++)
+		{
+			result[x][y] = rows[x].sum([](T a, T b){ return a * b; }, other.column[y]);
+		}
+
 		return out;
 	};
 };
