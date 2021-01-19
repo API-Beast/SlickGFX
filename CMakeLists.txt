@@ -17,19 +17,19 @@ add_subdirectory(sGFX)
 # Only build examples and testing if not a sub-project
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 	option(BUILD_EXAMPLES "Build examples." ON)
-	#option(BUILD_TESTS    "Build tests." ON)
+	option(BUILD_TESTS    "Build tests." ON)
 else()
 	set(BUILD_EXAMPLES OFF)
-	#set(BUILD_TESTS OFF)
+	set(BUILD_TESTS OFF)
 endif()
 
 if(BUILD_EXAMPLES)
 	add_subdirectory(examples)
 endif()
 
-#if(BUILD_TESTS)
-#	add_subdirectory(testing)
-#endif()
+if(BUILD_TESTS)
+	add_subdirectory(test)
+endif()
 
 # -------
 # Library

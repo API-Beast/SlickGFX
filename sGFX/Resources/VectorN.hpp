@@ -10,12 +10,18 @@ struct [[slick::tuple]] VectorN
 {
 	template <typename... Args, typename = typename std::enable_if<sizeof...(Args) == N>::type>
 	constexpr VectorN(Args&&... args) : elements{args...}{};
-	constexpr VectorN(T scalar){ for(int i; i < N; i++) elements[i] = scalar; };
+	constexpr VectorN(T scalar){ for(int i = 0; i < N; i++) elements[i] = scalar; };
 
 	T elements[N];
 	constexpr T& operator[](int i){ return elements[i]; };
+	constexpr const T& operator[](int i) const{ return elements[i]; };
 	template<int i>
 	constexpr T get(){ static_assert(i < N, "out of bounds"); return elements[i]; };
+
+	constexpr T* begin(){ return elements; };
+	constexpr T* end()  { return elements + N; };
+	constexpr const T* begin() const { return elements; };
+	constexpr const T* end()   const { return elements + N; };
 
 	/* Vector x Vector */
 	constexpr VectorN<N, T>  operator +(VectorN<N, T> other){ return visit([](T  a, T b){ return a + b;  }, other); };

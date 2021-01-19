@@ -42,6 +42,8 @@ namespace sGFX
 		char* sources_vert[] = {(char*)spec.shader_vertex.data()};
 		int frag_sources_lengths[] = {spec.shader_fragment.size()};
 		int vert_sources_lengths[] = {spec.shader_vertex.size()};
+		//std::string sources_frag = preprocess_shader(std::string_view((char*)spec.shader_fragment.data(), spec.shader_fragment.size()));
+		//std::string sources_vert = preprocess_shader(std::string_view((char*)spec.shader_vertex.data(),   spec.shader_vertex.size()));
 
 		GLuint program = glCreateProgram();
 		GLuint frag_shader = glCreateShader(GL_VERTEX_SHADER);
@@ -103,50 +105,18 @@ namespace sGFX
 		GLenum slot = GL_COLOR_ATTACHMENT0;
 		for(const RenderAttachment& r : spec.color_attachments)
 		{
-			GLuint texture;
-			GLenum format = 0;
-			switch(r.format)
-			{
-				case TextureFormat::None:
-					break;
-				case TextureFormat::Lum_u8:
-					format = GL_R8UI;
-					break;
-				case TextureFormat::Lum_f16:
-					format = GL_R16F;
-					break;
-				case TextureFormat::Lum_f32:
-					format = GL_R32F;
-					break;
-				case TextureFormat::RGB_u8:
-					format = GL_RGB8UI;
-					break;
-				case TextureFormat::RGB_f16:
-					format = GL_RGB16F;
-					break;
-				case TextureFormat::RGB_f32:
-					format = GL_RGB32F;
-					break;
-				case TextureFormat::RGBA_u8:
-					format = GL_RGBA8UI;
-					break;
-				case TextureFormat::RGBA_f16:
-					format = GL_RGBA16F;
-					break;
-				case TextureFormat::RGBA_f32:
-					format = GL_RGBA32F;
-					break;
-			}
-			if(format == 0)
-				continue;
-			// For simplicities sake we will use glTexImage2D instead of glTexStorage2D for now, because it allows changing the format which will come in handy for resizing the framebuffer.
-			glCreateTextures(GL_TEXTURE_2D, 1, &texture);
-			glBindTexture(GL_TEXTURE_2D, texture);
-			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA,  GL_UNSIGNED_BYTE, nullptr);
-			glNamedFramebufferTexture(fbo_name, slot, texture, 0);
-			fbo.color.push_back({texture});
+			Texture t = Texture::Setup(r.format, width, height, r.mip_levels);
+			glNamedFramebufferTexture(fbo_name, slot, t.id, 0);
+			fbo.color.push_back(t);
 			slot += 1;
 		}
+
+		fbo.depth = Texture::Setup(spec.depth_attachment.format, width, height, spec.depth_attachment.mip_levels);
+		if(fbo.depth.id) glNamedFramebufferTexture(fbo_name, GL_DEPTH_ATTACHMENT, fbo.depth.id, 0);
+
+		fbo.stencil = Texture::Setup(spec.stencil_attachment.format, width, height, spec.stencil_attachment.mip_levels);
+		if(fbo.stencil.id) glNamedFramebufferTexture(fbo_name, GL_STENCIL_ATTACHMENT, fbo.stencil.id, 0);
+
 		std::vector<GLenum> buffers(spec.color_attachments.size());
 		for(int i = 0; i<buffers.size(); i++)
 			buffers[i] = GL_COLOR_ATTACHMENT0 + i;
@@ -223,7 +193,7 @@ namespace sGFX
 				continue;
 
 			glCreateBuffers(1, &buffers[i]);
-			glNamedBufferStorage(buffers[i], buffer_size[i], NULL, GL_DYNAMIC_DRAW);
+			glNamedBufferStorage(buffers[i], buffer_size[i], NULL, GL_DYNAMIC_STORAGE_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT);
 			if(preserve_data && old_buffers[i])
 			{
 				int to_write = old_buffer_size[0];
@@ -248,6 +218,32 @@ namespace sGFX
 		glPopDebugGroup();
 	}
 	
+	void RenderPass::setup_transform_feedback(const std::vector<AttributeBuffer>& buffers) 
+	{
+		if(transform_buffer_id)
+			tear_down_transform_feedback();
+
+		glCreateTransformFeedbacks(1, &transform_buffer_id);
+
+		int i = 0;
+		for(auto buffer : buffers)
+			glTransformFeedbackBufferBase(transform_buffer_id, i++, buffer.id);
+
+		glBeginTransformFeedback(GL_TRIANGLES);
+	}
+	
+	void RenderPass::tear_down_transform_feedback() 
+	{
+		glEndTransformFeedback();
+		glDeleteTransformFeedbacks(1, &transform_buffer_id);
+		transform_buffer_id = 0;
+	}
+	
+	std::string RenderPass::run_preprocessor(std::string_view source) 
+	{
+		// TODO
+	}
+	
 	GPU_InstanceData RenderPass::upload_raw_instances(uint8_t* data, size_t length) 
 	{
 		const char context_name[] = "upload_raw_instances()";
@@ -261,7 +257,7 @@ namespace sGFX
 		}
 
 		GPU_InstanceData retVal;
-		retVal.attribute_offset = instance_attributes.write_offset;
+		retVal.instance_offset = instance_attributes.write_offset / instance_attributes.stride;
 		retVal.num_instances = length / instance_attributes.stride;
 		retVal.instance_format_hash = instance_attributes.format_hash;
 		assert((length % instance_attributes.stride) == 0); // Illformed data
@@ -277,11 +273,14 @@ namespace sGFX
 		const char context_name[] = "draw()";
 		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, __LINE__, sizeof(context_name), context_name);
 		
+		glMemoryBarrier(GL_CLIENT_MAPPED_BUFFER_BARRIER_BIT);
 		glViewport(0, 0, fbo.size[0], fbo.size[1]);
 		glBindVertexArray(vertex_array_id);
 		glUseProgram(shader.id);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo.id);
+		glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, transform_buffer_id);
 
+		// Do we have a index buffer?
 		if(indices.id)
 			glDrawElementsInstancedBaseVertexBaseInstance(GL_TRIANGLE_STRIP, num_indices, GL_UNSIGNED_INT, (void*)(sizeof(GLuint) * index_offset), num_instances, vertex_offset, instance_offset);
 		else
@@ -289,4 +288,15 @@ namespace sGFX
 
 		glPopDebugGroup();
 	}
+	
+	void RenderPass::draw(const GPU_MeshData& mesh, int num_instances, int instance_offset) 
+	{
+		draw(mesh.num_indices, num_instances, mesh.index_offset, instance_offset, mesh.vertex_offset);
+	}
+	
+	void RenderPass::draw(const GPU_MeshData& mesh, const GPU_InstanceData& instances) 
+	{
+		draw(mesh.num_indices, instances.num_instances, mesh.index_offset, instances.instance_offset, mesh.vertex_offset);
+	}
+	
 }

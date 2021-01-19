@@ -5,9 +5,12 @@
 #include "Framebuffer.hpp"
 #include "Mesh.hpp"
 #include "ShaderProgram.hpp"
+#include "AttributeBuffer.hpp"
 #include <vector>
 #include <map>
 #include <initializer_list>
+#include <string>
+#include <string_view>
 
 namespace sGFX
 {
@@ -31,6 +34,7 @@ enum class UsageHint
 struct [[slick::tuple]] RenderAttachment
 {
 	TextureFormat format;
+	int mip_levels = 1;
 };
 
 struct [[slick::tuple]] ShaderAttribute
@@ -42,8 +46,8 @@ struct [[slick::tuple]] ShaderAttribute
 
 struct [[slick::object]] RenderPassSpec
 {
-	[[slick::import_file]] std::vector<unsigned char> shader_vertex;
-	[[slick::import_file]] std::vector<unsigned char> shader_fragment;
+	[[slick::import_file]] std::string shader_vertex;
+	[[slick::import_file]] std::string shader_fragment;
 
 	RenderAttachment depth_attachment = {TextureFormat::None};
 	RenderAttachment stencil_attachment = {TextureFormat::None};
@@ -53,7 +57,7 @@ struct [[slick::object]] RenderPassSpec
 	std::vector<ShaderAttribute>  instance_attributes;
 
 	// These determine the size of the buffers
-	int max_vertices  = 32767; // Going over 32k will use 32 bit indices.
+	int max_vertices  = 32767;
 	int max_indices   = 32767 * 8;
 	int max_instances = 256;
 };
@@ -64,20 +68,28 @@ struct AttributeSpec
 	int index;
 	int array_elements;
 	int byte_offset;
-}; 
+};
 
 struct RenderPass
 {
 	RenderPass(){};
 	~RenderPass();
+	RenderPass(RenderPass&) = delete;
+	RenderPass& operator=(RenderPass&) = delete;
 
 	void draw(int num_indices, int num_instances, int index_offset = 0, int instance_offset = 0, int vertex_offset = 0);
-	void draw(const GPU_MeshData&);
+	void draw(const GPU_MeshData& mesh, int num_instances = 1, int instance_offset = 0);
+	void draw(const GPU_MeshData& mesh, const GPU_InstanceData& instances);
 
 	void create_from_spec(const RenderPassSpec& spec, int width, int height);
 	void recreate_shader();
 	void recreate_framebuffer(int width, int height);
 	void recreate_attribute_buffers(int max_vertices = -1, int max_indices = -1, int max_instances = -1, bool preserve_data = false);
+
+	void setup_transform_feedback(const std::vector<AttributeBuffer>& buffers);
+	void tear_down_transform_feedback();
+
+	std::string run_preprocessor(std::string_view source);
 
 	/*GPU_MeshData     upload(const CPU_MeshData& data);
 	GPU_InstanceData upload(const CPU_InstanceData& data);
@@ -90,7 +102,8 @@ struct RenderPass
 	AttributeBuffer indices;
 	AttributeBuffer vertex_attributes;
 	AttributeBuffer instance_attributes;
-	unsigned int vertex_array_id;
+	uint32_t vertex_array_id = 0;
+	uint32_t transform_buffer_id = 0;
 
 	std::multimap<UsageHint,   AttributeSpec> vattribute_specs;
 };

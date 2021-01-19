@@ -25,34 +25,4 @@ namespace sGFX
 		}
 		return GL_FALSE;
 	}
-	
-	bool AttributeBuffer::upload_data(uint8_t* data, int length) 
-	{
-		if(length > (capacity - write_offset))
-		{
-			const char error_message[] = "AttributeBuffer is full, can't write data. Do you need to resize?";
-			glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_ERROR, 9003, GL_DEBUG_SEVERITY_LOW, sizeof(error_message), error_message);
-			return false;
-		}
-
-		glNamedBufferSubData(id, write_offset, length, (void*)data);
-		write_offset += length;
-		return true;
-	}
-	
-	bool AttributeBuffer::replace_data(int offset, uint8_t* data, int length) 
-	{
-		if(length > (capacity - offset))
-		{
-			const char error_message[] = "Trying to write beyond last element of AttributeBuffer.";
-			glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_ERROR, 9004, GL_DEBUG_SEVERITY_LOW, sizeof(error_message), error_message);
-			return false;
-		}
-
-		glNamedBufferSubData(id, offset, length, (void*)data);
-		offset += length;
-		if(offset > write_offset)
-			write_offset = offset;
-		return true;
-	}
 }

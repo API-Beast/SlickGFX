@@ -5,6 +5,7 @@
 namespace sGFX
 {
 
+	// Unorm stands for unsigned normalized, e.g. a fixed float from [0 to 1]
 	template<typename T>
 	struct Unorm
 	{
@@ -48,12 +49,12 @@ namespace sGFX
 
 			constexpr Unorm<T> operator+(T value){ return {clamp_i(data + value)}; };
 			constexpr Unorm<T> operator-(T value){ return {clamp_i(data - value)}; };
-			constexpr Unorm<T> operator*(T value){ return {clamp_i(data * value)}; };
+			constexpr Unorm<T> operator%(T value){ return {clamp_i(data % value)}; };
 			constexpr Unorm<T> operator/(T value){ return {clamp_i(data / value)}; };
 
 			constexpr Unorm<T>& operator+=(T value){ return data = clamp_i(data + value); };
 			constexpr Unorm<T>& operator-=(T value){ return data = clamp_i(data - value); };
-			constexpr Unorm<T>& operator*=(T value){ return data = clamp_i(data * value); };
+			constexpr Unorm<T>& operator%=(T value){ return data = clamp_i(data % value); };
 			constexpr Unorm<T>& operator/=(T value){ return data = clamp_i(data / value); };
 	};
 

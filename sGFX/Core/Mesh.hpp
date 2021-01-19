@@ -9,7 +9,7 @@ namespace sGFX
 	struct GPU_MeshData
 	{
 		int index_offset = -1;
-		int attribute_offset = -1;
+		int vertex_offset = -1;
 
 		int num_indices = -1;
 
@@ -18,7 +18,7 @@ namespace sGFX
 
 	struct GPU_InstanceData
 	{
-		int attribute_offset = -1;
+		int instance_offset = -1;
 		int num_instances = -1;
 
 		int instance_format_hash = -1;

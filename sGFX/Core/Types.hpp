@@ -7,20 +7,6 @@
 
 namespace sGFX
 {
-	enum class TextureFormat
-	{
-		None,
-		Lum_u8,
-		Lum_f16,
-		Lum_f32,
-		RGB_u8,
-		RGB_f16,
-		RGB_f32,
-		RGBA_u8,
-		RGBA_f16,
-		RGBA_f32
-	};
-
 	enum class DataFormat : uint16_t;
 
 	struct DataFormatStruct
@@ -79,20 +65,5 @@ namespace sGFX
 	using Mat22 = MatrixN<2, 2, float>;
 	using Mat33 = MatrixN<3, 3, float>;
 	using Mat44 = MatrixN<4, 4, float>;
-
-	struct AttributeBuffer
-	{
-		uint32_t id = 0;
-		int capacity = 0;
-		int format_hash = 0;
-		int stride = 0;
-		int write_offset = 0;
-
-		bool upload_data(uint8_t* data, int length);
-		bool replace_data(int offset, uint8_t* data, int length);
-
-		operator bool(){ return id; };
-		bool operator==(const AttributeBuffer& other){ return id == other.id; };
-	};
 
 }

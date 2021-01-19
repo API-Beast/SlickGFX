@@ -32,8 +32,8 @@ int main()
 	glfwSwapInterval(1); // VSync
 	sGFX::SetupOpenGL(window);
 
-	std::vector<unsigned char> frag_shader = slick::import_file("screen_fragment.glsl");
-	std::vector<unsigned char> vert_shader = slick::import_file("screen_vertex.glsl");
+	auto frag_shader = slick::import_file("screen_fragment.glsl");
+	auto vert_shader = slick::import_file("screen_vertex.glsl");
 	sGFX::RenderPassSpec spec = {
 		frag_shader, /* fragment shader */
 		vert_shader, /* vertex shader */
