@@ -239,11 +239,6 @@ namespace sGFX
 		transform_buffer_id = 0;
 	}
 	
-	std::string RenderPass::run_preprocessor(std::string_view source) 
-	{
-		// TODO
-	}
-	
 	GPU_InstanceData RenderPass::upload_raw_instances(uint8_t* data, size_t length) 
 	{
 		const char context_name[] = "upload_raw_instances()";

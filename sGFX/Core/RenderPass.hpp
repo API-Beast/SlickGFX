@@ -89,8 +89,6 @@ struct RenderPass
 	void setup_transform_feedback(const std::vector<AttributeBuffer>& buffers);
 	void tear_down_transform_feedback();
 
-	std::string run_preprocessor(std::string_view source);
-
 	/*GPU_MeshData     upload(const CPU_MeshData& data);
 	GPU_InstanceData upload(const CPU_InstanceData& data);
 	GPU_MeshData     upload_raw_vertices (uint8_t* data, size_t length, uint32_t* indices = nullptr, size_t index_length = 0);*/
