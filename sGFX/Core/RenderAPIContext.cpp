@@ -1,11 +1,13 @@
 
-#include "GL.hpp"
+#include "RenderAPIContext.hpp"
 #include "GL/flextGL.h"
 
 #include <vector>
 #include <cstdio>
 #include <string>
 #include <glfw/glfw3.h>
+
+
 
 namespace
 {
@@ -100,16 +102,71 @@ void DebugOpenGL(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei
 	printf(" %s%s %s%s: %.*s\n", _color, _severity, _type, _color_reset, length, msg);
 };
 
+void SetupOpenGL(GLFWwindow* window)
+{
+	glfwMakeContextCurrent(window);
+	flextInit(window);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+	glDebugMessageCallback(DebugOpenGL, NULL);
+	//glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, true);
+};
+
 }
 
 namespace sGFX
 {
-	void SetupOpenGL(GLFWwindow* window)
+	struct RenderAPIContextData
 	{
-		glfwMakeContextCurrent(window);
-		flextInit(window);
-		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-		glDebugMessageCallback(DebugOpenGL, NULL);
-		//glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, true);
+		GLFWwindow* window;
+	};
+
+	RenderAPIContext::~RenderAPIContext() 
+	{
+		if(d && d->window)
+			glfwDestroyWindow(d->window);
+		delete d;
+	}
+
+	RenderAPIContext RenderAPIContext::SetupWindowGLFW(const char* name, int width, int height, int flags, RenderAPIContext* share_resources) 
+	{
+		GLFWwindow* window = nullptr;
+		glfwInit();
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, !(flags & ReleaseContext));
+		glfwWindowHint(GLFW_RESIZABLE, flags & Resizable);
+		glfwWindowHint(GLFW_VISIBLE, !(flags & Hidden));
+		window = glfwCreateWindow(width, height, name, NULL, share_resources ? share_resources->d->window : nullptr);
+		if(flags & VSync)
+			glfwSwapInterval(1);
+		SetupOpenGL(window);
+
+		return {new RenderAPIContextData{window}};
+	}
+	
+	RenderAPIContext RenderAPIContext::SetupOffscreen(int flags, RenderAPIContext* share_resources) 
+	{
+		GLFWwindow* window = nullptr;
+		glfwInit();
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, !(flags & ReleaseContext));
+		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+		window = glfwCreateWindow(1, 1, "sGFX Offscreen Context", NULL, share_resources ? share_resources->d->window : nullptr);
+		SetupOpenGL(window);
+
+		return {new RenderAPIContextData{window}};
+	}
+	
+	void RenderAPIContext::make_active() 
+	{
+		glfwMakeContextCurrent(d->window);
+	}
+	
+	GLFWwindow* RenderAPIContext::get_glfw_window_handle() 
+	{
+		return d->window;
 	}
 }

@@ -22,15 +22,8 @@ void resize_loop(GLFWwindow* window, int width, int height)
 
 int main()
 {
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-	glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-	GLFWwindow* window = glfwCreateWindow(800, 600, "sGFX Screenspace Example", NULL, NULL);
-	glfwSwapInterval(1); // VSync
-	sGFX::SetupOpenGL(window);
+	sGFX::RenderAPIContext ctx = sGFX::RenderAPIContext::SetupWindowGLFW("sGFX Screenspace Test", 800, 600, sGFX::RenderAPIContext::Resizable | sGFX::RenderAPIContext::VSync);
+	GLFWwindow* window = ctx.get_glfw_window_handle();
 
 	auto frag_shader = slick::import_file("screen_fragment.glsl");
 	auto vert_shader = slick::import_file("screen_vertex.glsl");
@@ -54,7 +47,5 @@ int main()
 		main_loop(window);
 		glfwPollEvents();
 	}
-
-	glfwTerminate();
 	return 0;
 }

@@ -7,7 +7,7 @@ using namespace sGFX;
 
 YES_TEST(RenderPass, screenspace)
 {
-	TestGlContext ctxt(2, 2);
+	RenderAPIContext ctx = RenderAPIContext::SetupOffscreen();
 	RenderPassSpec spec = {
 		R"(#version 450 core
 		layout(location = 0) out vec4 gColor;
