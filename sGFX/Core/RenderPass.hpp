@@ -102,6 +102,7 @@ struct RenderPass
 	AttributeBuffer instance_attributes;
 	uint32_t vertex_array_id = 0;
 	uint32_t transform_buffer_id = 0;
+	std::vector<AttributeBuffer> shader_storage_buffers;
 
 	std::multimap<UsageHint,   AttributeSpec> vattribute_specs;
 };

@@ -268,12 +268,17 @@ namespace sGFX
 		const char context_name[] = "draw()";
 		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, __LINE__, sizeof(context_name), context_name);
 		
-		glMemoryBarrier(GL_CLIENT_MAPPED_BUFFER_BARRIER_BIT);
+		glMemoryBarrier(GL_CLIENT_MAPPED_BUFFER_BARRIER_BIT | GL_SHADER_STORAGE_BARRIER_BIT);
 		glViewport(0, 0, fbo.size[0], fbo.size[1]);
 		glBindVertexArray(vertex_array_id);
 		glUseProgram(shader.id);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo.id);
 		glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, transform_buffer_id);
+
+		int i = 0;
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+		for(AttributeBuffer& buf : shader_storage_buffers)
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, i++, buf.id);
 
 		// Do we have a index buffer?
 		if(indices.id)
