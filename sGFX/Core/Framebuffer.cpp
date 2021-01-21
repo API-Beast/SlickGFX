@@ -45,8 +45,8 @@ void Framebuffer::clear_attachments(Vec4F _color, float _depth, int _stencil)
 
 void Framebuffer::copy_to_screen() 
 {
-	// 0 is default framebuffer, e.g. the backbuffer of the screen.
-	glBlitNamedFramebuffer(id, 0, 0, 0, size[0], size[1], 0, 0, size[0], size[1], GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	constexpr uint32_t BACKBUFFER = 0;
+	glBlitNamedFramebuffer(id, BACKBUFFER, 0, 0, size[0], size[1], 0, 0, size[0], size[1], GL_COLOR_BUFFER_BIT, GL_NEAREST);
 }
 
 }
