@@ -1,5 +1,6 @@
 #pragma once
 #include "VectorN.hpp"
+#include <cmath>
 
 namespace sGFX
 {
@@ -9,7 +10,7 @@ struct [[slick::tuple]] MatrixN
 {
 	VectorN<NInput, T> rows[NOutput];
 
-	static constexpr MatrixN<NInput, NOutput, T> identity()
+	static constexpr MatrixN<NInput, NOutput, T> Identity()
 	{
 		MatrixN<NInput, NOutput, T> result;
 		for(int i = 0; i<NOutput; i++)
@@ -18,6 +19,18 @@ struct [[slick::tuple]] MatrixN
 			if((i < NInput) && (i < NOutput))
 				result.rows[i][i] = 1;
 		}
+		return result;
+	}
+
+	static constexpr MatrixN<NInput, NOutput, T> Rotation2D(float rotation)
+	{
+		static_assert(NInput  >= 2, "Rotation matrix needs to be at least 2x2");
+		static_assert(NOutput >= 2, "Rotation matrix needs to be at least 2x2");
+		MatrixN<NInput, NOutput, T> result = Identity();
+		result.rows[0][0] =  std::cos(rotation);
+		result.rows[1][0] = -std::sin(rotation);
+		result.rows[0][1] =  std::sin(rotation);
+		result.rows[1][1] =  std::cos(rotation);
 		return result;
 	}
 
@@ -59,7 +72,7 @@ constexpr VectorN<NOut, T> operator*(const VectorN<NIn, T>& a, const MatrixN<NIn
 }
 
 template<int N, typename T>
-constexpr Vector<N, T>& operator*=(VectorN<N, T>& a, const MatrixN<N, N, T>& b)
+constexpr VectorN<N, T>& operator*=(VectorN<N, T>& a, const MatrixN<N, N, T>& b)
 {
 	return a = b.transform(a);
 }
