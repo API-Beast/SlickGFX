@@ -38,7 +38,7 @@ struct [[slick::tuple]] MatrixN
 	};
 
 	template<int NRows>
-	constexpr MatrixN<NRows, NOutput, T> multiply(MatrixN<NRows, NInput, T>& other)
+	constexpr MatrixN<NRows, NOutput, T> operator*(MatrixN<NRows, NInput, T>& other)
 	{
 		MatrixN<NRows, NOutput, T> result;
 		for(int x = 0; x < NRows; x++)
@@ -50,5 +50,18 @@ struct [[slick::tuple]] MatrixN
 		return result;
 	};
 };
+
+
+template<int NIn, int NOut, typename T>
+constexpr VectorN<NOut, T> operator*(const VectorN<NIn, T>& a, const MatrixN<NIn, NOut, T>& b)
+{
+	return b.transform(a);
+}
+
+template<int N, typename T>
+constexpr Vector<N, T>& operator*=(VectorN<N, T>& a, const MatrixN<N, N, T>& b)
+{
+	return a = b.transform(a);
+}
 
 }
