@@ -5,9 +5,10 @@
 #include <vector>
 #include <cstdio>
 #include <string>
+
+// WHY DOES IT INCLUDE OPENGL HEADERS
+#define GLFW_INCLUDE_NONE
 #include <glfw/glfw3.h>
-
-
 
 namespace
 {

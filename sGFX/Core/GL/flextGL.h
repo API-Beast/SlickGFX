@@ -1,18 +1,16 @@
-#ifndef __gl_h_
-#define __gl_h_
+#pragma once
 /*
     This file was generated using https://github.com/mosra/flextgl:
 
-        path/to/flextGLgen.py -D generated -t templates/glfw3 profile.txt
+        path/to/flextGLgen.py -D generated -t templates/glfw3-cpp profile.txt
 
     Do not edit directly, modify the template or profile and regenerate.
 */
 
-#include "khrplatform.h"
+// GLFW, and potentially other libraries use this to detect if OpenGL is included
+#define __gl_h_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <KHR/khrplatform.h>
 
 /* Function declaration macros - to move into glplatform.h */
 
@@ -27,12 +25,10 @@ extern "C" {
 #ifndef APIENTRY
 #define APIENTRY
 #endif
-#ifndef APIENTRYP
-#define APIENTRYP APIENTRY *
-#endif
 #ifndef GLAPI
 #define GLAPI extern
 #endif
+
 
 /* ------------------------------- DATA TYPES ------------------------------ */
 
@@ -1483,1933 +1479,725 @@ typedef void (APIENTRY *GLDEBUGPROC)(GLenum source,GLenum type,GLuint id,GLenum 
 #define GL_NONE 0
 #define GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH 0x82FC
 
+/* GL_ARB_shading_language_include */
+
+#define GL_SHADER_INCLUDE_ARB 0x8DAE
+#define GL_NAMED_STRING_LENGTH_ARB 0x8DE9
+#define GL_NAMED_STRING_TYPE_ARB 0x8DEA
+
+/* ------------------------- CORE OPENGL FUNCTIONS ------------------------- */
+
+extern "C"
+{
+    /* GL_VERSION_1_0 */
+    extern void APIENTRY glBlendFunc (GLenum sfactor, GLenum dfactor);
+    extern void APIENTRY glClear (GLbitfield mask);
+    extern void APIENTRY glClearColor (GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
+    extern void APIENTRY glClearDepth (GLdouble depth);
+    extern void APIENTRY glClearStencil (GLint s);
+    extern void APIENTRY glColorMask (GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha);
+    extern void APIENTRY glCullFace (GLenum mode);
+    extern void APIENTRY glDepthFunc (GLenum func);
+    extern void APIENTRY glDepthMask (GLboolean flag);
+    extern void APIENTRY glDepthRange (GLdouble n, GLdouble f);
+    extern void APIENTRY glDisable (GLenum cap);
+    extern void APIENTRY glDrawBuffer (GLenum buf);
+    extern void APIENTRY glEnable (GLenum cap);
+    extern void APIENTRY glFinish (void);
+    extern void APIENTRY glFlush (void);
+    extern void APIENTRY glFrontFace (GLenum mode);
+    extern void APIENTRY glGetBooleanv (GLenum pname, GLboolean * data);
+    extern void APIENTRY glGetDoublev (GLenum pname, GLdouble * data);
+    extern GLenum APIENTRY glGetError (void);
+    extern void APIENTRY glGetFloatv (GLenum pname, GLfloat * data);
+    extern void APIENTRY glGetIntegerv (GLenum pname, GLint * data);
+    extern const GLubyte * APIENTRY glGetString (GLenum name);
+    extern void APIENTRY glGetTexImage (GLenum target, GLint level, GLenum format, GLenum type, void * pixels);
+    extern void APIENTRY glGetTexLevelParameterfv (GLenum target, GLint level, GLenum pname, GLfloat * params);
+    extern void APIENTRY glGetTexLevelParameteriv (GLenum target, GLint level, GLenum pname, GLint * params);
+    extern void APIENTRY glGetTexParameterfv (GLenum target, GLenum pname, GLfloat * params);
+    extern void APIENTRY glGetTexParameteriv (GLenum target, GLenum pname, GLint * params);
+    extern void APIENTRY glHint (GLenum target, GLenum mode);
+    extern GLboolean APIENTRY glIsEnabled (GLenum cap);
+    extern void APIENTRY glLineWidth (GLfloat width);
+    extern void APIENTRY glLogicOp (GLenum opcode);
+    extern void APIENTRY glPixelStoref (GLenum pname, GLfloat param);
+    extern void APIENTRY glPixelStorei (GLenum pname, GLint param);
+    extern void APIENTRY glPointSize (GLfloat size);
+    extern void APIENTRY glPolygonMode (GLenum face, GLenum mode);
+    extern void APIENTRY glReadBuffer (GLenum src);
+    extern void APIENTRY glReadPixels (GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, void * pixels);
+    extern void APIENTRY glScissor (GLint x, GLint y, GLsizei width, GLsizei height);
+    extern void APIENTRY glStencilFunc (GLenum func, GLint ref, GLuint mask);
+    extern void APIENTRY glStencilMask (GLuint mask);
+    extern void APIENTRY glStencilOp (GLenum fail, GLenum zfail, GLenum zpass);
+    extern void APIENTRY glTexImage1D (GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const void * pixels);
+    extern void APIENTRY glTexImage2D (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const void * pixels);
+    extern void APIENTRY glTexParameterf (GLenum target, GLenum pname, GLfloat param);
+    extern void APIENTRY glTexParameterfv (GLenum target, GLenum pname, const GLfloat * params);
+    extern void APIENTRY glTexParameteri (GLenum target, GLenum pname, GLint param);
+    extern void APIENTRY glTexParameteriv (GLenum target, GLenum pname, const GLint * params);
+    extern void APIENTRY glViewport (GLint x, GLint y, GLsizei width, GLsizei height);
+
+    /* GL_VERSION_1_1 */
+    extern void APIENTRY glBindTexture (GLenum target, GLuint texture);
+    extern void APIENTRY glCopyTexImage1D (GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLint border);
+    extern void APIENTRY glCopyTexImage2D (GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border);
+    extern void APIENTRY glCopyTexSubImage1D (GLenum target, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width);
+    extern void APIENTRY glCopyTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height);
+    extern void APIENTRY glDeleteTextures (GLsizei n, const GLuint * textures);
+    extern void APIENTRY glDrawArrays (GLenum mode, GLint first, GLsizei count);
+    extern void APIENTRY glDrawElements (GLenum mode, GLsizei count, GLenum type, const void * indices);
+    extern void APIENTRY glGenTextures (GLsizei n, GLuint * textures);
+    extern GLboolean APIENTRY glIsTexture (GLuint texture);
+    extern void APIENTRY glPolygonOffset (GLfloat factor, GLfloat units);
+    extern void APIENTRY glTexSubImage1D (GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const void * pixels);
+    extern void APIENTRY glTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const void * pixels);
+
+}
+
 /* -------------------------- FUNCTION PROTOTYPES -------------------------- */
 
-/* GL_VERSION_1_0 */
-
-GLAPI void APIENTRY glBlendFunc (GLenum sfactor, GLenum dfactor);
-GLAPI void APIENTRY glClear (GLbitfield mask);
-GLAPI void APIENTRY glClearColor (GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
-GLAPI void APIENTRY glClearDepth (GLdouble depth);
-GLAPI void APIENTRY glClearStencil (GLint s);
-GLAPI void APIENTRY glColorMask (GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha);
-GLAPI void APIENTRY glCullFace (GLenum mode);
-GLAPI void APIENTRY glDepthFunc (GLenum func);
-GLAPI void APIENTRY glDepthMask (GLboolean flag);
-GLAPI void APIENTRY glDepthRange (GLdouble n, GLdouble f);
-GLAPI void APIENTRY glDisable (GLenum cap);
-GLAPI void APIENTRY glDrawBuffer (GLenum buf);
-GLAPI void APIENTRY glEnable (GLenum cap);
-GLAPI void APIENTRY glFinish (void);
-GLAPI void APIENTRY glFlush (void);
-GLAPI void APIENTRY glFrontFace (GLenum mode);
-GLAPI void APIENTRY glGetBooleanv (GLenum pname, GLboolean * data);
-GLAPI void APIENTRY glGetDoublev (GLenum pname, GLdouble * data);
-GLAPI GLenum APIENTRY glGetError (void);
-GLAPI void APIENTRY glGetFloatv (GLenum pname, GLfloat * data);
-GLAPI void APIENTRY glGetIntegerv (GLenum pname, GLint * data);
-GLAPI const GLubyte * APIENTRY glGetString (GLenum name);
-GLAPI void APIENTRY glGetTexImage (GLenum target, GLint level, GLenum format, GLenum type, void * pixels);
-GLAPI void APIENTRY glGetTexLevelParameterfv (GLenum target, GLint level, GLenum pname, GLfloat * params);
-GLAPI void APIENTRY glGetTexLevelParameteriv (GLenum target, GLint level, GLenum pname, GLint * params);
-GLAPI void APIENTRY glGetTexParameterfv (GLenum target, GLenum pname, GLfloat * params);
-GLAPI void APIENTRY glGetTexParameteriv (GLenum target, GLenum pname, GLint * params);
-GLAPI void APIENTRY glHint (GLenum target, GLenum mode);
-GLAPI GLboolean APIENTRY glIsEnabled (GLenum cap);
-GLAPI void APIENTRY glLineWidth (GLfloat width);
-GLAPI void APIENTRY glLogicOp (GLenum opcode);
-GLAPI void APIENTRY glPixelStoref (GLenum pname, GLfloat param);
-GLAPI void APIENTRY glPixelStorei (GLenum pname, GLint param);
-GLAPI void APIENTRY glPointSize (GLfloat size);
-GLAPI void APIENTRY glPolygonMode (GLenum face, GLenum mode);
-GLAPI void APIENTRY glReadBuffer (GLenum src);
-GLAPI void APIENTRY glReadPixels (GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, void * pixels);
-GLAPI void APIENTRY glScissor (GLint x, GLint y, GLsizei width, GLsizei height);
-GLAPI void APIENTRY glStencilFunc (GLenum func, GLint ref, GLuint mask);
-GLAPI void APIENTRY glStencilMask (GLuint mask);
-GLAPI void APIENTRY glStencilOp (GLenum fail, GLenum zfail, GLenum zpass);
-GLAPI void APIENTRY glTexImage1D (GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const void * pixels);
-GLAPI void APIENTRY glTexImage2D (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const void * pixels);
-GLAPI void APIENTRY glTexParameterf (GLenum target, GLenum pname, GLfloat param);
-GLAPI void APIENTRY glTexParameterfv (GLenum target, GLenum pname, const GLfloat * params);
-GLAPI void APIENTRY glTexParameteri (GLenum target, GLenum pname, GLint param);
-GLAPI void APIENTRY glTexParameteriv (GLenum target, GLenum pname, const GLint * params);
-GLAPI void APIENTRY glViewport (GLint x, GLint y, GLsizei width, GLsizei height);
-
-/* GL_VERSION_1_1 */
-
-GLAPI void APIENTRY glBindTexture (GLenum target, GLuint texture);
-GLAPI void APIENTRY glCopyTexImage1D (GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLint border);
-GLAPI void APIENTRY glCopyTexImage2D (GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border);
-GLAPI void APIENTRY glCopyTexSubImage1D (GLenum target, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width);
-GLAPI void APIENTRY glCopyTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height);
-GLAPI void APIENTRY glDeleteTextures (GLsizei n, const GLuint * textures);
-GLAPI void APIENTRY glDrawArrays (GLenum mode, GLint first, GLsizei count);
-GLAPI void APIENTRY glDrawElements (GLenum mode, GLsizei count, GLenum type, const void * indices);
-GLAPI void APIENTRY glGenTextures (GLsizei n, GLuint * textures);
-GLAPI GLboolean APIENTRY glIsTexture (GLuint texture);
-GLAPI void APIENTRY glPolygonOffset (GLfloat factor, GLfloat units);
-GLAPI void APIENTRY glTexSubImage1D (GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const void * pixels);
-GLAPI void APIENTRY glTexSubImage2D (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const void * pixels);
-
-/* GL_VERSION_1_2 */
-
-typedef void (APIENTRY PFNGLCOPYTEXSUBIMAGE3D_PROC (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height));
-typedef void (APIENTRY PFNGLDRAWRANGEELEMENTS_PROC (GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const void * indices));
-typedef void (APIENTRY PFNGLTEXIMAGE3D_PROC (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const void * pixels));
-typedef void (APIENTRY PFNGLTEXSUBIMAGE3D_PROC (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void * pixels));
-
-GLAPI PFNGLCOPYTEXSUBIMAGE3D_PROC* glpfCopyTexSubImage3D;
-GLAPI PFNGLDRAWRANGEELEMENTS_PROC* glpfDrawRangeElements;
-GLAPI PFNGLTEXIMAGE3D_PROC* glpfTexImage3D;
-GLAPI PFNGLTEXSUBIMAGE3D_PROC* glpfTexSubImage3D;
-
-#define glCopyTexSubImage3D glpfCopyTexSubImage3D
-#define glDrawRangeElements glpfDrawRangeElements
-#define glTexImage3D glpfTexImage3D
-#define glTexSubImage3D glpfTexSubImage3D
-
-/* GL_VERSION_1_3 */
-
-typedef void (APIENTRY PFNGLACTIVETEXTURE_PROC (GLenum texture));
-typedef void (APIENTRY PFNGLCOMPRESSEDTEXIMAGE1D_PROC (GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, const void * data));
-typedef void (APIENTRY PFNGLCOMPRESSEDTEXIMAGE2D_PROC (GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const void * data));
-typedef void (APIENTRY PFNGLCOMPRESSEDTEXIMAGE3D_PROC (GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const void * data));
-typedef void (APIENTRY PFNGLCOMPRESSEDTEXSUBIMAGE1D_PROC (GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const void * data));
-typedef void (APIENTRY PFNGLCOMPRESSEDTEXSUBIMAGE2D_PROC (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void * data));
-typedef void (APIENTRY PFNGLCOMPRESSEDTEXSUBIMAGE3D_PROC (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const void * data));
-typedef void (APIENTRY PFNGLGETCOMPRESSEDTEXIMAGE_PROC (GLenum target, GLint level, void * img));
-typedef void (APIENTRY PFNGLSAMPLECOVERAGE_PROC (GLfloat value, GLboolean invert));
-
-GLAPI PFNGLACTIVETEXTURE_PROC* glpfActiveTexture;
-GLAPI PFNGLCOMPRESSEDTEXIMAGE1D_PROC* glpfCompressedTexImage1D;
-GLAPI PFNGLCOMPRESSEDTEXIMAGE2D_PROC* glpfCompressedTexImage2D;
-GLAPI PFNGLCOMPRESSEDTEXIMAGE3D_PROC* glpfCompressedTexImage3D;
-GLAPI PFNGLCOMPRESSEDTEXSUBIMAGE1D_PROC* glpfCompressedTexSubImage1D;
-GLAPI PFNGLCOMPRESSEDTEXSUBIMAGE2D_PROC* glpfCompressedTexSubImage2D;
-GLAPI PFNGLCOMPRESSEDTEXSUBIMAGE3D_PROC* glpfCompressedTexSubImage3D;
-GLAPI PFNGLGETCOMPRESSEDTEXIMAGE_PROC* glpfGetCompressedTexImage;
-GLAPI PFNGLSAMPLECOVERAGE_PROC* glpfSampleCoverage;
-
-#define glActiveTexture glpfActiveTexture
-#define glCompressedTexImage1D glpfCompressedTexImage1D
-#define glCompressedTexImage2D glpfCompressedTexImage2D
-#define glCompressedTexImage3D glpfCompressedTexImage3D
-#define glCompressedTexSubImage1D glpfCompressedTexSubImage1D
-#define glCompressedTexSubImage2D glpfCompressedTexSubImage2D
-#define glCompressedTexSubImage3D glpfCompressedTexSubImage3D
-#define glGetCompressedTexImage glpfGetCompressedTexImage
-#define glSampleCoverage glpfSampleCoverage
-
-/* GL_VERSION_1_4 */
-
-typedef void (APIENTRY PFNGLBLENDCOLOR_PROC (GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha));
-typedef void (APIENTRY PFNGLBLENDEQUATION_PROC (GLenum mode));
-typedef void (APIENTRY PFNGLBLENDFUNCSEPARATE_PROC (GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha));
-typedef void (APIENTRY PFNGLMULTIDRAWARRAYS_PROC (GLenum mode, const GLint * first, const GLsizei * count, GLsizei drawcount));
-typedef void (APIENTRY PFNGLMULTIDRAWELEMENTS_PROC (GLenum mode, const GLsizei * count, GLenum type, const void *const* indices, GLsizei drawcount));
-typedef void (APIENTRY PFNGLPOINTPARAMETERF_PROC (GLenum pname, GLfloat param));
-typedef void (APIENTRY PFNGLPOINTPARAMETERFV_PROC (GLenum pname, const GLfloat * params));
-typedef void (APIENTRY PFNGLPOINTPARAMETERI_PROC (GLenum pname, GLint param));
-typedef void (APIENTRY PFNGLPOINTPARAMETERIV_PROC (GLenum pname, const GLint * params));
-
-GLAPI PFNGLBLENDCOLOR_PROC* glpfBlendColor;
-GLAPI PFNGLBLENDEQUATION_PROC* glpfBlendEquation;
-GLAPI PFNGLBLENDFUNCSEPARATE_PROC* glpfBlendFuncSeparate;
-GLAPI PFNGLMULTIDRAWARRAYS_PROC* glpfMultiDrawArrays;
-GLAPI PFNGLMULTIDRAWELEMENTS_PROC* glpfMultiDrawElements;
-GLAPI PFNGLPOINTPARAMETERF_PROC* glpfPointParameterf;
-GLAPI PFNGLPOINTPARAMETERFV_PROC* glpfPointParameterfv;
-GLAPI PFNGLPOINTPARAMETERI_PROC* glpfPointParameteri;
-GLAPI PFNGLPOINTPARAMETERIV_PROC* glpfPointParameteriv;
-
-#define glBlendColor glpfBlendColor
-#define glBlendEquation glpfBlendEquation
-#define glBlendFuncSeparate glpfBlendFuncSeparate
-#define glMultiDrawArrays glpfMultiDrawArrays
-#define glMultiDrawElements glpfMultiDrawElements
-#define glPointParameterf glpfPointParameterf
-#define glPointParameterfv glpfPointParameterfv
-#define glPointParameteri glpfPointParameteri
-#define glPointParameteriv glpfPointParameteriv
-
-/* GL_VERSION_1_5 */
-
-typedef void (APIENTRY PFNGLBEGINQUERY_PROC (GLenum target, GLuint id));
-typedef void (APIENTRY PFNGLBINDBUFFER_PROC (GLenum target, GLuint buffer));
-typedef void (APIENTRY PFNGLBUFFERDATA_PROC (GLenum target, GLsizeiptr size, const void * data, GLenum usage));
-typedef void (APIENTRY PFNGLBUFFERSUBDATA_PROC (GLenum target, GLintptr offset, GLsizeiptr size, const void * data));
-typedef void (APIENTRY PFNGLDELETEBUFFERS_PROC (GLsizei n, const GLuint * buffers));
-typedef void (APIENTRY PFNGLDELETEQUERIES_PROC (GLsizei n, const GLuint * ids));
-typedef void (APIENTRY PFNGLENDQUERY_PROC (GLenum target));
-typedef void (APIENTRY PFNGLGENBUFFERS_PROC (GLsizei n, GLuint * buffers));
-typedef void (APIENTRY PFNGLGENQUERIES_PROC (GLsizei n, GLuint * ids));
-typedef void (APIENTRY PFNGLGETBUFFERPARAMETERIV_PROC (GLenum target, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETBUFFERPOINTERV_PROC (GLenum target, GLenum pname, void ** params));
-typedef void (APIENTRY PFNGLGETBUFFERSUBDATA_PROC (GLenum target, GLintptr offset, GLsizeiptr size, void * data));
-typedef void (APIENTRY PFNGLGETQUERYOBJECTIV_PROC (GLuint id, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETQUERYOBJECTUIV_PROC (GLuint id, GLenum pname, GLuint * params));
-typedef void (APIENTRY PFNGLGETQUERYIV_PROC (GLenum target, GLenum pname, GLint * params));
-typedef GLboolean (APIENTRY PFNGLISBUFFER_PROC (GLuint buffer));
-typedef GLboolean (APIENTRY PFNGLISQUERY_PROC (GLuint id));
-typedef void * (APIENTRY PFNGLMAPBUFFER_PROC (GLenum target, GLenum access));
-typedef GLboolean (APIENTRY PFNGLUNMAPBUFFER_PROC (GLenum target));
-
-GLAPI PFNGLBEGINQUERY_PROC* glpfBeginQuery;
-GLAPI PFNGLBINDBUFFER_PROC* glpfBindBuffer;
-GLAPI PFNGLBUFFERDATA_PROC* glpfBufferData;
-GLAPI PFNGLBUFFERSUBDATA_PROC* glpfBufferSubData;
-GLAPI PFNGLDELETEBUFFERS_PROC* glpfDeleteBuffers;
-GLAPI PFNGLDELETEQUERIES_PROC* glpfDeleteQueries;
-GLAPI PFNGLENDQUERY_PROC* glpfEndQuery;
-GLAPI PFNGLGENBUFFERS_PROC* glpfGenBuffers;
-GLAPI PFNGLGENQUERIES_PROC* glpfGenQueries;
-GLAPI PFNGLGETBUFFERPARAMETERIV_PROC* glpfGetBufferParameteriv;
-GLAPI PFNGLGETBUFFERPOINTERV_PROC* glpfGetBufferPointerv;
-GLAPI PFNGLGETBUFFERSUBDATA_PROC* glpfGetBufferSubData;
-GLAPI PFNGLGETQUERYOBJECTIV_PROC* glpfGetQueryObjectiv;
-GLAPI PFNGLGETQUERYOBJECTUIV_PROC* glpfGetQueryObjectuiv;
-GLAPI PFNGLGETQUERYIV_PROC* glpfGetQueryiv;
-GLAPI PFNGLISBUFFER_PROC* glpfIsBuffer;
-GLAPI PFNGLISQUERY_PROC* glpfIsQuery;
-GLAPI PFNGLMAPBUFFER_PROC* glpfMapBuffer;
-GLAPI PFNGLUNMAPBUFFER_PROC* glpfUnmapBuffer;
-
-#define glBeginQuery glpfBeginQuery
-#define glBindBuffer glpfBindBuffer
-#define glBufferData glpfBufferData
-#define glBufferSubData glpfBufferSubData
-#define glDeleteBuffers glpfDeleteBuffers
-#define glDeleteQueries glpfDeleteQueries
-#define glEndQuery glpfEndQuery
-#define glGenBuffers glpfGenBuffers
-#define glGenQueries glpfGenQueries
-#define glGetBufferParameteriv glpfGetBufferParameteriv
-#define glGetBufferPointerv glpfGetBufferPointerv
-#define glGetBufferSubData glpfGetBufferSubData
-#define glGetQueryObjectiv glpfGetQueryObjectiv
-#define glGetQueryObjectuiv glpfGetQueryObjectuiv
-#define glGetQueryiv glpfGetQueryiv
-#define glIsBuffer glpfIsBuffer
-#define glIsQuery glpfIsQuery
-#define glMapBuffer glpfMapBuffer
-#define glUnmapBuffer glpfUnmapBuffer
-
-/* GL_VERSION_2_0 */
-
-typedef void (APIENTRY PFNGLATTACHSHADER_PROC (GLuint program, GLuint shader));
-typedef void (APIENTRY PFNGLBINDATTRIBLOCATION_PROC (GLuint program, GLuint index, const GLchar * name));
-typedef void (APIENTRY PFNGLBLENDEQUATIONSEPARATE_PROC (GLenum modeRGB, GLenum modeAlpha));
-typedef void (APIENTRY PFNGLCOMPILESHADER_PROC (GLuint shader));
-typedef GLuint (APIENTRY PFNGLCREATEPROGRAM_PROC (void));
-typedef GLuint (APIENTRY PFNGLCREATESHADER_PROC (GLenum type));
-typedef void (APIENTRY PFNGLDELETEPROGRAM_PROC (GLuint program));
-typedef void (APIENTRY PFNGLDELETESHADER_PROC (GLuint shader));
-typedef void (APIENTRY PFNGLDETACHSHADER_PROC (GLuint program, GLuint shader));
-typedef void (APIENTRY PFNGLDISABLEVERTEXATTRIBARRAY_PROC (GLuint index));
-typedef void (APIENTRY PFNGLDRAWBUFFERS_PROC (GLsizei n, const GLenum * bufs));
-typedef void (APIENTRY PFNGLENABLEVERTEXATTRIBARRAY_PROC (GLuint index));
-typedef void (APIENTRY PFNGLGETACTIVEATTRIB_PROC (GLuint program, GLuint index, GLsizei bufSize, GLsizei * length, GLint * size, GLenum * type, GLchar * name));
-typedef void (APIENTRY PFNGLGETACTIVEUNIFORM_PROC (GLuint program, GLuint index, GLsizei bufSize, GLsizei * length, GLint * size, GLenum * type, GLchar * name));
-typedef void (APIENTRY PFNGLGETATTACHEDSHADERS_PROC (GLuint program, GLsizei maxCount, GLsizei * count, GLuint * shaders));
-typedef GLint (APIENTRY PFNGLGETATTRIBLOCATION_PROC (GLuint program, const GLchar * name));
-typedef void (APIENTRY PFNGLGETPROGRAMINFOLOG_PROC (GLuint program, GLsizei bufSize, GLsizei * length, GLchar * infoLog));
-typedef void (APIENTRY PFNGLGETPROGRAMIV_PROC (GLuint program, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETSHADERINFOLOG_PROC (GLuint shader, GLsizei bufSize, GLsizei * length, GLchar * infoLog));
-typedef void (APIENTRY PFNGLGETSHADERSOURCE_PROC (GLuint shader, GLsizei bufSize, GLsizei * length, GLchar * source));
-typedef void (APIENTRY PFNGLGETSHADERIV_PROC (GLuint shader, GLenum pname, GLint * params));
-typedef GLint (APIENTRY PFNGLGETUNIFORMLOCATION_PROC (GLuint program, const GLchar * name));
-typedef void (APIENTRY PFNGLGETUNIFORMFV_PROC (GLuint program, GLint location, GLfloat * params));
-typedef void (APIENTRY PFNGLGETUNIFORMIV_PROC (GLuint program, GLint location, GLint * params));
-typedef void (APIENTRY PFNGLGETVERTEXATTRIBPOINTERV_PROC (GLuint index, GLenum pname, void ** pointer));
-typedef void (APIENTRY PFNGLGETVERTEXATTRIBDV_PROC (GLuint index, GLenum pname, GLdouble * params));
-typedef void (APIENTRY PFNGLGETVERTEXATTRIBFV_PROC (GLuint index, GLenum pname, GLfloat * params));
-typedef void (APIENTRY PFNGLGETVERTEXATTRIBIV_PROC (GLuint index, GLenum pname, GLint * params));
-typedef GLboolean (APIENTRY PFNGLISPROGRAM_PROC (GLuint program));
-typedef GLboolean (APIENTRY PFNGLISSHADER_PROC (GLuint shader));
-typedef void (APIENTRY PFNGLLINKPROGRAM_PROC (GLuint program));
-typedef void (APIENTRY PFNGLSHADERSOURCE_PROC (GLuint shader, GLsizei count, const GLchar *const* string, const GLint * length));
-typedef void (APIENTRY PFNGLSTENCILFUNCSEPARATE_PROC (GLenum face, GLenum func, GLint ref, GLuint mask));
-typedef void (APIENTRY PFNGLSTENCILMASKSEPARATE_PROC (GLenum face, GLuint mask));
-typedef void (APIENTRY PFNGLSTENCILOPSEPARATE_PROC (GLenum face, GLenum sfail, GLenum dpfail, GLenum dppass));
-typedef void (APIENTRY PFNGLUNIFORM1F_PROC (GLint location, GLfloat v0));
-typedef void (APIENTRY PFNGLUNIFORM1FV_PROC (GLint location, GLsizei count, const GLfloat * value));
-typedef void (APIENTRY PFNGLUNIFORM1I_PROC (GLint location, GLint v0));
-typedef void (APIENTRY PFNGLUNIFORM1IV_PROC (GLint location, GLsizei count, const GLint * value));
-typedef void (APIENTRY PFNGLUNIFORM2F_PROC (GLint location, GLfloat v0, GLfloat v1));
-typedef void (APIENTRY PFNGLUNIFORM2FV_PROC (GLint location, GLsizei count, const GLfloat * value));
-typedef void (APIENTRY PFNGLUNIFORM2I_PROC (GLint location, GLint v0, GLint v1));
-typedef void (APIENTRY PFNGLUNIFORM2IV_PROC (GLint location, GLsizei count, const GLint * value));
-typedef void (APIENTRY PFNGLUNIFORM3F_PROC (GLint location, GLfloat v0, GLfloat v1, GLfloat v2));
-typedef void (APIENTRY PFNGLUNIFORM3FV_PROC (GLint location, GLsizei count, const GLfloat * value));
-typedef void (APIENTRY PFNGLUNIFORM3I_PROC (GLint location, GLint v0, GLint v1, GLint v2));
-typedef void (APIENTRY PFNGLUNIFORM3IV_PROC (GLint location, GLsizei count, const GLint * value));
-typedef void (APIENTRY PFNGLUNIFORM4F_PROC (GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3));
-typedef void (APIENTRY PFNGLUNIFORM4FV_PROC (GLint location, GLsizei count, const GLfloat * value));
-typedef void (APIENTRY PFNGLUNIFORM4I_PROC (GLint location, GLint v0, GLint v1, GLint v2, GLint v3));
-typedef void (APIENTRY PFNGLUNIFORM4IV_PROC (GLint location, GLsizei count, const GLint * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX2FV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX3FV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX4FV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLUSEPROGRAM_PROC (GLuint program));
-typedef void (APIENTRY PFNGLVALIDATEPROGRAM_PROC (GLuint program));
-typedef void (APIENTRY PFNGLVERTEXATTRIB1D_PROC (GLuint index, GLdouble x));
-typedef void (APIENTRY PFNGLVERTEXATTRIB1DV_PROC (GLuint index, const GLdouble * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB1F_PROC (GLuint index, GLfloat x));
-typedef void (APIENTRY PFNGLVERTEXATTRIB1FV_PROC (GLuint index, const GLfloat * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB1S_PROC (GLuint index, GLshort x));
-typedef void (APIENTRY PFNGLVERTEXATTRIB1SV_PROC (GLuint index, const GLshort * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB2D_PROC (GLuint index, GLdouble x, GLdouble y));
-typedef void (APIENTRY PFNGLVERTEXATTRIB2DV_PROC (GLuint index, const GLdouble * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB2F_PROC (GLuint index, GLfloat x, GLfloat y));
-typedef void (APIENTRY PFNGLVERTEXATTRIB2FV_PROC (GLuint index, const GLfloat * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB2S_PROC (GLuint index, GLshort x, GLshort y));
-typedef void (APIENTRY PFNGLVERTEXATTRIB2SV_PROC (GLuint index, const GLshort * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB3D_PROC (GLuint index, GLdouble x, GLdouble y, GLdouble z));
-typedef void (APIENTRY PFNGLVERTEXATTRIB3DV_PROC (GLuint index, const GLdouble * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB3F_PROC (GLuint index, GLfloat x, GLfloat y, GLfloat z));
-typedef void (APIENTRY PFNGLVERTEXATTRIB3FV_PROC (GLuint index, const GLfloat * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB3S_PROC (GLuint index, GLshort x, GLshort y, GLshort z));
-typedef void (APIENTRY PFNGLVERTEXATTRIB3SV_PROC (GLuint index, const GLshort * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4NBV_PROC (GLuint index, const GLbyte * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4NIV_PROC (GLuint index, const GLint * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4NSV_PROC (GLuint index, const GLshort * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4NUB_PROC (GLuint index, GLubyte x, GLubyte y, GLubyte z, GLubyte w));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4NUBV_PROC (GLuint index, const GLubyte * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4NUIV_PROC (GLuint index, const GLuint * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4NUSV_PROC (GLuint index, const GLushort * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4BV_PROC (GLuint index, const GLbyte * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4D_PROC (GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4DV_PROC (GLuint index, const GLdouble * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4F_PROC (GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4FV_PROC (GLuint index, const GLfloat * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4IV_PROC (GLuint index, const GLint * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4S_PROC (GLuint index, GLshort x, GLshort y, GLshort z, GLshort w));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4SV_PROC (GLuint index, const GLshort * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4UBV_PROC (GLuint index, const GLubyte * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4UIV_PROC (GLuint index, const GLuint * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIB4USV_PROC (GLuint index, const GLushort * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBPOINTER_PROC (GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void * pointer));
-
-GLAPI PFNGLATTACHSHADER_PROC* glpfAttachShader;
-GLAPI PFNGLBINDATTRIBLOCATION_PROC* glpfBindAttribLocation;
-GLAPI PFNGLBLENDEQUATIONSEPARATE_PROC* glpfBlendEquationSeparate;
-GLAPI PFNGLCOMPILESHADER_PROC* glpfCompileShader;
-GLAPI PFNGLCREATEPROGRAM_PROC* glpfCreateProgram;
-GLAPI PFNGLCREATESHADER_PROC* glpfCreateShader;
-GLAPI PFNGLDELETEPROGRAM_PROC* glpfDeleteProgram;
-GLAPI PFNGLDELETESHADER_PROC* glpfDeleteShader;
-GLAPI PFNGLDETACHSHADER_PROC* glpfDetachShader;
-GLAPI PFNGLDISABLEVERTEXATTRIBARRAY_PROC* glpfDisableVertexAttribArray;
-GLAPI PFNGLDRAWBUFFERS_PROC* glpfDrawBuffers;
-GLAPI PFNGLENABLEVERTEXATTRIBARRAY_PROC* glpfEnableVertexAttribArray;
-GLAPI PFNGLGETACTIVEATTRIB_PROC* glpfGetActiveAttrib;
-GLAPI PFNGLGETACTIVEUNIFORM_PROC* glpfGetActiveUniform;
-GLAPI PFNGLGETATTACHEDSHADERS_PROC* glpfGetAttachedShaders;
-GLAPI PFNGLGETATTRIBLOCATION_PROC* glpfGetAttribLocation;
-GLAPI PFNGLGETPROGRAMINFOLOG_PROC* glpfGetProgramInfoLog;
-GLAPI PFNGLGETPROGRAMIV_PROC* glpfGetProgramiv;
-GLAPI PFNGLGETSHADERINFOLOG_PROC* glpfGetShaderInfoLog;
-GLAPI PFNGLGETSHADERSOURCE_PROC* glpfGetShaderSource;
-GLAPI PFNGLGETSHADERIV_PROC* glpfGetShaderiv;
-GLAPI PFNGLGETUNIFORMLOCATION_PROC* glpfGetUniformLocation;
-GLAPI PFNGLGETUNIFORMFV_PROC* glpfGetUniformfv;
-GLAPI PFNGLGETUNIFORMIV_PROC* glpfGetUniformiv;
-GLAPI PFNGLGETVERTEXATTRIBPOINTERV_PROC* glpfGetVertexAttribPointerv;
-GLAPI PFNGLGETVERTEXATTRIBDV_PROC* glpfGetVertexAttribdv;
-GLAPI PFNGLGETVERTEXATTRIBFV_PROC* glpfGetVertexAttribfv;
-GLAPI PFNGLGETVERTEXATTRIBIV_PROC* glpfGetVertexAttribiv;
-GLAPI PFNGLISPROGRAM_PROC* glpfIsProgram;
-GLAPI PFNGLISSHADER_PROC* glpfIsShader;
-GLAPI PFNGLLINKPROGRAM_PROC* glpfLinkProgram;
-GLAPI PFNGLSHADERSOURCE_PROC* glpfShaderSource;
-GLAPI PFNGLSTENCILFUNCSEPARATE_PROC* glpfStencilFuncSeparate;
-GLAPI PFNGLSTENCILMASKSEPARATE_PROC* glpfStencilMaskSeparate;
-GLAPI PFNGLSTENCILOPSEPARATE_PROC* glpfStencilOpSeparate;
-GLAPI PFNGLUNIFORM1F_PROC* glpfUniform1f;
-GLAPI PFNGLUNIFORM1FV_PROC* glpfUniform1fv;
-GLAPI PFNGLUNIFORM1I_PROC* glpfUniform1i;
-GLAPI PFNGLUNIFORM1IV_PROC* glpfUniform1iv;
-GLAPI PFNGLUNIFORM2F_PROC* glpfUniform2f;
-GLAPI PFNGLUNIFORM2FV_PROC* glpfUniform2fv;
-GLAPI PFNGLUNIFORM2I_PROC* glpfUniform2i;
-GLAPI PFNGLUNIFORM2IV_PROC* glpfUniform2iv;
-GLAPI PFNGLUNIFORM3F_PROC* glpfUniform3f;
-GLAPI PFNGLUNIFORM3FV_PROC* glpfUniform3fv;
-GLAPI PFNGLUNIFORM3I_PROC* glpfUniform3i;
-GLAPI PFNGLUNIFORM3IV_PROC* glpfUniform3iv;
-GLAPI PFNGLUNIFORM4F_PROC* glpfUniform4f;
-GLAPI PFNGLUNIFORM4FV_PROC* glpfUniform4fv;
-GLAPI PFNGLUNIFORM4I_PROC* glpfUniform4i;
-GLAPI PFNGLUNIFORM4IV_PROC* glpfUniform4iv;
-GLAPI PFNGLUNIFORMMATRIX2FV_PROC* glpfUniformMatrix2fv;
-GLAPI PFNGLUNIFORMMATRIX3FV_PROC* glpfUniformMatrix3fv;
-GLAPI PFNGLUNIFORMMATRIX4FV_PROC* glpfUniformMatrix4fv;
-GLAPI PFNGLUSEPROGRAM_PROC* glpfUseProgram;
-GLAPI PFNGLVALIDATEPROGRAM_PROC* glpfValidateProgram;
-GLAPI PFNGLVERTEXATTRIB1D_PROC* glpfVertexAttrib1d;
-GLAPI PFNGLVERTEXATTRIB1DV_PROC* glpfVertexAttrib1dv;
-GLAPI PFNGLVERTEXATTRIB1F_PROC* glpfVertexAttrib1f;
-GLAPI PFNGLVERTEXATTRIB1FV_PROC* glpfVertexAttrib1fv;
-GLAPI PFNGLVERTEXATTRIB1S_PROC* glpfVertexAttrib1s;
-GLAPI PFNGLVERTEXATTRIB1SV_PROC* glpfVertexAttrib1sv;
-GLAPI PFNGLVERTEXATTRIB2D_PROC* glpfVertexAttrib2d;
-GLAPI PFNGLVERTEXATTRIB2DV_PROC* glpfVertexAttrib2dv;
-GLAPI PFNGLVERTEXATTRIB2F_PROC* glpfVertexAttrib2f;
-GLAPI PFNGLVERTEXATTRIB2FV_PROC* glpfVertexAttrib2fv;
-GLAPI PFNGLVERTEXATTRIB2S_PROC* glpfVertexAttrib2s;
-GLAPI PFNGLVERTEXATTRIB2SV_PROC* glpfVertexAttrib2sv;
-GLAPI PFNGLVERTEXATTRIB3D_PROC* glpfVertexAttrib3d;
-GLAPI PFNGLVERTEXATTRIB3DV_PROC* glpfVertexAttrib3dv;
-GLAPI PFNGLVERTEXATTRIB3F_PROC* glpfVertexAttrib3f;
-GLAPI PFNGLVERTEXATTRIB3FV_PROC* glpfVertexAttrib3fv;
-GLAPI PFNGLVERTEXATTRIB3S_PROC* glpfVertexAttrib3s;
-GLAPI PFNGLVERTEXATTRIB3SV_PROC* glpfVertexAttrib3sv;
-GLAPI PFNGLVERTEXATTRIB4NBV_PROC* glpfVertexAttrib4Nbv;
-GLAPI PFNGLVERTEXATTRIB4NIV_PROC* glpfVertexAttrib4Niv;
-GLAPI PFNGLVERTEXATTRIB4NSV_PROC* glpfVertexAttrib4Nsv;
-GLAPI PFNGLVERTEXATTRIB4NUB_PROC* glpfVertexAttrib4Nub;
-GLAPI PFNGLVERTEXATTRIB4NUBV_PROC* glpfVertexAttrib4Nubv;
-GLAPI PFNGLVERTEXATTRIB4NUIV_PROC* glpfVertexAttrib4Nuiv;
-GLAPI PFNGLVERTEXATTRIB4NUSV_PROC* glpfVertexAttrib4Nusv;
-GLAPI PFNGLVERTEXATTRIB4BV_PROC* glpfVertexAttrib4bv;
-GLAPI PFNGLVERTEXATTRIB4D_PROC* glpfVertexAttrib4d;
-GLAPI PFNGLVERTEXATTRIB4DV_PROC* glpfVertexAttrib4dv;
-GLAPI PFNGLVERTEXATTRIB4F_PROC* glpfVertexAttrib4f;
-GLAPI PFNGLVERTEXATTRIB4FV_PROC* glpfVertexAttrib4fv;
-GLAPI PFNGLVERTEXATTRIB4IV_PROC* glpfVertexAttrib4iv;
-GLAPI PFNGLVERTEXATTRIB4S_PROC* glpfVertexAttrib4s;
-GLAPI PFNGLVERTEXATTRIB4SV_PROC* glpfVertexAttrib4sv;
-GLAPI PFNGLVERTEXATTRIB4UBV_PROC* glpfVertexAttrib4ubv;
-GLAPI PFNGLVERTEXATTRIB4UIV_PROC* glpfVertexAttrib4uiv;
-GLAPI PFNGLVERTEXATTRIB4USV_PROC* glpfVertexAttrib4usv;
-GLAPI PFNGLVERTEXATTRIBPOINTER_PROC* glpfVertexAttribPointer;
-
-#define glAttachShader glpfAttachShader
-#define glBindAttribLocation glpfBindAttribLocation
-#define glBlendEquationSeparate glpfBlendEquationSeparate
-#define glCompileShader glpfCompileShader
-#define glCreateProgram glpfCreateProgram
-#define glCreateShader glpfCreateShader
-#define glDeleteProgram glpfDeleteProgram
-#define glDeleteShader glpfDeleteShader
-#define glDetachShader glpfDetachShader
-#define glDisableVertexAttribArray glpfDisableVertexAttribArray
-#define glDrawBuffers glpfDrawBuffers
-#define glEnableVertexAttribArray glpfEnableVertexAttribArray
-#define glGetActiveAttrib glpfGetActiveAttrib
-#define glGetActiveUniform glpfGetActiveUniform
-#define glGetAttachedShaders glpfGetAttachedShaders
-#define glGetAttribLocation glpfGetAttribLocation
-#define glGetProgramInfoLog glpfGetProgramInfoLog
-#define glGetProgramiv glpfGetProgramiv
-#define glGetShaderInfoLog glpfGetShaderInfoLog
-#define glGetShaderSource glpfGetShaderSource
-#define glGetShaderiv glpfGetShaderiv
-#define glGetUniformLocation glpfGetUniformLocation
-#define glGetUniformfv glpfGetUniformfv
-#define glGetUniformiv glpfGetUniformiv
-#define glGetVertexAttribPointerv glpfGetVertexAttribPointerv
-#define glGetVertexAttribdv glpfGetVertexAttribdv
-#define glGetVertexAttribfv glpfGetVertexAttribfv
-#define glGetVertexAttribiv glpfGetVertexAttribiv
-#define glIsProgram glpfIsProgram
-#define glIsShader glpfIsShader
-#define glLinkProgram glpfLinkProgram
-#define glShaderSource glpfShaderSource
-#define glStencilFuncSeparate glpfStencilFuncSeparate
-#define glStencilMaskSeparate glpfStencilMaskSeparate
-#define glStencilOpSeparate glpfStencilOpSeparate
-#define glUniform1f glpfUniform1f
-#define glUniform1fv glpfUniform1fv
-#define glUniform1i glpfUniform1i
-#define glUniform1iv glpfUniform1iv
-#define glUniform2f glpfUniform2f
-#define glUniform2fv glpfUniform2fv
-#define glUniform2i glpfUniform2i
-#define glUniform2iv glpfUniform2iv
-#define glUniform3f glpfUniform3f
-#define glUniform3fv glpfUniform3fv
-#define glUniform3i glpfUniform3i
-#define glUniform3iv glpfUniform3iv
-#define glUniform4f glpfUniform4f
-#define glUniform4fv glpfUniform4fv
-#define glUniform4i glpfUniform4i
-#define glUniform4iv glpfUniform4iv
-#define glUniformMatrix2fv glpfUniformMatrix2fv
-#define glUniformMatrix3fv glpfUniformMatrix3fv
-#define glUniformMatrix4fv glpfUniformMatrix4fv
-#define glUseProgram glpfUseProgram
-#define glValidateProgram glpfValidateProgram
-#define glVertexAttrib1d glpfVertexAttrib1d
-#define glVertexAttrib1dv glpfVertexAttrib1dv
-#define glVertexAttrib1f glpfVertexAttrib1f
-#define glVertexAttrib1fv glpfVertexAttrib1fv
-#define glVertexAttrib1s glpfVertexAttrib1s
-#define glVertexAttrib1sv glpfVertexAttrib1sv
-#define glVertexAttrib2d glpfVertexAttrib2d
-#define glVertexAttrib2dv glpfVertexAttrib2dv
-#define glVertexAttrib2f glpfVertexAttrib2f
-#define glVertexAttrib2fv glpfVertexAttrib2fv
-#define glVertexAttrib2s glpfVertexAttrib2s
-#define glVertexAttrib2sv glpfVertexAttrib2sv
-#define glVertexAttrib3d glpfVertexAttrib3d
-#define glVertexAttrib3dv glpfVertexAttrib3dv
-#define glVertexAttrib3f glpfVertexAttrib3f
-#define glVertexAttrib3fv glpfVertexAttrib3fv
-#define glVertexAttrib3s glpfVertexAttrib3s
-#define glVertexAttrib3sv glpfVertexAttrib3sv
-#define glVertexAttrib4Nbv glpfVertexAttrib4Nbv
-#define glVertexAttrib4Niv glpfVertexAttrib4Niv
-#define glVertexAttrib4Nsv glpfVertexAttrib4Nsv
-#define glVertexAttrib4Nub glpfVertexAttrib4Nub
-#define glVertexAttrib4Nubv glpfVertexAttrib4Nubv
-#define glVertexAttrib4Nuiv glpfVertexAttrib4Nuiv
-#define glVertexAttrib4Nusv glpfVertexAttrib4Nusv
-#define glVertexAttrib4bv glpfVertexAttrib4bv
-#define glVertexAttrib4d glpfVertexAttrib4d
-#define glVertexAttrib4dv glpfVertexAttrib4dv
-#define glVertexAttrib4f glpfVertexAttrib4f
-#define glVertexAttrib4fv glpfVertexAttrib4fv
-#define glVertexAttrib4iv glpfVertexAttrib4iv
-#define glVertexAttrib4s glpfVertexAttrib4s
-#define glVertexAttrib4sv glpfVertexAttrib4sv
-#define glVertexAttrib4ubv glpfVertexAttrib4ubv
-#define glVertexAttrib4uiv glpfVertexAttrib4uiv
-#define glVertexAttrib4usv glpfVertexAttrib4usv
-#define glVertexAttribPointer glpfVertexAttribPointer
-
-/* GL_VERSION_2_1 */
-
-typedef void (APIENTRY PFNGLUNIFORMMATRIX2X3FV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX2X4FV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX3X2FV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX3X4FV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX4X2FV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX4X3FV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-
-GLAPI PFNGLUNIFORMMATRIX2X3FV_PROC* glpfUniformMatrix2x3fv;
-GLAPI PFNGLUNIFORMMATRIX2X4FV_PROC* glpfUniformMatrix2x4fv;
-GLAPI PFNGLUNIFORMMATRIX3X2FV_PROC* glpfUniformMatrix3x2fv;
-GLAPI PFNGLUNIFORMMATRIX3X4FV_PROC* glpfUniformMatrix3x4fv;
-GLAPI PFNGLUNIFORMMATRIX4X2FV_PROC* glpfUniformMatrix4x2fv;
-GLAPI PFNGLUNIFORMMATRIX4X3FV_PROC* glpfUniformMatrix4x3fv;
-
-#define glUniformMatrix2x3fv glpfUniformMatrix2x3fv
-#define glUniformMatrix2x4fv glpfUniformMatrix2x4fv
-#define glUniformMatrix3x2fv glpfUniformMatrix3x2fv
-#define glUniformMatrix3x4fv glpfUniformMatrix3x4fv
-#define glUniformMatrix4x2fv glpfUniformMatrix4x2fv
-#define glUniformMatrix4x3fv glpfUniformMatrix4x3fv
-
-/* GL_VERSION_3_0 */
-
-typedef void (APIENTRY PFNGLBEGINCONDITIONALRENDER_PROC (GLuint id, GLenum mode));
-typedef void (APIENTRY PFNGLBEGINTRANSFORMFEEDBACK_PROC (GLenum primitiveMode));
-typedef void (APIENTRY PFNGLBINDBUFFERBASE_PROC (GLenum target, GLuint index, GLuint buffer));
-typedef void (APIENTRY PFNGLBINDBUFFERRANGE_PROC (GLenum target, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size));
-typedef void (APIENTRY PFNGLBINDFRAGDATALOCATION_PROC (GLuint program, GLuint color, const GLchar * name));
-typedef void (APIENTRY PFNGLBINDFRAMEBUFFER_PROC (GLenum target, GLuint framebuffer));
-typedef void (APIENTRY PFNGLBINDRENDERBUFFER_PROC (GLenum target, GLuint renderbuffer));
-typedef void (APIENTRY PFNGLBINDVERTEXARRAY_PROC (GLuint array));
-typedef void (APIENTRY PFNGLBLITFRAMEBUFFER_PROC (GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter));
-typedef GLenum (APIENTRY PFNGLCHECKFRAMEBUFFERSTATUS_PROC (GLenum target));
-typedef void (APIENTRY PFNGLCLAMPCOLOR_PROC (GLenum target, GLenum clamp));
-typedef void (APIENTRY PFNGLCLEARBUFFERFI_PROC (GLenum buffer, GLint drawbuffer, GLfloat depth, GLint stencil));
-typedef void (APIENTRY PFNGLCLEARBUFFERFV_PROC (GLenum buffer, GLint drawbuffer, const GLfloat * value));
-typedef void (APIENTRY PFNGLCLEARBUFFERIV_PROC (GLenum buffer, GLint drawbuffer, const GLint * value));
-typedef void (APIENTRY PFNGLCLEARBUFFERUIV_PROC (GLenum buffer, GLint drawbuffer, const GLuint * value));
-typedef void (APIENTRY PFNGLCOLORMASKI_PROC (GLuint index, GLboolean r, GLboolean g, GLboolean b, GLboolean a));
-typedef void (APIENTRY PFNGLDELETEFRAMEBUFFERS_PROC (GLsizei n, const GLuint * framebuffers));
-typedef void (APIENTRY PFNGLDELETERENDERBUFFERS_PROC (GLsizei n, const GLuint * renderbuffers));
-typedef void (APIENTRY PFNGLDELETEVERTEXARRAYS_PROC (GLsizei n, const GLuint * arrays));
-typedef void (APIENTRY PFNGLDISABLEI_PROC (GLenum target, GLuint index));
-typedef void (APIENTRY PFNGLENABLEI_PROC (GLenum target, GLuint index));
-typedef void (APIENTRY PFNGLENDCONDITIONALRENDER_PROC (void));
-typedef void (APIENTRY PFNGLENDTRANSFORMFEEDBACK_PROC (void));
-typedef void (APIENTRY PFNGLFLUSHMAPPEDBUFFERRANGE_PROC (GLenum target, GLintptr offset, GLsizeiptr length));
-typedef void (APIENTRY PFNGLFRAMEBUFFERRENDERBUFFER_PROC (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer));
-typedef void (APIENTRY PFNGLFRAMEBUFFERTEXTURE1D_PROC (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level));
-typedef void (APIENTRY PFNGLFRAMEBUFFERTEXTURE2D_PROC (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level));
-typedef void (APIENTRY PFNGLFRAMEBUFFERTEXTURE3D_PROC (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset));
-typedef void (APIENTRY PFNGLFRAMEBUFFERTEXTURELAYER_PROC (GLenum target, GLenum attachment, GLuint texture, GLint level, GLint layer));
-typedef void (APIENTRY PFNGLGENFRAMEBUFFERS_PROC (GLsizei n, GLuint * framebuffers));
-typedef void (APIENTRY PFNGLGENRENDERBUFFERS_PROC (GLsizei n, GLuint * renderbuffers));
-typedef void (APIENTRY PFNGLGENVERTEXARRAYS_PROC (GLsizei n, GLuint * arrays));
-typedef void (APIENTRY PFNGLGENERATEMIPMAP_PROC (GLenum target));
-typedef void (APIENTRY PFNGLGETBOOLEANI_V_PROC (GLenum target, GLuint index, GLboolean * data));
-typedef GLint (APIENTRY PFNGLGETFRAGDATALOCATION_PROC (GLuint program, const GLchar * name));
-typedef void (APIENTRY PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIV_PROC (GLenum target, GLenum attachment, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETINTEGERI_V_PROC (GLenum target, GLuint index, GLint * data));
-typedef void (APIENTRY PFNGLGETRENDERBUFFERPARAMETERIV_PROC (GLenum target, GLenum pname, GLint * params));
-typedef const GLubyte * (APIENTRY PFNGLGETSTRINGI_PROC (GLenum name, GLuint index));
-typedef void (APIENTRY PFNGLGETTEXPARAMETERIIV_PROC (GLenum target, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETTEXPARAMETERIUIV_PROC (GLenum target, GLenum pname, GLuint * params));
-typedef void (APIENTRY PFNGLGETTRANSFORMFEEDBACKVARYING_PROC (GLuint program, GLuint index, GLsizei bufSize, GLsizei * length, GLsizei * size, GLenum * type, GLchar * name));
-typedef void (APIENTRY PFNGLGETUNIFORMUIV_PROC (GLuint program, GLint location, GLuint * params));
-typedef void (APIENTRY PFNGLGETVERTEXATTRIBIIV_PROC (GLuint index, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETVERTEXATTRIBIUIV_PROC (GLuint index, GLenum pname, GLuint * params));
-typedef GLboolean (APIENTRY PFNGLISENABLEDI_PROC (GLenum target, GLuint index));
-typedef GLboolean (APIENTRY PFNGLISFRAMEBUFFER_PROC (GLuint framebuffer));
-typedef GLboolean (APIENTRY PFNGLISRENDERBUFFER_PROC (GLuint renderbuffer));
-typedef GLboolean (APIENTRY PFNGLISVERTEXARRAY_PROC (GLuint array));
-typedef void * (APIENTRY PFNGLMAPBUFFERRANGE_PROC (GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access));
-typedef void (APIENTRY PFNGLRENDERBUFFERSTORAGE_PROC (GLenum target, GLenum internalformat, GLsizei width, GLsizei height));
-typedef void (APIENTRY PFNGLRENDERBUFFERSTORAGEMULTISAMPLE_PROC (GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height));
-typedef void (APIENTRY PFNGLTEXPARAMETERIIV_PROC (GLenum target, GLenum pname, const GLint * params));
-typedef void (APIENTRY PFNGLTEXPARAMETERIUIV_PROC (GLenum target, GLenum pname, const GLuint * params));
-typedef void (APIENTRY PFNGLTRANSFORMFEEDBACKVARYINGS_PROC (GLuint program, GLsizei count, const GLchar *const* varyings, GLenum bufferMode));
-typedef void (APIENTRY PFNGLUNIFORM1UI_PROC (GLint location, GLuint v0));
-typedef void (APIENTRY PFNGLUNIFORM1UIV_PROC (GLint location, GLsizei count, const GLuint * value));
-typedef void (APIENTRY PFNGLUNIFORM2UI_PROC (GLint location, GLuint v0, GLuint v1));
-typedef void (APIENTRY PFNGLUNIFORM2UIV_PROC (GLint location, GLsizei count, const GLuint * value));
-typedef void (APIENTRY PFNGLUNIFORM3UI_PROC (GLint location, GLuint v0, GLuint v1, GLuint v2));
-typedef void (APIENTRY PFNGLUNIFORM3UIV_PROC (GLint location, GLsizei count, const GLuint * value));
-typedef void (APIENTRY PFNGLUNIFORM4UI_PROC (GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3));
-typedef void (APIENTRY PFNGLUNIFORM4UIV_PROC (GLint location, GLsizei count, const GLuint * value));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI1I_PROC (GLuint index, GLint x));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI1IV_PROC (GLuint index, const GLint * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI1UI_PROC (GLuint index, GLuint x));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI1UIV_PROC (GLuint index, const GLuint * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI2I_PROC (GLuint index, GLint x, GLint y));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI2IV_PROC (GLuint index, const GLint * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI2UI_PROC (GLuint index, GLuint x, GLuint y));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI2UIV_PROC (GLuint index, const GLuint * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI3I_PROC (GLuint index, GLint x, GLint y, GLint z));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI3IV_PROC (GLuint index, const GLint * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI3UI_PROC (GLuint index, GLuint x, GLuint y, GLuint z));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI3UIV_PROC (GLuint index, const GLuint * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI4BV_PROC (GLuint index, const GLbyte * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI4I_PROC (GLuint index, GLint x, GLint y, GLint z, GLint w));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI4IV_PROC (GLuint index, const GLint * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI4SV_PROC (GLuint index, const GLshort * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI4UBV_PROC (GLuint index, const GLubyte * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI4UI_PROC (GLuint index, GLuint x, GLuint y, GLuint z, GLuint w));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI4UIV_PROC (GLuint index, const GLuint * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBI4USV_PROC (GLuint index, const GLushort * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBIPOINTER_PROC (GLuint index, GLint size, GLenum type, GLsizei stride, const void * pointer));
-
-GLAPI PFNGLBEGINCONDITIONALRENDER_PROC* glpfBeginConditionalRender;
-GLAPI PFNGLBEGINTRANSFORMFEEDBACK_PROC* glpfBeginTransformFeedback;
-GLAPI PFNGLBINDBUFFERBASE_PROC* glpfBindBufferBase;
-GLAPI PFNGLBINDBUFFERRANGE_PROC* glpfBindBufferRange;
-GLAPI PFNGLBINDFRAGDATALOCATION_PROC* glpfBindFragDataLocation;
-GLAPI PFNGLBINDFRAMEBUFFER_PROC* glpfBindFramebuffer;
-GLAPI PFNGLBINDRENDERBUFFER_PROC* glpfBindRenderbuffer;
-GLAPI PFNGLBINDVERTEXARRAY_PROC* glpfBindVertexArray;
-GLAPI PFNGLBLITFRAMEBUFFER_PROC* glpfBlitFramebuffer;
-GLAPI PFNGLCHECKFRAMEBUFFERSTATUS_PROC* glpfCheckFramebufferStatus;
-GLAPI PFNGLCLAMPCOLOR_PROC* glpfClampColor;
-GLAPI PFNGLCLEARBUFFERFI_PROC* glpfClearBufferfi;
-GLAPI PFNGLCLEARBUFFERFV_PROC* glpfClearBufferfv;
-GLAPI PFNGLCLEARBUFFERIV_PROC* glpfClearBufferiv;
-GLAPI PFNGLCLEARBUFFERUIV_PROC* glpfClearBufferuiv;
-GLAPI PFNGLCOLORMASKI_PROC* glpfColorMaski;
-GLAPI PFNGLDELETEFRAMEBUFFERS_PROC* glpfDeleteFramebuffers;
-GLAPI PFNGLDELETERENDERBUFFERS_PROC* glpfDeleteRenderbuffers;
-GLAPI PFNGLDELETEVERTEXARRAYS_PROC* glpfDeleteVertexArrays;
-GLAPI PFNGLDISABLEI_PROC* glpfDisablei;
-GLAPI PFNGLENABLEI_PROC* glpfEnablei;
-GLAPI PFNGLENDCONDITIONALRENDER_PROC* glpfEndConditionalRender;
-GLAPI PFNGLENDTRANSFORMFEEDBACK_PROC* glpfEndTransformFeedback;
-GLAPI PFNGLFLUSHMAPPEDBUFFERRANGE_PROC* glpfFlushMappedBufferRange;
-GLAPI PFNGLFRAMEBUFFERRENDERBUFFER_PROC* glpfFramebufferRenderbuffer;
-GLAPI PFNGLFRAMEBUFFERTEXTURE1D_PROC* glpfFramebufferTexture1D;
-GLAPI PFNGLFRAMEBUFFERTEXTURE2D_PROC* glpfFramebufferTexture2D;
-GLAPI PFNGLFRAMEBUFFERTEXTURE3D_PROC* glpfFramebufferTexture3D;
-GLAPI PFNGLFRAMEBUFFERTEXTURELAYER_PROC* glpfFramebufferTextureLayer;
-GLAPI PFNGLGENFRAMEBUFFERS_PROC* glpfGenFramebuffers;
-GLAPI PFNGLGENRENDERBUFFERS_PROC* glpfGenRenderbuffers;
-GLAPI PFNGLGENVERTEXARRAYS_PROC* glpfGenVertexArrays;
-GLAPI PFNGLGENERATEMIPMAP_PROC* glpfGenerateMipmap;
-GLAPI PFNGLGETBOOLEANI_V_PROC* glpfGetBooleani_v;
-GLAPI PFNGLGETFRAGDATALOCATION_PROC* glpfGetFragDataLocation;
-GLAPI PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIV_PROC* glpfGetFramebufferAttachmentParameteriv;
-GLAPI PFNGLGETINTEGERI_V_PROC* glpfGetIntegeri_v;
-GLAPI PFNGLGETRENDERBUFFERPARAMETERIV_PROC* glpfGetRenderbufferParameteriv;
-GLAPI PFNGLGETSTRINGI_PROC* glpfGetStringi;
-GLAPI PFNGLGETTEXPARAMETERIIV_PROC* glpfGetTexParameterIiv;
-GLAPI PFNGLGETTEXPARAMETERIUIV_PROC* glpfGetTexParameterIuiv;
-GLAPI PFNGLGETTRANSFORMFEEDBACKVARYING_PROC* glpfGetTransformFeedbackVarying;
-GLAPI PFNGLGETUNIFORMUIV_PROC* glpfGetUniformuiv;
-GLAPI PFNGLGETVERTEXATTRIBIIV_PROC* glpfGetVertexAttribIiv;
-GLAPI PFNGLGETVERTEXATTRIBIUIV_PROC* glpfGetVertexAttribIuiv;
-GLAPI PFNGLISENABLEDI_PROC* glpfIsEnabledi;
-GLAPI PFNGLISFRAMEBUFFER_PROC* glpfIsFramebuffer;
-GLAPI PFNGLISRENDERBUFFER_PROC* glpfIsRenderbuffer;
-GLAPI PFNGLISVERTEXARRAY_PROC* glpfIsVertexArray;
-GLAPI PFNGLMAPBUFFERRANGE_PROC* glpfMapBufferRange;
-GLAPI PFNGLRENDERBUFFERSTORAGE_PROC* glpfRenderbufferStorage;
-GLAPI PFNGLRENDERBUFFERSTORAGEMULTISAMPLE_PROC* glpfRenderbufferStorageMultisample;
-GLAPI PFNGLTEXPARAMETERIIV_PROC* glpfTexParameterIiv;
-GLAPI PFNGLTEXPARAMETERIUIV_PROC* glpfTexParameterIuiv;
-GLAPI PFNGLTRANSFORMFEEDBACKVARYINGS_PROC* glpfTransformFeedbackVaryings;
-GLAPI PFNGLUNIFORM1UI_PROC* glpfUniform1ui;
-GLAPI PFNGLUNIFORM1UIV_PROC* glpfUniform1uiv;
-GLAPI PFNGLUNIFORM2UI_PROC* glpfUniform2ui;
-GLAPI PFNGLUNIFORM2UIV_PROC* glpfUniform2uiv;
-GLAPI PFNGLUNIFORM3UI_PROC* glpfUniform3ui;
-GLAPI PFNGLUNIFORM3UIV_PROC* glpfUniform3uiv;
-GLAPI PFNGLUNIFORM4UI_PROC* glpfUniform4ui;
-GLAPI PFNGLUNIFORM4UIV_PROC* glpfUniform4uiv;
-GLAPI PFNGLVERTEXATTRIBI1I_PROC* glpfVertexAttribI1i;
-GLAPI PFNGLVERTEXATTRIBI1IV_PROC* glpfVertexAttribI1iv;
-GLAPI PFNGLVERTEXATTRIBI1UI_PROC* glpfVertexAttribI1ui;
-GLAPI PFNGLVERTEXATTRIBI1UIV_PROC* glpfVertexAttribI1uiv;
-GLAPI PFNGLVERTEXATTRIBI2I_PROC* glpfVertexAttribI2i;
-GLAPI PFNGLVERTEXATTRIBI2IV_PROC* glpfVertexAttribI2iv;
-GLAPI PFNGLVERTEXATTRIBI2UI_PROC* glpfVertexAttribI2ui;
-GLAPI PFNGLVERTEXATTRIBI2UIV_PROC* glpfVertexAttribI2uiv;
-GLAPI PFNGLVERTEXATTRIBI3I_PROC* glpfVertexAttribI3i;
-GLAPI PFNGLVERTEXATTRIBI3IV_PROC* glpfVertexAttribI3iv;
-GLAPI PFNGLVERTEXATTRIBI3UI_PROC* glpfVertexAttribI3ui;
-GLAPI PFNGLVERTEXATTRIBI3UIV_PROC* glpfVertexAttribI3uiv;
-GLAPI PFNGLVERTEXATTRIBI4BV_PROC* glpfVertexAttribI4bv;
-GLAPI PFNGLVERTEXATTRIBI4I_PROC* glpfVertexAttribI4i;
-GLAPI PFNGLVERTEXATTRIBI4IV_PROC* glpfVertexAttribI4iv;
-GLAPI PFNGLVERTEXATTRIBI4SV_PROC* glpfVertexAttribI4sv;
-GLAPI PFNGLVERTEXATTRIBI4UBV_PROC* glpfVertexAttribI4ubv;
-GLAPI PFNGLVERTEXATTRIBI4UI_PROC* glpfVertexAttribI4ui;
-GLAPI PFNGLVERTEXATTRIBI4UIV_PROC* glpfVertexAttribI4uiv;
-GLAPI PFNGLVERTEXATTRIBI4USV_PROC* glpfVertexAttribI4usv;
-GLAPI PFNGLVERTEXATTRIBIPOINTER_PROC* glpfVertexAttribIPointer;
-
-#define glBeginConditionalRender glpfBeginConditionalRender
-#define glBeginTransformFeedback glpfBeginTransformFeedback
-#define glBindBufferBase glpfBindBufferBase
-#define glBindBufferRange glpfBindBufferRange
-#define glBindFragDataLocation glpfBindFragDataLocation
-#define glBindFramebuffer glpfBindFramebuffer
-#define glBindRenderbuffer glpfBindRenderbuffer
-#define glBindVertexArray glpfBindVertexArray
-#define glBlitFramebuffer glpfBlitFramebuffer
-#define glCheckFramebufferStatus glpfCheckFramebufferStatus
-#define glClampColor glpfClampColor
-#define glClearBufferfi glpfClearBufferfi
-#define glClearBufferfv glpfClearBufferfv
-#define glClearBufferiv glpfClearBufferiv
-#define glClearBufferuiv glpfClearBufferuiv
-#define glColorMaski glpfColorMaski
-#define glDeleteFramebuffers glpfDeleteFramebuffers
-#define glDeleteRenderbuffers glpfDeleteRenderbuffers
-#define glDeleteVertexArrays glpfDeleteVertexArrays
-#define glDisablei glpfDisablei
-#define glEnablei glpfEnablei
-#define glEndConditionalRender glpfEndConditionalRender
-#define glEndTransformFeedback glpfEndTransformFeedback
-#define glFlushMappedBufferRange glpfFlushMappedBufferRange
-#define glFramebufferRenderbuffer glpfFramebufferRenderbuffer
-#define glFramebufferTexture1D glpfFramebufferTexture1D
-#define glFramebufferTexture2D glpfFramebufferTexture2D
-#define glFramebufferTexture3D glpfFramebufferTexture3D
-#define glFramebufferTextureLayer glpfFramebufferTextureLayer
-#define glGenFramebuffers glpfGenFramebuffers
-#define glGenRenderbuffers glpfGenRenderbuffers
-#define glGenVertexArrays glpfGenVertexArrays
-#define glGenerateMipmap glpfGenerateMipmap
-#define glGetBooleani_v glpfGetBooleani_v
-#define glGetFragDataLocation glpfGetFragDataLocation
-#define glGetFramebufferAttachmentParameteriv glpfGetFramebufferAttachmentParameteriv
-#define glGetIntegeri_v glpfGetIntegeri_v
-#define glGetRenderbufferParameteriv glpfGetRenderbufferParameteriv
-#define glGetStringi glpfGetStringi
-#define glGetTexParameterIiv glpfGetTexParameterIiv
-#define glGetTexParameterIuiv glpfGetTexParameterIuiv
-#define glGetTransformFeedbackVarying glpfGetTransformFeedbackVarying
-#define glGetUniformuiv glpfGetUniformuiv
-#define glGetVertexAttribIiv glpfGetVertexAttribIiv
-#define glGetVertexAttribIuiv glpfGetVertexAttribIuiv
-#define glIsEnabledi glpfIsEnabledi
-#define glIsFramebuffer glpfIsFramebuffer
-#define glIsRenderbuffer glpfIsRenderbuffer
-#define glIsVertexArray glpfIsVertexArray
-#define glMapBufferRange glpfMapBufferRange
-#define glRenderbufferStorage glpfRenderbufferStorage
-#define glRenderbufferStorageMultisample glpfRenderbufferStorageMultisample
-#define glTexParameterIiv glpfTexParameterIiv
-#define glTexParameterIuiv glpfTexParameterIuiv
-#define glTransformFeedbackVaryings glpfTransformFeedbackVaryings
-#define glUniform1ui glpfUniform1ui
-#define glUniform1uiv glpfUniform1uiv
-#define glUniform2ui glpfUniform2ui
-#define glUniform2uiv glpfUniform2uiv
-#define glUniform3ui glpfUniform3ui
-#define glUniform3uiv glpfUniform3uiv
-#define glUniform4ui glpfUniform4ui
-#define glUniform4uiv glpfUniform4uiv
-#define glVertexAttribI1i glpfVertexAttribI1i
-#define glVertexAttribI1iv glpfVertexAttribI1iv
-#define glVertexAttribI1ui glpfVertexAttribI1ui
-#define glVertexAttribI1uiv glpfVertexAttribI1uiv
-#define glVertexAttribI2i glpfVertexAttribI2i
-#define glVertexAttribI2iv glpfVertexAttribI2iv
-#define glVertexAttribI2ui glpfVertexAttribI2ui
-#define glVertexAttribI2uiv glpfVertexAttribI2uiv
-#define glVertexAttribI3i glpfVertexAttribI3i
-#define glVertexAttribI3iv glpfVertexAttribI3iv
-#define glVertexAttribI3ui glpfVertexAttribI3ui
-#define glVertexAttribI3uiv glpfVertexAttribI3uiv
-#define glVertexAttribI4bv glpfVertexAttribI4bv
-#define glVertexAttribI4i glpfVertexAttribI4i
-#define glVertexAttribI4iv glpfVertexAttribI4iv
-#define glVertexAttribI4sv glpfVertexAttribI4sv
-#define glVertexAttribI4ubv glpfVertexAttribI4ubv
-#define glVertexAttribI4ui glpfVertexAttribI4ui
-#define glVertexAttribI4uiv glpfVertexAttribI4uiv
-#define glVertexAttribI4usv glpfVertexAttribI4usv
-#define glVertexAttribIPointer glpfVertexAttribIPointer
-
-/* GL_VERSION_3_1 */
-
-typedef void (APIENTRY PFNGLCOPYBUFFERSUBDATA_PROC (GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size));
-typedef void (APIENTRY PFNGLDRAWARRAYSINSTANCED_PROC (GLenum mode, GLint first, GLsizei count, GLsizei instancecount));
-typedef void (APIENTRY PFNGLDRAWELEMENTSINSTANCED_PROC (GLenum mode, GLsizei count, GLenum type, const void * indices, GLsizei instancecount));
-typedef void (APIENTRY PFNGLGETACTIVEUNIFORMBLOCKNAME_PROC (GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei * length, GLchar * uniformBlockName));
-typedef void (APIENTRY PFNGLGETACTIVEUNIFORMBLOCKIV_PROC (GLuint program, GLuint uniformBlockIndex, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETACTIVEUNIFORMNAME_PROC (GLuint program, GLuint uniformIndex, GLsizei bufSize, GLsizei * length, GLchar * uniformName));
-typedef void (APIENTRY PFNGLGETACTIVEUNIFORMSIV_PROC (GLuint program, GLsizei uniformCount, const GLuint * uniformIndices, GLenum pname, GLint * params));
-typedef GLuint (APIENTRY PFNGLGETUNIFORMBLOCKINDEX_PROC (GLuint program, const GLchar * uniformBlockName));
-typedef void (APIENTRY PFNGLGETUNIFORMINDICES_PROC (GLuint program, GLsizei uniformCount, const GLchar *const* uniformNames, GLuint * uniformIndices));
-typedef void (APIENTRY PFNGLPRIMITIVERESTARTINDEX_PROC (GLuint index));
-typedef void (APIENTRY PFNGLTEXBUFFER_PROC (GLenum target, GLenum internalformat, GLuint buffer));
-typedef void (APIENTRY PFNGLUNIFORMBLOCKBINDING_PROC (GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding));
-
-GLAPI PFNGLCOPYBUFFERSUBDATA_PROC* glpfCopyBufferSubData;
-GLAPI PFNGLDRAWARRAYSINSTANCED_PROC* glpfDrawArraysInstanced;
-GLAPI PFNGLDRAWELEMENTSINSTANCED_PROC* glpfDrawElementsInstanced;
-GLAPI PFNGLGETACTIVEUNIFORMBLOCKNAME_PROC* glpfGetActiveUniformBlockName;
-GLAPI PFNGLGETACTIVEUNIFORMBLOCKIV_PROC* glpfGetActiveUniformBlockiv;
-GLAPI PFNGLGETACTIVEUNIFORMNAME_PROC* glpfGetActiveUniformName;
-GLAPI PFNGLGETACTIVEUNIFORMSIV_PROC* glpfGetActiveUniformsiv;
-GLAPI PFNGLGETUNIFORMBLOCKINDEX_PROC* glpfGetUniformBlockIndex;
-GLAPI PFNGLGETUNIFORMINDICES_PROC* glpfGetUniformIndices;
-GLAPI PFNGLPRIMITIVERESTARTINDEX_PROC* glpfPrimitiveRestartIndex;
-GLAPI PFNGLTEXBUFFER_PROC* glpfTexBuffer;
-GLAPI PFNGLUNIFORMBLOCKBINDING_PROC* glpfUniformBlockBinding;
-
-#define glCopyBufferSubData glpfCopyBufferSubData
-#define glDrawArraysInstanced glpfDrawArraysInstanced
-#define glDrawElementsInstanced glpfDrawElementsInstanced
-#define glGetActiveUniformBlockName glpfGetActiveUniformBlockName
-#define glGetActiveUniformBlockiv glpfGetActiveUniformBlockiv
-#define glGetActiveUniformName glpfGetActiveUniformName
-#define glGetActiveUniformsiv glpfGetActiveUniformsiv
-#define glGetUniformBlockIndex glpfGetUniformBlockIndex
-#define glGetUniformIndices glpfGetUniformIndices
-#define glPrimitiveRestartIndex glpfPrimitiveRestartIndex
-#define glTexBuffer glpfTexBuffer
-#define glUniformBlockBinding glpfUniformBlockBinding
-
-/* GL_VERSION_3_2 */
-
-typedef GLenum (APIENTRY PFNGLCLIENTWAITSYNC_PROC (GLsync sync, GLbitfield flags, GLuint64 timeout));
-typedef void (APIENTRY PFNGLDELETESYNC_PROC (GLsync sync));
-typedef void (APIENTRY PFNGLDRAWELEMENTSBASEVERTEX_PROC (GLenum mode, GLsizei count, GLenum type, const void * indices, GLint basevertex));
-typedef void (APIENTRY PFNGLDRAWELEMENTSINSTANCEDBASEVERTEX_PROC (GLenum mode, GLsizei count, GLenum type, const void * indices, GLsizei instancecount, GLint basevertex));
-typedef void (APIENTRY PFNGLDRAWRANGEELEMENTSBASEVERTEX_PROC (GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const void * indices, GLint basevertex));
-typedef GLsync (APIENTRY PFNGLFENCESYNC_PROC (GLenum condition, GLbitfield flags));
-typedef void (APIENTRY PFNGLFRAMEBUFFERTEXTURE_PROC (GLenum target, GLenum attachment, GLuint texture, GLint level));
-typedef void (APIENTRY PFNGLGETBUFFERPARAMETERI64V_PROC (GLenum target, GLenum pname, GLint64 * params));
-typedef void (APIENTRY PFNGLGETINTEGER64I_V_PROC (GLenum target, GLuint index, GLint64 * data));
-typedef void (APIENTRY PFNGLGETINTEGER64V_PROC (GLenum pname, GLint64 * data));
-typedef void (APIENTRY PFNGLGETMULTISAMPLEFV_PROC (GLenum pname, GLuint index, GLfloat * val));
-typedef void (APIENTRY PFNGLGETSYNCIV_PROC (GLsync sync, GLenum pname, GLsizei count, GLsizei * length, GLint * values));
-typedef GLboolean (APIENTRY PFNGLISSYNC_PROC (GLsync sync));
-typedef void (APIENTRY PFNGLMULTIDRAWELEMENTSBASEVERTEX_PROC (GLenum mode, const GLsizei * count, GLenum type, const void *const* indices, GLsizei drawcount, const GLint * basevertex));
-typedef void (APIENTRY PFNGLPROVOKINGVERTEX_PROC (GLenum mode));
-typedef void (APIENTRY PFNGLSAMPLEMASKI_PROC (GLuint maskNumber, GLbitfield mask));
-typedef void (APIENTRY PFNGLTEXIMAGE2DMULTISAMPLE_PROC (GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations));
-typedef void (APIENTRY PFNGLTEXIMAGE3DMULTISAMPLE_PROC (GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations));
-typedef void (APIENTRY PFNGLWAITSYNC_PROC (GLsync sync, GLbitfield flags, GLuint64 timeout));
-
-GLAPI PFNGLCLIENTWAITSYNC_PROC* glpfClientWaitSync;
-GLAPI PFNGLDELETESYNC_PROC* glpfDeleteSync;
-GLAPI PFNGLDRAWELEMENTSBASEVERTEX_PROC* glpfDrawElementsBaseVertex;
-GLAPI PFNGLDRAWELEMENTSINSTANCEDBASEVERTEX_PROC* glpfDrawElementsInstancedBaseVertex;
-GLAPI PFNGLDRAWRANGEELEMENTSBASEVERTEX_PROC* glpfDrawRangeElementsBaseVertex;
-GLAPI PFNGLFENCESYNC_PROC* glpfFenceSync;
-GLAPI PFNGLFRAMEBUFFERTEXTURE_PROC* glpfFramebufferTexture;
-GLAPI PFNGLGETBUFFERPARAMETERI64V_PROC* glpfGetBufferParameteri64v;
-GLAPI PFNGLGETINTEGER64I_V_PROC* glpfGetInteger64i_v;
-GLAPI PFNGLGETINTEGER64V_PROC* glpfGetInteger64v;
-GLAPI PFNGLGETMULTISAMPLEFV_PROC* glpfGetMultisamplefv;
-GLAPI PFNGLGETSYNCIV_PROC* glpfGetSynciv;
-GLAPI PFNGLISSYNC_PROC* glpfIsSync;
-GLAPI PFNGLMULTIDRAWELEMENTSBASEVERTEX_PROC* glpfMultiDrawElementsBaseVertex;
-GLAPI PFNGLPROVOKINGVERTEX_PROC* glpfProvokingVertex;
-GLAPI PFNGLSAMPLEMASKI_PROC* glpfSampleMaski;
-GLAPI PFNGLTEXIMAGE2DMULTISAMPLE_PROC* glpfTexImage2DMultisample;
-GLAPI PFNGLTEXIMAGE3DMULTISAMPLE_PROC* glpfTexImage3DMultisample;
-GLAPI PFNGLWAITSYNC_PROC* glpfWaitSync;
-
-#define glClientWaitSync glpfClientWaitSync
-#define glDeleteSync glpfDeleteSync
-#define glDrawElementsBaseVertex glpfDrawElementsBaseVertex
-#define glDrawElementsInstancedBaseVertex glpfDrawElementsInstancedBaseVertex
-#define glDrawRangeElementsBaseVertex glpfDrawRangeElementsBaseVertex
-#define glFenceSync glpfFenceSync
-#define glFramebufferTexture glpfFramebufferTexture
-#define glGetBufferParameteri64v glpfGetBufferParameteri64v
-#define glGetInteger64i_v glpfGetInteger64i_v
-#define glGetInteger64v glpfGetInteger64v
-#define glGetMultisamplefv glpfGetMultisamplefv
-#define glGetSynciv glpfGetSynciv
-#define glIsSync glpfIsSync
-#define glMultiDrawElementsBaseVertex glpfMultiDrawElementsBaseVertex
-#define glProvokingVertex glpfProvokingVertex
-#define glSampleMaski glpfSampleMaski
-#define glTexImage2DMultisample glpfTexImage2DMultisample
-#define glTexImage3DMultisample glpfTexImage3DMultisample
-#define glWaitSync glpfWaitSync
-
-/* GL_VERSION_3_3 */
-
-typedef void (APIENTRY PFNGLBINDFRAGDATALOCATIONINDEXED_PROC (GLuint program, GLuint colorNumber, GLuint index, const GLchar * name));
-typedef void (APIENTRY PFNGLBINDSAMPLER_PROC (GLuint unit, GLuint sampler));
-typedef void (APIENTRY PFNGLDELETESAMPLERS_PROC (GLsizei count, const GLuint * samplers));
-typedef void (APIENTRY PFNGLGENSAMPLERS_PROC (GLsizei count, GLuint * samplers));
-typedef GLint (APIENTRY PFNGLGETFRAGDATAINDEX_PROC (GLuint program, const GLchar * name));
-typedef void (APIENTRY PFNGLGETQUERYOBJECTI64V_PROC (GLuint id, GLenum pname, GLint64 * params));
-typedef void (APIENTRY PFNGLGETQUERYOBJECTUI64V_PROC (GLuint id, GLenum pname, GLuint64 * params));
-typedef void (APIENTRY PFNGLGETSAMPLERPARAMETERIIV_PROC (GLuint sampler, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETSAMPLERPARAMETERIUIV_PROC (GLuint sampler, GLenum pname, GLuint * params));
-typedef void (APIENTRY PFNGLGETSAMPLERPARAMETERFV_PROC (GLuint sampler, GLenum pname, GLfloat * params));
-typedef void (APIENTRY PFNGLGETSAMPLERPARAMETERIV_PROC (GLuint sampler, GLenum pname, GLint * params));
-typedef GLboolean (APIENTRY PFNGLISSAMPLER_PROC (GLuint sampler));
-typedef void (APIENTRY PFNGLQUERYCOUNTER_PROC (GLuint id, GLenum target));
-typedef void (APIENTRY PFNGLSAMPLERPARAMETERIIV_PROC (GLuint sampler, GLenum pname, const GLint * param));
-typedef void (APIENTRY PFNGLSAMPLERPARAMETERIUIV_PROC (GLuint sampler, GLenum pname, const GLuint * param));
-typedef void (APIENTRY PFNGLSAMPLERPARAMETERF_PROC (GLuint sampler, GLenum pname, GLfloat param));
-typedef void (APIENTRY PFNGLSAMPLERPARAMETERFV_PROC (GLuint sampler, GLenum pname, const GLfloat * param));
-typedef void (APIENTRY PFNGLSAMPLERPARAMETERI_PROC (GLuint sampler, GLenum pname, GLint param));
-typedef void (APIENTRY PFNGLSAMPLERPARAMETERIV_PROC (GLuint sampler, GLenum pname, const GLint * param));
-typedef void (APIENTRY PFNGLVERTEXATTRIBDIVISOR_PROC (GLuint index, GLuint divisor));
-typedef void (APIENTRY PFNGLVERTEXATTRIBP1UI_PROC (GLuint index, GLenum type, GLboolean normalized, GLuint value));
-typedef void (APIENTRY PFNGLVERTEXATTRIBP1UIV_PROC (GLuint index, GLenum type, GLboolean normalized, const GLuint * value));
-typedef void (APIENTRY PFNGLVERTEXATTRIBP2UI_PROC (GLuint index, GLenum type, GLboolean normalized, GLuint value));
-typedef void (APIENTRY PFNGLVERTEXATTRIBP2UIV_PROC (GLuint index, GLenum type, GLboolean normalized, const GLuint * value));
-typedef void (APIENTRY PFNGLVERTEXATTRIBP3UI_PROC (GLuint index, GLenum type, GLboolean normalized, GLuint value));
-typedef void (APIENTRY PFNGLVERTEXATTRIBP3UIV_PROC (GLuint index, GLenum type, GLboolean normalized, const GLuint * value));
-typedef void (APIENTRY PFNGLVERTEXATTRIBP4UI_PROC (GLuint index, GLenum type, GLboolean normalized, GLuint value));
-typedef void (APIENTRY PFNGLVERTEXATTRIBP4UIV_PROC (GLuint index, GLenum type, GLboolean normalized, const GLuint * value));
-
-GLAPI PFNGLBINDFRAGDATALOCATIONINDEXED_PROC* glpfBindFragDataLocationIndexed;
-GLAPI PFNGLBINDSAMPLER_PROC* glpfBindSampler;
-GLAPI PFNGLDELETESAMPLERS_PROC* glpfDeleteSamplers;
-GLAPI PFNGLGENSAMPLERS_PROC* glpfGenSamplers;
-GLAPI PFNGLGETFRAGDATAINDEX_PROC* glpfGetFragDataIndex;
-GLAPI PFNGLGETQUERYOBJECTI64V_PROC* glpfGetQueryObjecti64v;
-GLAPI PFNGLGETQUERYOBJECTUI64V_PROC* glpfGetQueryObjectui64v;
-GLAPI PFNGLGETSAMPLERPARAMETERIIV_PROC* glpfGetSamplerParameterIiv;
-GLAPI PFNGLGETSAMPLERPARAMETERIUIV_PROC* glpfGetSamplerParameterIuiv;
-GLAPI PFNGLGETSAMPLERPARAMETERFV_PROC* glpfGetSamplerParameterfv;
-GLAPI PFNGLGETSAMPLERPARAMETERIV_PROC* glpfGetSamplerParameteriv;
-GLAPI PFNGLISSAMPLER_PROC* glpfIsSampler;
-GLAPI PFNGLQUERYCOUNTER_PROC* glpfQueryCounter;
-GLAPI PFNGLSAMPLERPARAMETERIIV_PROC* glpfSamplerParameterIiv;
-GLAPI PFNGLSAMPLERPARAMETERIUIV_PROC* glpfSamplerParameterIuiv;
-GLAPI PFNGLSAMPLERPARAMETERF_PROC* glpfSamplerParameterf;
-GLAPI PFNGLSAMPLERPARAMETERFV_PROC* glpfSamplerParameterfv;
-GLAPI PFNGLSAMPLERPARAMETERI_PROC* glpfSamplerParameteri;
-GLAPI PFNGLSAMPLERPARAMETERIV_PROC* glpfSamplerParameteriv;
-GLAPI PFNGLVERTEXATTRIBDIVISOR_PROC* glpfVertexAttribDivisor;
-GLAPI PFNGLVERTEXATTRIBP1UI_PROC* glpfVertexAttribP1ui;
-GLAPI PFNGLVERTEXATTRIBP1UIV_PROC* glpfVertexAttribP1uiv;
-GLAPI PFNGLVERTEXATTRIBP2UI_PROC* glpfVertexAttribP2ui;
-GLAPI PFNGLVERTEXATTRIBP2UIV_PROC* glpfVertexAttribP2uiv;
-GLAPI PFNGLVERTEXATTRIBP3UI_PROC* glpfVertexAttribP3ui;
-GLAPI PFNGLVERTEXATTRIBP3UIV_PROC* glpfVertexAttribP3uiv;
-GLAPI PFNGLVERTEXATTRIBP4UI_PROC* glpfVertexAttribP4ui;
-GLAPI PFNGLVERTEXATTRIBP4UIV_PROC* glpfVertexAttribP4uiv;
-
-#define glBindFragDataLocationIndexed glpfBindFragDataLocationIndexed
-#define glBindSampler glpfBindSampler
-#define glDeleteSamplers glpfDeleteSamplers
-#define glGenSamplers glpfGenSamplers
-#define glGetFragDataIndex glpfGetFragDataIndex
-#define glGetQueryObjecti64v glpfGetQueryObjecti64v
-#define glGetQueryObjectui64v glpfGetQueryObjectui64v
-#define glGetSamplerParameterIiv glpfGetSamplerParameterIiv
-#define glGetSamplerParameterIuiv glpfGetSamplerParameterIuiv
-#define glGetSamplerParameterfv glpfGetSamplerParameterfv
-#define glGetSamplerParameteriv glpfGetSamplerParameteriv
-#define glIsSampler glpfIsSampler
-#define glQueryCounter glpfQueryCounter
-#define glSamplerParameterIiv glpfSamplerParameterIiv
-#define glSamplerParameterIuiv glpfSamplerParameterIuiv
-#define glSamplerParameterf glpfSamplerParameterf
-#define glSamplerParameterfv glpfSamplerParameterfv
-#define glSamplerParameteri glpfSamplerParameteri
-#define glSamplerParameteriv glpfSamplerParameteriv
-#define glVertexAttribDivisor glpfVertexAttribDivisor
-#define glVertexAttribP1ui glpfVertexAttribP1ui
-#define glVertexAttribP1uiv glpfVertexAttribP1uiv
-#define glVertexAttribP2ui glpfVertexAttribP2ui
-#define glVertexAttribP2uiv glpfVertexAttribP2uiv
-#define glVertexAttribP3ui glpfVertexAttribP3ui
-#define glVertexAttribP3uiv glpfVertexAttribP3uiv
-#define glVertexAttribP4ui glpfVertexAttribP4ui
-#define glVertexAttribP4uiv glpfVertexAttribP4uiv
-
-/* GL_VERSION_4_0 */
-
-typedef void (APIENTRY PFNGLBEGINQUERYINDEXED_PROC (GLenum target, GLuint index, GLuint id));
-typedef void (APIENTRY PFNGLBINDTRANSFORMFEEDBACK_PROC (GLenum target, GLuint id));
-typedef void (APIENTRY PFNGLBLENDEQUATIONSEPARATEI_PROC (GLuint buf, GLenum modeRGB, GLenum modeAlpha));
-typedef void (APIENTRY PFNGLBLENDEQUATIONI_PROC (GLuint buf, GLenum mode));
-typedef void (APIENTRY PFNGLBLENDFUNCSEPARATEI_PROC (GLuint buf, GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha, GLenum dstAlpha));
-typedef void (APIENTRY PFNGLBLENDFUNCI_PROC (GLuint buf, GLenum src, GLenum dst));
-typedef void (APIENTRY PFNGLDELETETRANSFORMFEEDBACKS_PROC (GLsizei n, const GLuint * ids));
-typedef void (APIENTRY PFNGLDRAWARRAYSINDIRECT_PROC (GLenum mode, const void * indirect));
-typedef void (APIENTRY PFNGLDRAWELEMENTSINDIRECT_PROC (GLenum mode, GLenum type, const void * indirect));
-typedef void (APIENTRY PFNGLDRAWTRANSFORMFEEDBACK_PROC (GLenum mode, GLuint id));
-typedef void (APIENTRY PFNGLDRAWTRANSFORMFEEDBACKSTREAM_PROC (GLenum mode, GLuint id, GLuint stream));
-typedef void (APIENTRY PFNGLENDQUERYINDEXED_PROC (GLenum target, GLuint index));
-typedef void (APIENTRY PFNGLGENTRANSFORMFEEDBACKS_PROC (GLsizei n, GLuint * ids));
-typedef void (APIENTRY PFNGLGETACTIVESUBROUTINENAME_PROC (GLuint program, GLenum shadertype, GLuint index, GLsizei bufSize, GLsizei * length, GLchar * name));
-typedef void (APIENTRY PFNGLGETACTIVESUBROUTINEUNIFORMNAME_PROC (GLuint program, GLenum shadertype, GLuint index, GLsizei bufSize, GLsizei * length, GLchar * name));
-typedef void (APIENTRY PFNGLGETACTIVESUBROUTINEUNIFORMIV_PROC (GLuint program, GLenum shadertype, GLuint index, GLenum pname, GLint * values));
-typedef void (APIENTRY PFNGLGETPROGRAMSTAGEIV_PROC (GLuint program, GLenum shadertype, GLenum pname, GLint * values));
-typedef void (APIENTRY PFNGLGETQUERYINDEXEDIV_PROC (GLenum target, GLuint index, GLenum pname, GLint * params));
-typedef GLuint (APIENTRY PFNGLGETSUBROUTINEINDEX_PROC (GLuint program, GLenum shadertype, const GLchar * name));
-typedef GLint (APIENTRY PFNGLGETSUBROUTINEUNIFORMLOCATION_PROC (GLuint program, GLenum shadertype, const GLchar * name));
-typedef void (APIENTRY PFNGLGETUNIFORMSUBROUTINEUIV_PROC (GLenum shadertype, GLint location, GLuint * params));
-typedef void (APIENTRY PFNGLGETUNIFORMDV_PROC (GLuint program, GLint location, GLdouble * params));
-typedef GLboolean (APIENTRY PFNGLISTRANSFORMFEEDBACK_PROC (GLuint id));
-typedef void (APIENTRY PFNGLMINSAMPLESHADING_PROC (GLfloat value));
-typedef void (APIENTRY PFNGLPATCHPARAMETERFV_PROC (GLenum pname, const GLfloat * values));
-typedef void (APIENTRY PFNGLPATCHPARAMETERI_PROC (GLenum pname, GLint value));
-typedef void (APIENTRY PFNGLPAUSETRANSFORMFEEDBACK_PROC (void));
-typedef void (APIENTRY PFNGLRESUMETRANSFORMFEEDBACK_PROC (void));
-typedef void (APIENTRY PFNGLUNIFORM1D_PROC (GLint location, GLdouble x));
-typedef void (APIENTRY PFNGLUNIFORM1DV_PROC (GLint location, GLsizei count, const GLdouble * value));
-typedef void (APIENTRY PFNGLUNIFORM2D_PROC (GLint location, GLdouble x, GLdouble y));
-typedef void (APIENTRY PFNGLUNIFORM2DV_PROC (GLint location, GLsizei count, const GLdouble * value));
-typedef void (APIENTRY PFNGLUNIFORM3D_PROC (GLint location, GLdouble x, GLdouble y, GLdouble z));
-typedef void (APIENTRY PFNGLUNIFORM3DV_PROC (GLint location, GLsizei count, const GLdouble * value));
-typedef void (APIENTRY PFNGLUNIFORM4D_PROC (GLint location, GLdouble x, GLdouble y, GLdouble z, GLdouble w));
-typedef void (APIENTRY PFNGLUNIFORM4DV_PROC (GLint location, GLsizei count, const GLdouble * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX2DV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX2X3DV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX2X4DV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX3DV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX3X2DV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX3X4DV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX4DV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX4X2DV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLUNIFORMMATRIX4X3DV_PROC (GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLUNIFORMSUBROUTINESUIV_PROC (GLenum shadertype, GLsizei count, const GLuint * indices));
-
-GLAPI PFNGLBEGINQUERYINDEXED_PROC* glpfBeginQueryIndexed;
-GLAPI PFNGLBINDTRANSFORMFEEDBACK_PROC* glpfBindTransformFeedback;
-GLAPI PFNGLBLENDEQUATIONSEPARATEI_PROC* glpfBlendEquationSeparatei;
-GLAPI PFNGLBLENDEQUATIONI_PROC* glpfBlendEquationi;
-GLAPI PFNGLBLENDFUNCSEPARATEI_PROC* glpfBlendFuncSeparatei;
-GLAPI PFNGLBLENDFUNCI_PROC* glpfBlendFunci;
-GLAPI PFNGLDELETETRANSFORMFEEDBACKS_PROC* glpfDeleteTransformFeedbacks;
-GLAPI PFNGLDRAWARRAYSINDIRECT_PROC* glpfDrawArraysIndirect;
-GLAPI PFNGLDRAWELEMENTSINDIRECT_PROC* glpfDrawElementsIndirect;
-GLAPI PFNGLDRAWTRANSFORMFEEDBACK_PROC* glpfDrawTransformFeedback;
-GLAPI PFNGLDRAWTRANSFORMFEEDBACKSTREAM_PROC* glpfDrawTransformFeedbackStream;
-GLAPI PFNGLENDQUERYINDEXED_PROC* glpfEndQueryIndexed;
-GLAPI PFNGLGENTRANSFORMFEEDBACKS_PROC* glpfGenTransformFeedbacks;
-GLAPI PFNGLGETACTIVESUBROUTINENAME_PROC* glpfGetActiveSubroutineName;
-GLAPI PFNGLGETACTIVESUBROUTINEUNIFORMNAME_PROC* glpfGetActiveSubroutineUniformName;
-GLAPI PFNGLGETACTIVESUBROUTINEUNIFORMIV_PROC* glpfGetActiveSubroutineUniformiv;
-GLAPI PFNGLGETPROGRAMSTAGEIV_PROC* glpfGetProgramStageiv;
-GLAPI PFNGLGETQUERYINDEXEDIV_PROC* glpfGetQueryIndexediv;
-GLAPI PFNGLGETSUBROUTINEINDEX_PROC* glpfGetSubroutineIndex;
-GLAPI PFNGLGETSUBROUTINEUNIFORMLOCATION_PROC* glpfGetSubroutineUniformLocation;
-GLAPI PFNGLGETUNIFORMSUBROUTINEUIV_PROC* glpfGetUniformSubroutineuiv;
-GLAPI PFNGLGETUNIFORMDV_PROC* glpfGetUniformdv;
-GLAPI PFNGLISTRANSFORMFEEDBACK_PROC* glpfIsTransformFeedback;
-GLAPI PFNGLMINSAMPLESHADING_PROC* glpfMinSampleShading;
-GLAPI PFNGLPATCHPARAMETERFV_PROC* glpfPatchParameterfv;
-GLAPI PFNGLPATCHPARAMETERI_PROC* glpfPatchParameteri;
-GLAPI PFNGLPAUSETRANSFORMFEEDBACK_PROC* glpfPauseTransformFeedback;
-GLAPI PFNGLRESUMETRANSFORMFEEDBACK_PROC* glpfResumeTransformFeedback;
-GLAPI PFNGLUNIFORM1D_PROC* glpfUniform1d;
-GLAPI PFNGLUNIFORM1DV_PROC* glpfUniform1dv;
-GLAPI PFNGLUNIFORM2D_PROC* glpfUniform2d;
-GLAPI PFNGLUNIFORM2DV_PROC* glpfUniform2dv;
-GLAPI PFNGLUNIFORM3D_PROC* glpfUniform3d;
-GLAPI PFNGLUNIFORM3DV_PROC* glpfUniform3dv;
-GLAPI PFNGLUNIFORM4D_PROC* glpfUniform4d;
-GLAPI PFNGLUNIFORM4DV_PROC* glpfUniform4dv;
-GLAPI PFNGLUNIFORMMATRIX2DV_PROC* glpfUniformMatrix2dv;
-GLAPI PFNGLUNIFORMMATRIX2X3DV_PROC* glpfUniformMatrix2x3dv;
-GLAPI PFNGLUNIFORMMATRIX2X4DV_PROC* glpfUniformMatrix2x4dv;
-GLAPI PFNGLUNIFORMMATRIX3DV_PROC* glpfUniformMatrix3dv;
-GLAPI PFNGLUNIFORMMATRIX3X2DV_PROC* glpfUniformMatrix3x2dv;
-GLAPI PFNGLUNIFORMMATRIX3X4DV_PROC* glpfUniformMatrix3x4dv;
-GLAPI PFNGLUNIFORMMATRIX4DV_PROC* glpfUniformMatrix4dv;
-GLAPI PFNGLUNIFORMMATRIX4X2DV_PROC* glpfUniformMatrix4x2dv;
-GLAPI PFNGLUNIFORMMATRIX4X3DV_PROC* glpfUniformMatrix4x3dv;
-GLAPI PFNGLUNIFORMSUBROUTINESUIV_PROC* glpfUniformSubroutinesuiv;
-
-#define glBeginQueryIndexed glpfBeginQueryIndexed
-#define glBindTransformFeedback glpfBindTransformFeedback
-#define glBlendEquationSeparatei glpfBlendEquationSeparatei
-#define glBlendEquationi glpfBlendEquationi
-#define glBlendFuncSeparatei glpfBlendFuncSeparatei
-#define glBlendFunci glpfBlendFunci
-#define glDeleteTransformFeedbacks glpfDeleteTransformFeedbacks
-#define glDrawArraysIndirect glpfDrawArraysIndirect
-#define glDrawElementsIndirect glpfDrawElementsIndirect
-#define glDrawTransformFeedback glpfDrawTransformFeedback
-#define glDrawTransformFeedbackStream glpfDrawTransformFeedbackStream
-#define glEndQueryIndexed glpfEndQueryIndexed
-#define glGenTransformFeedbacks glpfGenTransformFeedbacks
-#define glGetActiveSubroutineName glpfGetActiveSubroutineName
-#define glGetActiveSubroutineUniformName glpfGetActiveSubroutineUniformName
-#define glGetActiveSubroutineUniformiv glpfGetActiveSubroutineUniformiv
-#define glGetProgramStageiv glpfGetProgramStageiv
-#define glGetQueryIndexediv glpfGetQueryIndexediv
-#define glGetSubroutineIndex glpfGetSubroutineIndex
-#define glGetSubroutineUniformLocation glpfGetSubroutineUniformLocation
-#define glGetUniformSubroutineuiv glpfGetUniformSubroutineuiv
-#define glGetUniformdv glpfGetUniformdv
-#define glIsTransformFeedback glpfIsTransformFeedback
-#define glMinSampleShading glpfMinSampleShading
-#define glPatchParameterfv glpfPatchParameterfv
-#define glPatchParameteri glpfPatchParameteri
-#define glPauseTransformFeedback glpfPauseTransformFeedback
-#define glResumeTransformFeedback glpfResumeTransformFeedback
-#define glUniform1d glpfUniform1d
-#define glUniform1dv glpfUniform1dv
-#define glUniform2d glpfUniform2d
-#define glUniform2dv glpfUniform2dv
-#define glUniform3d glpfUniform3d
-#define glUniform3dv glpfUniform3dv
-#define glUniform4d glpfUniform4d
-#define glUniform4dv glpfUniform4dv
-#define glUniformMatrix2dv glpfUniformMatrix2dv
-#define glUniformMatrix2x3dv glpfUniformMatrix2x3dv
-#define glUniformMatrix2x4dv glpfUniformMatrix2x4dv
-#define glUniformMatrix3dv glpfUniformMatrix3dv
-#define glUniformMatrix3x2dv glpfUniformMatrix3x2dv
-#define glUniformMatrix3x4dv glpfUniformMatrix3x4dv
-#define glUniformMatrix4dv glpfUniformMatrix4dv
-#define glUniformMatrix4x2dv glpfUniformMatrix4x2dv
-#define glUniformMatrix4x3dv glpfUniformMatrix4x3dv
-#define glUniformSubroutinesuiv glpfUniformSubroutinesuiv
-
-/* GL_VERSION_4_1 */
-
-typedef void (APIENTRY PFNGLACTIVESHADERPROGRAM_PROC (GLuint pipeline, GLuint program));
-typedef void (APIENTRY PFNGLBINDPROGRAMPIPELINE_PROC (GLuint pipeline));
-typedef void (APIENTRY PFNGLCLEARDEPTHF_PROC (GLfloat d));
-typedef GLuint (APIENTRY PFNGLCREATESHADERPROGRAMV_PROC (GLenum type, GLsizei count, const GLchar *const* strings));
-typedef void (APIENTRY PFNGLDELETEPROGRAMPIPELINES_PROC (GLsizei n, const GLuint * pipelines));
-typedef void (APIENTRY PFNGLDEPTHRANGEARRAYV_PROC (GLuint first, GLsizei count, const GLdouble * v));
-typedef void (APIENTRY PFNGLDEPTHRANGEINDEXED_PROC (GLuint index, GLdouble n, GLdouble f));
-typedef void (APIENTRY PFNGLDEPTHRANGEF_PROC (GLfloat n, GLfloat f));
-typedef void (APIENTRY PFNGLGENPROGRAMPIPELINES_PROC (GLsizei n, GLuint * pipelines));
-typedef void (APIENTRY PFNGLGETDOUBLEI_V_PROC (GLenum target, GLuint index, GLdouble * data));
-typedef void (APIENTRY PFNGLGETFLOATI_V_PROC (GLenum target, GLuint index, GLfloat * data));
-typedef void (APIENTRY PFNGLGETPROGRAMBINARY_PROC (GLuint program, GLsizei bufSize, GLsizei * length, GLenum * binaryFormat, void * binary));
-typedef void (APIENTRY PFNGLGETPROGRAMPIPELINEINFOLOG_PROC (GLuint pipeline, GLsizei bufSize, GLsizei * length, GLchar * infoLog));
-typedef void (APIENTRY PFNGLGETPROGRAMPIPELINEIV_PROC (GLuint pipeline, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETSHADERPRECISIONFORMAT_PROC (GLenum shadertype, GLenum precisiontype, GLint * range, GLint * precision));
-typedef void (APIENTRY PFNGLGETVERTEXATTRIBLDV_PROC (GLuint index, GLenum pname, GLdouble * params));
-typedef GLboolean (APIENTRY PFNGLISPROGRAMPIPELINE_PROC (GLuint pipeline));
-typedef void (APIENTRY PFNGLPROGRAMBINARY_PROC (GLuint program, GLenum binaryFormat, const void * binary, GLsizei length));
-typedef void (APIENTRY PFNGLPROGRAMPARAMETERI_PROC (GLuint program, GLenum pname, GLint value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM1D_PROC (GLuint program, GLint location, GLdouble v0));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM1DV_PROC (GLuint program, GLint location, GLsizei count, const GLdouble * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM1F_PROC (GLuint program, GLint location, GLfloat v0));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM1FV_PROC (GLuint program, GLint location, GLsizei count, const GLfloat * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM1I_PROC (GLuint program, GLint location, GLint v0));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM1IV_PROC (GLuint program, GLint location, GLsizei count, const GLint * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM1UI_PROC (GLuint program, GLint location, GLuint v0));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM1UIV_PROC (GLuint program, GLint location, GLsizei count, const GLuint * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM2D_PROC (GLuint program, GLint location, GLdouble v0, GLdouble v1));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM2DV_PROC (GLuint program, GLint location, GLsizei count, const GLdouble * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM2F_PROC (GLuint program, GLint location, GLfloat v0, GLfloat v1));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM2FV_PROC (GLuint program, GLint location, GLsizei count, const GLfloat * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM2I_PROC (GLuint program, GLint location, GLint v0, GLint v1));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM2IV_PROC (GLuint program, GLint location, GLsizei count, const GLint * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM2UI_PROC (GLuint program, GLint location, GLuint v0, GLuint v1));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM2UIV_PROC (GLuint program, GLint location, GLsizei count, const GLuint * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM3D_PROC (GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM3DV_PROC (GLuint program, GLint location, GLsizei count, const GLdouble * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM3F_PROC (GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM3FV_PROC (GLuint program, GLint location, GLsizei count, const GLfloat * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM3I_PROC (GLuint program, GLint location, GLint v0, GLint v1, GLint v2));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM3IV_PROC (GLuint program, GLint location, GLsizei count, const GLint * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM3UI_PROC (GLuint program, GLint location, GLuint v0, GLuint v1, GLuint v2));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM3UIV_PROC (GLuint program, GLint location, GLsizei count, const GLuint * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM4D_PROC (GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2, GLdouble v3));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM4DV_PROC (GLuint program, GLint location, GLsizei count, const GLdouble * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM4F_PROC (GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM4FV_PROC (GLuint program, GLint location, GLsizei count, const GLfloat * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM4I_PROC (GLuint program, GLint location, GLint v0, GLint v1, GLint v2, GLint v3));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM4IV_PROC (GLuint program, GLint location, GLsizei count, const GLint * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM4UI_PROC (GLuint program, GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORM4UIV_PROC (GLuint program, GLint location, GLsizei count, const GLuint * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX2DV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX2FV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX2X3DV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX2X3FV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX2X4DV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX2X4FV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX3DV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX3FV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX3X2DV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX3X2FV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX3X4DV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX3X4FV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX4DV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX4FV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX4X2DV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX4X2FV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX4X3DV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value));
-typedef void (APIENTRY PFNGLPROGRAMUNIFORMMATRIX4X3FV_PROC (GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value));
-typedef void (APIENTRY PFNGLRELEASESHADERCOMPILER_PROC (void));
-typedef void (APIENTRY PFNGLSCISSORARRAYV_PROC (GLuint first, GLsizei count, const GLint * v));
-typedef void (APIENTRY PFNGLSCISSORINDEXED_PROC (GLuint index, GLint left, GLint bottom, GLsizei width, GLsizei height));
-typedef void (APIENTRY PFNGLSCISSORINDEXEDV_PROC (GLuint index, const GLint * v));
-typedef void (APIENTRY PFNGLSHADERBINARY_PROC (GLsizei count, const GLuint * shaders, GLenum binaryFormat, const void * binary, GLsizei length));
-typedef void (APIENTRY PFNGLUSEPROGRAMSTAGES_PROC (GLuint pipeline, GLbitfield stages, GLuint program));
-typedef void (APIENTRY PFNGLVALIDATEPROGRAMPIPELINE_PROC (GLuint pipeline));
-typedef void (APIENTRY PFNGLVERTEXATTRIBL1D_PROC (GLuint index, GLdouble x));
-typedef void (APIENTRY PFNGLVERTEXATTRIBL1DV_PROC (GLuint index, const GLdouble * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBL2D_PROC (GLuint index, GLdouble x, GLdouble y));
-typedef void (APIENTRY PFNGLVERTEXATTRIBL2DV_PROC (GLuint index, const GLdouble * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBL3D_PROC (GLuint index, GLdouble x, GLdouble y, GLdouble z));
-typedef void (APIENTRY PFNGLVERTEXATTRIBL3DV_PROC (GLuint index, const GLdouble * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBL4D_PROC (GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w));
-typedef void (APIENTRY PFNGLVERTEXATTRIBL4DV_PROC (GLuint index, const GLdouble * v));
-typedef void (APIENTRY PFNGLVERTEXATTRIBLPOINTER_PROC (GLuint index, GLint size, GLenum type, GLsizei stride, const void * pointer));
-typedef void (APIENTRY PFNGLVIEWPORTARRAYV_PROC (GLuint first, GLsizei count, const GLfloat * v));
-typedef void (APIENTRY PFNGLVIEWPORTINDEXEDF_PROC (GLuint index, GLfloat x, GLfloat y, GLfloat w, GLfloat h));
-typedef void (APIENTRY PFNGLVIEWPORTINDEXEDFV_PROC (GLuint index, const GLfloat * v));
-
-GLAPI PFNGLACTIVESHADERPROGRAM_PROC* glpfActiveShaderProgram;
-GLAPI PFNGLBINDPROGRAMPIPELINE_PROC* glpfBindProgramPipeline;
-GLAPI PFNGLCLEARDEPTHF_PROC* glpfClearDepthf;
-GLAPI PFNGLCREATESHADERPROGRAMV_PROC* glpfCreateShaderProgramv;
-GLAPI PFNGLDELETEPROGRAMPIPELINES_PROC* glpfDeleteProgramPipelines;
-GLAPI PFNGLDEPTHRANGEARRAYV_PROC* glpfDepthRangeArrayv;
-GLAPI PFNGLDEPTHRANGEINDEXED_PROC* glpfDepthRangeIndexed;
-GLAPI PFNGLDEPTHRANGEF_PROC* glpfDepthRangef;
-GLAPI PFNGLGENPROGRAMPIPELINES_PROC* glpfGenProgramPipelines;
-GLAPI PFNGLGETDOUBLEI_V_PROC* glpfGetDoublei_v;
-GLAPI PFNGLGETFLOATI_V_PROC* glpfGetFloati_v;
-GLAPI PFNGLGETPROGRAMBINARY_PROC* glpfGetProgramBinary;
-GLAPI PFNGLGETPROGRAMPIPELINEINFOLOG_PROC* glpfGetProgramPipelineInfoLog;
-GLAPI PFNGLGETPROGRAMPIPELINEIV_PROC* glpfGetProgramPipelineiv;
-GLAPI PFNGLGETSHADERPRECISIONFORMAT_PROC* glpfGetShaderPrecisionFormat;
-GLAPI PFNGLGETVERTEXATTRIBLDV_PROC* glpfGetVertexAttribLdv;
-GLAPI PFNGLISPROGRAMPIPELINE_PROC* glpfIsProgramPipeline;
-GLAPI PFNGLPROGRAMBINARY_PROC* glpfProgramBinary;
-GLAPI PFNGLPROGRAMPARAMETERI_PROC* glpfProgramParameteri;
-GLAPI PFNGLPROGRAMUNIFORM1D_PROC* glpfProgramUniform1d;
-GLAPI PFNGLPROGRAMUNIFORM1DV_PROC* glpfProgramUniform1dv;
-GLAPI PFNGLPROGRAMUNIFORM1F_PROC* glpfProgramUniform1f;
-GLAPI PFNGLPROGRAMUNIFORM1FV_PROC* glpfProgramUniform1fv;
-GLAPI PFNGLPROGRAMUNIFORM1I_PROC* glpfProgramUniform1i;
-GLAPI PFNGLPROGRAMUNIFORM1IV_PROC* glpfProgramUniform1iv;
-GLAPI PFNGLPROGRAMUNIFORM1UI_PROC* glpfProgramUniform1ui;
-GLAPI PFNGLPROGRAMUNIFORM1UIV_PROC* glpfProgramUniform1uiv;
-GLAPI PFNGLPROGRAMUNIFORM2D_PROC* glpfProgramUniform2d;
-GLAPI PFNGLPROGRAMUNIFORM2DV_PROC* glpfProgramUniform2dv;
-GLAPI PFNGLPROGRAMUNIFORM2F_PROC* glpfProgramUniform2f;
-GLAPI PFNGLPROGRAMUNIFORM2FV_PROC* glpfProgramUniform2fv;
-GLAPI PFNGLPROGRAMUNIFORM2I_PROC* glpfProgramUniform2i;
-GLAPI PFNGLPROGRAMUNIFORM2IV_PROC* glpfProgramUniform2iv;
-GLAPI PFNGLPROGRAMUNIFORM2UI_PROC* glpfProgramUniform2ui;
-GLAPI PFNGLPROGRAMUNIFORM2UIV_PROC* glpfProgramUniform2uiv;
-GLAPI PFNGLPROGRAMUNIFORM3D_PROC* glpfProgramUniform3d;
-GLAPI PFNGLPROGRAMUNIFORM3DV_PROC* glpfProgramUniform3dv;
-GLAPI PFNGLPROGRAMUNIFORM3F_PROC* glpfProgramUniform3f;
-GLAPI PFNGLPROGRAMUNIFORM3FV_PROC* glpfProgramUniform3fv;
-GLAPI PFNGLPROGRAMUNIFORM3I_PROC* glpfProgramUniform3i;
-GLAPI PFNGLPROGRAMUNIFORM3IV_PROC* glpfProgramUniform3iv;
-GLAPI PFNGLPROGRAMUNIFORM3UI_PROC* glpfProgramUniform3ui;
-GLAPI PFNGLPROGRAMUNIFORM3UIV_PROC* glpfProgramUniform3uiv;
-GLAPI PFNGLPROGRAMUNIFORM4D_PROC* glpfProgramUniform4d;
-GLAPI PFNGLPROGRAMUNIFORM4DV_PROC* glpfProgramUniform4dv;
-GLAPI PFNGLPROGRAMUNIFORM4F_PROC* glpfProgramUniform4f;
-GLAPI PFNGLPROGRAMUNIFORM4FV_PROC* glpfProgramUniform4fv;
-GLAPI PFNGLPROGRAMUNIFORM4I_PROC* glpfProgramUniform4i;
-GLAPI PFNGLPROGRAMUNIFORM4IV_PROC* glpfProgramUniform4iv;
-GLAPI PFNGLPROGRAMUNIFORM4UI_PROC* glpfProgramUniform4ui;
-GLAPI PFNGLPROGRAMUNIFORM4UIV_PROC* glpfProgramUniform4uiv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX2DV_PROC* glpfProgramUniformMatrix2dv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX2FV_PROC* glpfProgramUniformMatrix2fv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX2X3DV_PROC* glpfProgramUniformMatrix2x3dv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX2X3FV_PROC* glpfProgramUniformMatrix2x3fv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX2X4DV_PROC* glpfProgramUniformMatrix2x4dv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX2X4FV_PROC* glpfProgramUniformMatrix2x4fv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX3DV_PROC* glpfProgramUniformMatrix3dv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX3FV_PROC* glpfProgramUniformMatrix3fv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX3X2DV_PROC* glpfProgramUniformMatrix3x2dv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX3X2FV_PROC* glpfProgramUniformMatrix3x2fv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX3X4DV_PROC* glpfProgramUniformMatrix3x4dv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX3X4FV_PROC* glpfProgramUniformMatrix3x4fv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX4DV_PROC* glpfProgramUniformMatrix4dv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX4FV_PROC* glpfProgramUniformMatrix4fv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX4X2DV_PROC* glpfProgramUniformMatrix4x2dv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX4X2FV_PROC* glpfProgramUniformMatrix4x2fv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX4X3DV_PROC* glpfProgramUniformMatrix4x3dv;
-GLAPI PFNGLPROGRAMUNIFORMMATRIX4X3FV_PROC* glpfProgramUniformMatrix4x3fv;
-GLAPI PFNGLRELEASESHADERCOMPILER_PROC* glpfReleaseShaderCompiler;
-GLAPI PFNGLSCISSORARRAYV_PROC* glpfScissorArrayv;
-GLAPI PFNGLSCISSORINDEXED_PROC* glpfScissorIndexed;
-GLAPI PFNGLSCISSORINDEXEDV_PROC* glpfScissorIndexedv;
-GLAPI PFNGLSHADERBINARY_PROC* glpfShaderBinary;
-GLAPI PFNGLUSEPROGRAMSTAGES_PROC* glpfUseProgramStages;
-GLAPI PFNGLVALIDATEPROGRAMPIPELINE_PROC* glpfValidateProgramPipeline;
-GLAPI PFNGLVERTEXATTRIBL1D_PROC* glpfVertexAttribL1d;
-GLAPI PFNGLVERTEXATTRIBL1DV_PROC* glpfVertexAttribL1dv;
-GLAPI PFNGLVERTEXATTRIBL2D_PROC* glpfVertexAttribL2d;
-GLAPI PFNGLVERTEXATTRIBL2DV_PROC* glpfVertexAttribL2dv;
-GLAPI PFNGLVERTEXATTRIBL3D_PROC* glpfVertexAttribL3d;
-GLAPI PFNGLVERTEXATTRIBL3DV_PROC* glpfVertexAttribL3dv;
-GLAPI PFNGLVERTEXATTRIBL4D_PROC* glpfVertexAttribL4d;
-GLAPI PFNGLVERTEXATTRIBL4DV_PROC* glpfVertexAttribL4dv;
-GLAPI PFNGLVERTEXATTRIBLPOINTER_PROC* glpfVertexAttribLPointer;
-GLAPI PFNGLVIEWPORTARRAYV_PROC* glpfViewportArrayv;
-GLAPI PFNGLVIEWPORTINDEXEDF_PROC* glpfViewportIndexedf;
-GLAPI PFNGLVIEWPORTINDEXEDFV_PROC* glpfViewportIndexedfv;
-
-#define glActiveShaderProgram glpfActiveShaderProgram
-#define glBindProgramPipeline glpfBindProgramPipeline
-#define glClearDepthf glpfClearDepthf
-#define glCreateShaderProgramv glpfCreateShaderProgramv
-#define glDeleteProgramPipelines glpfDeleteProgramPipelines
-#define glDepthRangeArrayv glpfDepthRangeArrayv
-#define glDepthRangeIndexed glpfDepthRangeIndexed
-#define glDepthRangef glpfDepthRangef
-#define glGenProgramPipelines glpfGenProgramPipelines
-#define glGetDoublei_v glpfGetDoublei_v
-#define glGetFloati_v glpfGetFloati_v
-#define glGetProgramBinary glpfGetProgramBinary
-#define glGetProgramPipelineInfoLog glpfGetProgramPipelineInfoLog
-#define glGetProgramPipelineiv glpfGetProgramPipelineiv
-#define glGetShaderPrecisionFormat glpfGetShaderPrecisionFormat
-#define glGetVertexAttribLdv glpfGetVertexAttribLdv
-#define glIsProgramPipeline glpfIsProgramPipeline
-#define glProgramBinary glpfProgramBinary
-#define glProgramParameteri glpfProgramParameteri
-#define glProgramUniform1d glpfProgramUniform1d
-#define glProgramUniform1dv glpfProgramUniform1dv
-#define glProgramUniform1f glpfProgramUniform1f
-#define glProgramUniform1fv glpfProgramUniform1fv
-#define glProgramUniform1i glpfProgramUniform1i
-#define glProgramUniform1iv glpfProgramUniform1iv
-#define glProgramUniform1ui glpfProgramUniform1ui
-#define glProgramUniform1uiv glpfProgramUniform1uiv
-#define glProgramUniform2d glpfProgramUniform2d
-#define glProgramUniform2dv glpfProgramUniform2dv
-#define glProgramUniform2f glpfProgramUniform2f
-#define glProgramUniform2fv glpfProgramUniform2fv
-#define glProgramUniform2i glpfProgramUniform2i
-#define glProgramUniform2iv glpfProgramUniform2iv
-#define glProgramUniform2ui glpfProgramUniform2ui
-#define glProgramUniform2uiv glpfProgramUniform2uiv
-#define glProgramUniform3d glpfProgramUniform3d
-#define glProgramUniform3dv glpfProgramUniform3dv
-#define glProgramUniform3f glpfProgramUniform3f
-#define glProgramUniform3fv glpfProgramUniform3fv
-#define glProgramUniform3i glpfProgramUniform3i
-#define glProgramUniform3iv glpfProgramUniform3iv
-#define glProgramUniform3ui glpfProgramUniform3ui
-#define glProgramUniform3uiv glpfProgramUniform3uiv
-#define glProgramUniform4d glpfProgramUniform4d
-#define glProgramUniform4dv glpfProgramUniform4dv
-#define glProgramUniform4f glpfProgramUniform4f
-#define glProgramUniform4fv glpfProgramUniform4fv
-#define glProgramUniform4i glpfProgramUniform4i
-#define glProgramUniform4iv glpfProgramUniform4iv
-#define glProgramUniform4ui glpfProgramUniform4ui
-#define glProgramUniform4uiv glpfProgramUniform4uiv
-#define glProgramUniformMatrix2dv glpfProgramUniformMatrix2dv
-#define glProgramUniformMatrix2fv glpfProgramUniformMatrix2fv
-#define glProgramUniformMatrix2x3dv glpfProgramUniformMatrix2x3dv
-#define glProgramUniformMatrix2x3fv glpfProgramUniformMatrix2x3fv
-#define glProgramUniformMatrix2x4dv glpfProgramUniformMatrix2x4dv
-#define glProgramUniformMatrix2x4fv glpfProgramUniformMatrix2x4fv
-#define glProgramUniformMatrix3dv glpfProgramUniformMatrix3dv
-#define glProgramUniformMatrix3fv glpfProgramUniformMatrix3fv
-#define glProgramUniformMatrix3x2dv glpfProgramUniformMatrix3x2dv
-#define glProgramUniformMatrix3x2fv glpfProgramUniformMatrix3x2fv
-#define glProgramUniformMatrix3x4dv glpfProgramUniformMatrix3x4dv
-#define glProgramUniformMatrix3x4fv glpfProgramUniformMatrix3x4fv
-#define glProgramUniformMatrix4dv glpfProgramUniformMatrix4dv
-#define glProgramUniformMatrix4fv glpfProgramUniformMatrix4fv
-#define glProgramUniformMatrix4x2dv glpfProgramUniformMatrix4x2dv
-#define glProgramUniformMatrix4x2fv glpfProgramUniformMatrix4x2fv
-#define glProgramUniformMatrix4x3dv glpfProgramUniformMatrix4x3dv
-#define glProgramUniformMatrix4x3fv glpfProgramUniformMatrix4x3fv
-#define glReleaseShaderCompiler glpfReleaseShaderCompiler
-#define glScissorArrayv glpfScissorArrayv
-#define glScissorIndexed glpfScissorIndexed
-#define glScissorIndexedv glpfScissorIndexedv
-#define glShaderBinary glpfShaderBinary
-#define glUseProgramStages glpfUseProgramStages
-#define glValidateProgramPipeline glpfValidateProgramPipeline
-#define glVertexAttribL1d glpfVertexAttribL1d
-#define glVertexAttribL1dv glpfVertexAttribL1dv
-#define glVertexAttribL2d glpfVertexAttribL2d
-#define glVertexAttribL2dv glpfVertexAttribL2dv
-#define glVertexAttribL3d glpfVertexAttribL3d
-#define glVertexAttribL3dv glpfVertexAttribL3dv
-#define glVertexAttribL4d glpfVertexAttribL4d
-#define glVertexAttribL4dv glpfVertexAttribL4dv
-#define glVertexAttribLPointer glpfVertexAttribLPointer
-#define glViewportArrayv glpfViewportArrayv
-#define glViewportIndexedf glpfViewportIndexedf
-#define glViewportIndexedfv glpfViewportIndexedfv
-
-/* GL_VERSION_4_2 */
-
-typedef void (APIENTRY PFNGLBINDIMAGETEXTURE_PROC (GLuint unit, GLuint texture, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format));
-typedef void (APIENTRY PFNGLDRAWARRAYSINSTANCEDBASEINSTANCE_PROC (GLenum mode, GLint first, GLsizei count, GLsizei instancecount, GLuint baseinstance));
-typedef void (APIENTRY PFNGLDRAWELEMENTSINSTANCEDBASEINSTANCE_PROC (GLenum mode, GLsizei count, GLenum type, const void * indices, GLsizei instancecount, GLuint baseinstance));
-typedef void (APIENTRY PFNGLDRAWELEMENTSINSTANCEDBASEVERTEXBASEINSTANCE_PROC (GLenum mode, GLsizei count, GLenum type, const void * indices, GLsizei instancecount, GLint basevertex, GLuint baseinstance));
-typedef void (APIENTRY PFNGLDRAWTRANSFORMFEEDBACKINSTANCED_PROC (GLenum mode, GLuint id, GLsizei instancecount));
-typedef void (APIENTRY PFNGLDRAWTRANSFORMFEEDBACKSTREAMINSTANCED_PROC (GLenum mode, GLuint id, GLuint stream, GLsizei instancecount));
-typedef void (APIENTRY PFNGLGETACTIVEATOMICCOUNTERBUFFERIV_PROC (GLuint program, GLuint bufferIndex, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETINTERNALFORMATIV_PROC (GLenum target, GLenum internalformat, GLenum pname, GLsizei count, GLint * params));
-typedef void (APIENTRY PFNGLMEMORYBARRIER_PROC (GLbitfield barriers));
-typedef void (APIENTRY PFNGLTEXSTORAGE1D_PROC (GLenum target, GLsizei levels, GLenum internalformat, GLsizei width));
-typedef void (APIENTRY PFNGLTEXSTORAGE2D_PROC (GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height));
-typedef void (APIENTRY PFNGLTEXSTORAGE3D_PROC (GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth));
-
-GLAPI PFNGLBINDIMAGETEXTURE_PROC* glpfBindImageTexture;
-GLAPI PFNGLDRAWARRAYSINSTANCEDBASEINSTANCE_PROC* glpfDrawArraysInstancedBaseInstance;
-GLAPI PFNGLDRAWELEMENTSINSTANCEDBASEINSTANCE_PROC* glpfDrawElementsInstancedBaseInstance;
-GLAPI PFNGLDRAWELEMENTSINSTANCEDBASEVERTEXBASEINSTANCE_PROC* glpfDrawElementsInstancedBaseVertexBaseInstance;
-GLAPI PFNGLDRAWTRANSFORMFEEDBACKINSTANCED_PROC* glpfDrawTransformFeedbackInstanced;
-GLAPI PFNGLDRAWTRANSFORMFEEDBACKSTREAMINSTANCED_PROC* glpfDrawTransformFeedbackStreamInstanced;
-GLAPI PFNGLGETACTIVEATOMICCOUNTERBUFFERIV_PROC* glpfGetActiveAtomicCounterBufferiv;
-GLAPI PFNGLGETINTERNALFORMATIV_PROC* glpfGetInternalformativ;
-GLAPI PFNGLMEMORYBARRIER_PROC* glpfMemoryBarrier;
-GLAPI PFNGLTEXSTORAGE1D_PROC* glpfTexStorage1D;
-GLAPI PFNGLTEXSTORAGE2D_PROC* glpfTexStorage2D;
-GLAPI PFNGLTEXSTORAGE3D_PROC* glpfTexStorage3D;
-
-#define glBindImageTexture glpfBindImageTexture
-#define glDrawArraysInstancedBaseInstance glpfDrawArraysInstancedBaseInstance
-#define glDrawElementsInstancedBaseInstance glpfDrawElementsInstancedBaseInstance
-#define glDrawElementsInstancedBaseVertexBaseInstance glpfDrawElementsInstancedBaseVertexBaseInstance
-#define glDrawTransformFeedbackInstanced glpfDrawTransformFeedbackInstanced
-#define glDrawTransformFeedbackStreamInstanced glpfDrawTransformFeedbackStreamInstanced
-#define glGetActiveAtomicCounterBufferiv glpfGetActiveAtomicCounterBufferiv
-#define glGetInternalformativ glpfGetInternalformativ
-#define glMemoryBarrier glpfMemoryBarrier
-#define glTexStorage1D glpfTexStorage1D
-#define glTexStorage2D glpfTexStorage2D
-#define glTexStorage3D glpfTexStorage3D
-
-/* GL_VERSION_4_3 */
-
-typedef void (APIENTRY PFNGLBINDVERTEXBUFFER_PROC (GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride));
-typedef void (APIENTRY PFNGLCLEARBUFFERDATA_PROC (GLenum target, GLenum internalformat, GLenum format, GLenum type, const void * data));
-typedef void (APIENTRY PFNGLCLEARBUFFERSUBDATA_PROC (GLenum target, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data));
-typedef void (APIENTRY PFNGLCOPYIMAGESUBDATA_PROC (GLuint srcName, GLenum srcTarget, GLint srcLevel, GLint srcX, GLint srcY, GLint srcZ, GLuint dstName, GLenum dstTarget, GLint dstLevel, GLint dstX, GLint dstY, GLint dstZ, GLsizei srcWidth, GLsizei srcHeight, GLsizei srcDepth));
-typedef void (APIENTRY PFNGLDEBUGMESSAGECALLBACK_PROC (GLDEBUGPROC callback, const void * userParam));
-typedef void (APIENTRY PFNGLDEBUGMESSAGECONTROL_PROC (GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids, GLboolean enabled));
-typedef void (APIENTRY PFNGLDEBUGMESSAGEINSERT_PROC (GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar * buf));
-typedef void (APIENTRY PFNGLDISPATCHCOMPUTE_PROC (GLuint num_groups_x, GLuint num_groups_y, GLuint num_groups_z));
-typedef void (APIENTRY PFNGLDISPATCHCOMPUTEINDIRECT_PROC (GLintptr indirect));
-typedef void (APIENTRY PFNGLFRAMEBUFFERPARAMETERI_PROC (GLenum target, GLenum pname, GLint param));
-typedef GLuint (APIENTRY PFNGLGETDEBUGMESSAGELOG_PROC (GLuint count, GLsizei bufSize, GLenum * sources, GLenum * types, GLuint * ids, GLenum * severities, GLsizei * lengths, GLchar * messageLog));
-typedef void (APIENTRY PFNGLGETFRAMEBUFFERPARAMETERIV_PROC (GLenum target, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETINTERNALFORMATI64V_PROC (GLenum target, GLenum internalformat, GLenum pname, GLsizei count, GLint64 * params));
-typedef void (APIENTRY PFNGLGETOBJECTLABEL_PROC (GLenum identifier, GLuint name, GLsizei bufSize, GLsizei * length, GLchar * label));
-typedef void (APIENTRY PFNGLGETOBJECTPTRLABEL_PROC (const void * ptr, GLsizei bufSize, GLsizei * length, GLchar * label));
-typedef void (APIENTRY PFNGLGETPOINTERV_PROC (GLenum pname, void ** params));
-typedef void (APIENTRY PFNGLGETPROGRAMINTERFACEIV_PROC (GLuint program, GLenum programInterface, GLenum pname, GLint * params));
-typedef GLuint (APIENTRY PFNGLGETPROGRAMRESOURCEINDEX_PROC (GLuint program, GLenum programInterface, const GLchar * name));
-typedef GLint (APIENTRY PFNGLGETPROGRAMRESOURCELOCATION_PROC (GLuint program, GLenum programInterface, const GLchar * name));
-typedef GLint (APIENTRY PFNGLGETPROGRAMRESOURCELOCATIONINDEX_PROC (GLuint program, GLenum programInterface, const GLchar * name));
-typedef void (APIENTRY PFNGLGETPROGRAMRESOURCENAME_PROC (GLuint program, GLenum programInterface, GLuint index, GLsizei bufSize, GLsizei * length, GLchar * name));
-typedef void (APIENTRY PFNGLGETPROGRAMRESOURCEIV_PROC (GLuint program, GLenum programInterface, GLuint index, GLsizei propCount, const GLenum * props, GLsizei count, GLsizei * length, GLint * params));
-typedef void (APIENTRY PFNGLINVALIDATEBUFFERDATA_PROC (GLuint buffer));
-typedef void (APIENTRY PFNGLINVALIDATEBUFFERSUBDATA_PROC (GLuint buffer, GLintptr offset, GLsizeiptr length));
-typedef void (APIENTRY PFNGLINVALIDATEFRAMEBUFFER_PROC (GLenum target, GLsizei numAttachments, const GLenum * attachments));
-typedef void (APIENTRY PFNGLINVALIDATESUBFRAMEBUFFER_PROC (GLenum target, GLsizei numAttachments, const GLenum * attachments, GLint x, GLint y, GLsizei width, GLsizei height));
-typedef void (APIENTRY PFNGLINVALIDATETEXIMAGE_PROC (GLuint texture, GLint level));
-typedef void (APIENTRY PFNGLINVALIDATETEXSUBIMAGE_PROC (GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth));
-typedef void (APIENTRY PFNGLMULTIDRAWARRAYSINDIRECT_PROC (GLenum mode, const void * indirect, GLsizei drawcount, GLsizei stride));
-typedef void (APIENTRY PFNGLMULTIDRAWELEMENTSINDIRECT_PROC (GLenum mode, GLenum type, const void * indirect, GLsizei drawcount, GLsizei stride));
-typedef void (APIENTRY PFNGLOBJECTLABEL_PROC (GLenum identifier, GLuint name, GLsizei length, const GLchar * label));
-typedef void (APIENTRY PFNGLOBJECTPTRLABEL_PROC (const void * ptr, GLsizei length, const GLchar * label));
-typedef void (APIENTRY PFNGLPOPDEBUGGROUP_PROC (void));
-typedef void (APIENTRY PFNGLPUSHDEBUGGROUP_PROC (GLenum source, GLuint id, GLsizei length, const GLchar * message));
-typedef void (APIENTRY PFNGLSHADERSTORAGEBLOCKBINDING_PROC (GLuint program, GLuint storageBlockIndex, GLuint storageBlockBinding));
-typedef void (APIENTRY PFNGLTEXBUFFERRANGE_PROC (GLenum target, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size));
-typedef void (APIENTRY PFNGLTEXSTORAGE2DMULTISAMPLE_PROC (GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations));
-typedef void (APIENTRY PFNGLTEXSTORAGE3DMULTISAMPLE_PROC (GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations));
-typedef void (APIENTRY PFNGLTEXTUREVIEW_PROC (GLuint texture, GLenum target, GLuint origtexture, GLenum internalformat, GLuint minlevel, GLuint numlevels, GLuint minlayer, GLuint numlayers));
-typedef void (APIENTRY PFNGLVERTEXATTRIBBINDING_PROC (GLuint attribindex, GLuint bindingindex));
-typedef void (APIENTRY PFNGLVERTEXATTRIBFORMAT_PROC (GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset));
-typedef void (APIENTRY PFNGLVERTEXATTRIBIFORMAT_PROC (GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset));
-typedef void (APIENTRY PFNGLVERTEXATTRIBLFORMAT_PROC (GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset));
-typedef void (APIENTRY PFNGLVERTEXBINDINGDIVISOR_PROC (GLuint bindingindex, GLuint divisor));
-
-GLAPI PFNGLBINDVERTEXBUFFER_PROC* glpfBindVertexBuffer;
-GLAPI PFNGLCLEARBUFFERDATA_PROC* glpfClearBufferData;
-GLAPI PFNGLCLEARBUFFERSUBDATA_PROC* glpfClearBufferSubData;
-GLAPI PFNGLCOPYIMAGESUBDATA_PROC* glpfCopyImageSubData;
-GLAPI PFNGLDEBUGMESSAGECALLBACK_PROC* glpfDebugMessageCallback;
-GLAPI PFNGLDEBUGMESSAGECONTROL_PROC* glpfDebugMessageControl;
-GLAPI PFNGLDEBUGMESSAGEINSERT_PROC* glpfDebugMessageInsert;
-GLAPI PFNGLDISPATCHCOMPUTE_PROC* glpfDispatchCompute;
-GLAPI PFNGLDISPATCHCOMPUTEINDIRECT_PROC* glpfDispatchComputeIndirect;
-GLAPI PFNGLFRAMEBUFFERPARAMETERI_PROC* glpfFramebufferParameteri;
-GLAPI PFNGLGETDEBUGMESSAGELOG_PROC* glpfGetDebugMessageLog;
-GLAPI PFNGLGETFRAMEBUFFERPARAMETERIV_PROC* glpfGetFramebufferParameteriv;
-GLAPI PFNGLGETINTERNALFORMATI64V_PROC* glpfGetInternalformati64v;
-GLAPI PFNGLGETOBJECTLABEL_PROC* glpfGetObjectLabel;
-GLAPI PFNGLGETOBJECTPTRLABEL_PROC* glpfGetObjectPtrLabel;
-GLAPI PFNGLGETPOINTERV_PROC* glpfGetPointerv;
-GLAPI PFNGLGETPROGRAMINTERFACEIV_PROC* glpfGetProgramInterfaceiv;
-GLAPI PFNGLGETPROGRAMRESOURCEINDEX_PROC* glpfGetProgramResourceIndex;
-GLAPI PFNGLGETPROGRAMRESOURCELOCATION_PROC* glpfGetProgramResourceLocation;
-GLAPI PFNGLGETPROGRAMRESOURCELOCATIONINDEX_PROC* glpfGetProgramResourceLocationIndex;
-GLAPI PFNGLGETPROGRAMRESOURCENAME_PROC* glpfGetProgramResourceName;
-GLAPI PFNGLGETPROGRAMRESOURCEIV_PROC* glpfGetProgramResourceiv;
-GLAPI PFNGLINVALIDATEBUFFERDATA_PROC* glpfInvalidateBufferData;
-GLAPI PFNGLINVALIDATEBUFFERSUBDATA_PROC* glpfInvalidateBufferSubData;
-GLAPI PFNGLINVALIDATEFRAMEBUFFER_PROC* glpfInvalidateFramebuffer;
-GLAPI PFNGLINVALIDATESUBFRAMEBUFFER_PROC* glpfInvalidateSubFramebuffer;
-GLAPI PFNGLINVALIDATETEXIMAGE_PROC* glpfInvalidateTexImage;
-GLAPI PFNGLINVALIDATETEXSUBIMAGE_PROC* glpfInvalidateTexSubImage;
-GLAPI PFNGLMULTIDRAWARRAYSINDIRECT_PROC* glpfMultiDrawArraysIndirect;
-GLAPI PFNGLMULTIDRAWELEMENTSINDIRECT_PROC* glpfMultiDrawElementsIndirect;
-GLAPI PFNGLOBJECTLABEL_PROC* glpfObjectLabel;
-GLAPI PFNGLOBJECTPTRLABEL_PROC* glpfObjectPtrLabel;
-GLAPI PFNGLPOPDEBUGGROUP_PROC* glpfPopDebugGroup;
-GLAPI PFNGLPUSHDEBUGGROUP_PROC* glpfPushDebugGroup;
-GLAPI PFNGLSHADERSTORAGEBLOCKBINDING_PROC* glpfShaderStorageBlockBinding;
-GLAPI PFNGLTEXBUFFERRANGE_PROC* glpfTexBufferRange;
-GLAPI PFNGLTEXSTORAGE2DMULTISAMPLE_PROC* glpfTexStorage2DMultisample;
-GLAPI PFNGLTEXSTORAGE3DMULTISAMPLE_PROC* glpfTexStorage3DMultisample;
-GLAPI PFNGLTEXTUREVIEW_PROC* glpfTextureView;
-GLAPI PFNGLVERTEXATTRIBBINDING_PROC* glpfVertexAttribBinding;
-GLAPI PFNGLVERTEXATTRIBFORMAT_PROC* glpfVertexAttribFormat;
-GLAPI PFNGLVERTEXATTRIBIFORMAT_PROC* glpfVertexAttribIFormat;
-GLAPI PFNGLVERTEXATTRIBLFORMAT_PROC* glpfVertexAttribLFormat;
-GLAPI PFNGLVERTEXBINDINGDIVISOR_PROC* glpfVertexBindingDivisor;
-
-#define glBindVertexBuffer glpfBindVertexBuffer
-#define glClearBufferData glpfClearBufferData
-#define glClearBufferSubData glpfClearBufferSubData
-#define glCopyImageSubData glpfCopyImageSubData
-#define glDebugMessageCallback glpfDebugMessageCallback
-#define glDebugMessageControl glpfDebugMessageControl
-#define glDebugMessageInsert glpfDebugMessageInsert
-#define glDispatchCompute glpfDispatchCompute
-#define glDispatchComputeIndirect glpfDispatchComputeIndirect
-#define glFramebufferParameteri glpfFramebufferParameteri
-#define glGetDebugMessageLog glpfGetDebugMessageLog
-#define glGetFramebufferParameteriv glpfGetFramebufferParameteriv
-#define glGetInternalformati64v glpfGetInternalformati64v
-#define glGetObjectLabel glpfGetObjectLabel
-#define glGetObjectPtrLabel glpfGetObjectPtrLabel
-#define glGetPointerv glpfGetPointerv
-#define glGetProgramInterfaceiv glpfGetProgramInterfaceiv
-#define glGetProgramResourceIndex glpfGetProgramResourceIndex
-#define glGetProgramResourceLocation glpfGetProgramResourceLocation
-#define glGetProgramResourceLocationIndex glpfGetProgramResourceLocationIndex
-#define glGetProgramResourceName glpfGetProgramResourceName
-#define glGetProgramResourceiv glpfGetProgramResourceiv
-#define glInvalidateBufferData glpfInvalidateBufferData
-#define glInvalidateBufferSubData glpfInvalidateBufferSubData
-#define glInvalidateFramebuffer glpfInvalidateFramebuffer
-#define glInvalidateSubFramebuffer glpfInvalidateSubFramebuffer
-#define glInvalidateTexImage glpfInvalidateTexImage
-#define glInvalidateTexSubImage glpfInvalidateTexSubImage
-#define glMultiDrawArraysIndirect glpfMultiDrawArraysIndirect
-#define glMultiDrawElementsIndirect glpfMultiDrawElementsIndirect
-#define glObjectLabel glpfObjectLabel
-#define glObjectPtrLabel glpfObjectPtrLabel
-#define glPopDebugGroup glpfPopDebugGroup
-#define glPushDebugGroup glpfPushDebugGroup
-#define glShaderStorageBlockBinding glpfShaderStorageBlockBinding
-#define glTexBufferRange glpfTexBufferRange
-#define glTexStorage2DMultisample glpfTexStorage2DMultisample
-#define glTexStorage3DMultisample glpfTexStorage3DMultisample
-#define glTextureView glpfTextureView
-#define glVertexAttribBinding glpfVertexAttribBinding
-#define glVertexAttribFormat glpfVertexAttribFormat
-#define glVertexAttribIFormat glpfVertexAttribIFormat
-#define glVertexAttribLFormat glpfVertexAttribLFormat
-#define glVertexBindingDivisor glpfVertexBindingDivisor
-
-/* GL_VERSION_4_4 */
-
-typedef void (APIENTRY PFNGLBINDBUFFERSBASE_PROC (GLenum target, GLuint first, GLsizei count, const GLuint * buffers));
-typedef void (APIENTRY PFNGLBINDBUFFERSRANGE_PROC (GLenum target, GLuint first, GLsizei count, const GLuint * buffers, const GLintptr * offsets, const GLsizeiptr * sizes));
-typedef void (APIENTRY PFNGLBINDIMAGETEXTURES_PROC (GLuint first, GLsizei count, const GLuint * textures));
-typedef void (APIENTRY PFNGLBINDSAMPLERS_PROC (GLuint first, GLsizei count, const GLuint * samplers));
-typedef void (APIENTRY PFNGLBINDTEXTURES_PROC (GLuint first, GLsizei count, const GLuint * textures));
-typedef void (APIENTRY PFNGLBINDVERTEXBUFFERS_PROC (GLuint first, GLsizei count, const GLuint * buffers, const GLintptr * offsets, const GLsizei * strides));
-typedef void (APIENTRY PFNGLBUFFERSTORAGE_PROC (GLenum target, GLsizeiptr size, const void * data, GLbitfield flags));
-typedef void (APIENTRY PFNGLCLEARTEXIMAGE_PROC (GLuint texture, GLint level, GLenum format, GLenum type, const void * data));
-typedef void (APIENTRY PFNGLCLEARTEXSUBIMAGE_PROC (GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void * data));
-
-GLAPI PFNGLBINDBUFFERSBASE_PROC* glpfBindBuffersBase;
-GLAPI PFNGLBINDBUFFERSRANGE_PROC* glpfBindBuffersRange;
-GLAPI PFNGLBINDIMAGETEXTURES_PROC* glpfBindImageTextures;
-GLAPI PFNGLBINDSAMPLERS_PROC* glpfBindSamplers;
-GLAPI PFNGLBINDTEXTURES_PROC* glpfBindTextures;
-GLAPI PFNGLBINDVERTEXBUFFERS_PROC* glpfBindVertexBuffers;
-GLAPI PFNGLBUFFERSTORAGE_PROC* glpfBufferStorage;
-GLAPI PFNGLCLEARTEXIMAGE_PROC* glpfClearTexImage;
-GLAPI PFNGLCLEARTEXSUBIMAGE_PROC* glpfClearTexSubImage;
-
-#define glBindBuffersBase glpfBindBuffersBase
-#define glBindBuffersRange glpfBindBuffersRange
-#define glBindImageTextures glpfBindImageTextures
-#define glBindSamplers glpfBindSamplers
-#define glBindTextures glpfBindTextures
-#define glBindVertexBuffers glpfBindVertexBuffers
-#define glBufferStorage glpfBufferStorage
-#define glClearTexImage glpfClearTexImage
-#define glClearTexSubImage glpfClearTexSubImage
-
-/* GL_VERSION_4_5 */
-
-typedef void (APIENTRY PFNGLBINDTEXTUREUNIT_PROC (GLuint unit, GLuint texture));
-typedef void (APIENTRY PFNGLBLITNAMEDFRAMEBUFFER_PROC (GLuint readFramebuffer, GLuint drawFramebuffer, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter));
-typedef GLenum (APIENTRY PFNGLCHECKNAMEDFRAMEBUFFERSTATUS_PROC (GLuint framebuffer, GLenum target));
-typedef void (APIENTRY PFNGLCLEARNAMEDBUFFERDATA_PROC (GLuint buffer, GLenum internalformat, GLenum format, GLenum type, const void * data));
-typedef void (APIENTRY PFNGLCLEARNAMEDBUFFERSUBDATA_PROC (GLuint buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data));
-typedef void (APIENTRY PFNGLCLEARNAMEDFRAMEBUFFERFI_PROC (GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLfloat depth, GLint stencil));
-typedef void (APIENTRY PFNGLCLEARNAMEDFRAMEBUFFERFV_PROC (GLuint framebuffer, GLenum buffer, GLint drawbuffer, const GLfloat * value));
-typedef void (APIENTRY PFNGLCLEARNAMEDFRAMEBUFFERIV_PROC (GLuint framebuffer, GLenum buffer, GLint drawbuffer, const GLint * value));
-typedef void (APIENTRY PFNGLCLEARNAMEDFRAMEBUFFERUIV_PROC (GLuint framebuffer, GLenum buffer, GLint drawbuffer, const GLuint * value));
-typedef void (APIENTRY PFNGLCLIPCONTROL_PROC (GLenum origin, GLenum depth));
-typedef void (APIENTRY PFNGLCOMPRESSEDTEXTURESUBIMAGE1D_PROC (GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const void * data));
-typedef void (APIENTRY PFNGLCOMPRESSEDTEXTURESUBIMAGE2D_PROC (GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void * data));
-typedef void (APIENTRY PFNGLCOMPRESSEDTEXTURESUBIMAGE3D_PROC (GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const void * data));
-typedef void (APIENTRY PFNGLCOPYNAMEDBUFFERSUBDATA_PROC (GLuint readBuffer, GLuint writeBuffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size));
-typedef void (APIENTRY PFNGLCOPYTEXTURESUBIMAGE1D_PROC (GLuint texture, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width));
-typedef void (APIENTRY PFNGLCOPYTEXTURESUBIMAGE2D_PROC (GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height));
-typedef void (APIENTRY PFNGLCOPYTEXTURESUBIMAGE3D_PROC (GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height));
-typedef void (APIENTRY PFNGLCREATEBUFFERS_PROC (GLsizei n, GLuint * buffers));
-typedef void (APIENTRY PFNGLCREATEFRAMEBUFFERS_PROC (GLsizei n, GLuint * framebuffers));
-typedef void (APIENTRY PFNGLCREATEPROGRAMPIPELINES_PROC (GLsizei n, GLuint * pipelines));
-typedef void (APIENTRY PFNGLCREATEQUERIES_PROC (GLenum target, GLsizei n, GLuint * ids));
-typedef void (APIENTRY PFNGLCREATERENDERBUFFERS_PROC (GLsizei n, GLuint * renderbuffers));
-typedef void (APIENTRY PFNGLCREATESAMPLERS_PROC (GLsizei n, GLuint * samplers));
-typedef void (APIENTRY PFNGLCREATETEXTURES_PROC (GLenum target, GLsizei n, GLuint * textures));
-typedef void (APIENTRY PFNGLCREATETRANSFORMFEEDBACKS_PROC (GLsizei n, GLuint * ids));
-typedef void (APIENTRY PFNGLCREATEVERTEXARRAYS_PROC (GLsizei n, GLuint * arrays));
-typedef void (APIENTRY PFNGLDISABLEVERTEXARRAYATTRIB_PROC (GLuint vaobj, GLuint index));
-typedef void (APIENTRY PFNGLENABLEVERTEXARRAYATTRIB_PROC (GLuint vaobj, GLuint index));
-typedef void (APIENTRY PFNGLFLUSHMAPPEDNAMEDBUFFERRANGE_PROC (GLuint buffer, GLintptr offset, GLsizeiptr length));
-typedef void (APIENTRY PFNGLGENERATETEXTUREMIPMAP_PROC (GLuint texture));
-typedef void (APIENTRY PFNGLGETCOMPRESSEDTEXTUREIMAGE_PROC (GLuint texture, GLint level, GLsizei bufSize, void * pixels));
-typedef void (APIENTRY PFNGLGETCOMPRESSEDTEXTURESUBIMAGE_PROC (GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize, void * pixels));
-typedef GLenum (APIENTRY PFNGLGETGRAPHICSRESETSTATUS_PROC (void));
-typedef void (APIENTRY PFNGLGETNAMEDBUFFERPARAMETERI64V_PROC (GLuint buffer, GLenum pname, GLint64 * params));
-typedef void (APIENTRY PFNGLGETNAMEDBUFFERPARAMETERIV_PROC (GLuint buffer, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETNAMEDBUFFERPOINTERV_PROC (GLuint buffer, GLenum pname, void ** params));
-typedef void (APIENTRY PFNGLGETNAMEDBUFFERSUBDATA_PROC (GLuint buffer, GLintptr offset, GLsizeiptr size, void * data));
-typedef void (APIENTRY PFNGLGETNAMEDFRAMEBUFFERATTACHMENTPARAMETERIV_PROC (GLuint framebuffer, GLenum attachment, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETNAMEDFRAMEBUFFERPARAMETERIV_PROC (GLuint framebuffer, GLenum pname, GLint * param));
-typedef void (APIENTRY PFNGLGETNAMEDRENDERBUFFERPARAMETERIV_PROC (GLuint renderbuffer, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETQUERYBUFFEROBJECTI64V_PROC (GLuint id, GLuint buffer, GLenum pname, GLintptr offset));
-typedef void (APIENTRY PFNGLGETQUERYBUFFEROBJECTIV_PROC (GLuint id, GLuint buffer, GLenum pname, GLintptr offset));
-typedef void (APIENTRY PFNGLGETQUERYBUFFEROBJECTUI64V_PROC (GLuint id, GLuint buffer, GLenum pname, GLintptr offset));
-typedef void (APIENTRY PFNGLGETQUERYBUFFEROBJECTUIV_PROC (GLuint id, GLuint buffer, GLenum pname, GLintptr offset));
-typedef void (APIENTRY PFNGLGETTEXTUREIMAGE_PROC (GLuint texture, GLint level, GLenum format, GLenum type, GLsizei bufSize, void * pixels));
-typedef void (APIENTRY PFNGLGETTEXTURELEVELPARAMETERFV_PROC (GLuint texture, GLint level, GLenum pname, GLfloat * params));
-typedef void (APIENTRY PFNGLGETTEXTURELEVELPARAMETERIV_PROC (GLuint texture, GLint level, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETTEXTUREPARAMETERIIV_PROC (GLuint texture, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETTEXTUREPARAMETERIUIV_PROC (GLuint texture, GLenum pname, GLuint * params));
-typedef void (APIENTRY PFNGLGETTEXTUREPARAMETERFV_PROC (GLuint texture, GLenum pname, GLfloat * params));
-typedef void (APIENTRY PFNGLGETTEXTUREPARAMETERIV_PROC (GLuint texture, GLenum pname, GLint * params));
-typedef void (APIENTRY PFNGLGETTEXTURESUBIMAGE_PROC (GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, GLsizei bufSize, void * pixels));
-typedef void (APIENTRY PFNGLGETTRANSFORMFEEDBACKI64_V_PROC (GLuint xfb, GLenum pname, GLuint index, GLint64 * param));
-typedef void (APIENTRY PFNGLGETTRANSFORMFEEDBACKI_V_PROC (GLuint xfb, GLenum pname, GLuint index, GLint * param));
-typedef void (APIENTRY PFNGLGETTRANSFORMFEEDBACKIV_PROC (GLuint xfb, GLenum pname, GLint * param));
-typedef void (APIENTRY PFNGLGETVERTEXARRAYINDEXED64IV_PROC (GLuint vaobj, GLuint index, GLenum pname, GLint64 * param));
-typedef void (APIENTRY PFNGLGETVERTEXARRAYINDEXEDIV_PROC (GLuint vaobj, GLuint index, GLenum pname, GLint * param));
-typedef void (APIENTRY PFNGLGETVERTEXARRAYIV_PROC (GLuint vaobj, GLenum pname, GLint * param));
-typedef void (APIENTRY PFNGLGETNCOMPRESSEDTEXIMAGE_PROC (GLenum target, GLint lod, GLsizei bufSize, void * pixels));
-typedef void (APIENTRY PFNGLGETNTEXIMAGE_PROC (GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize, void * pixels));
-typedef void (APIENTRY PFNGLGETNUNIFORMDV_PROC (GLuint program, GLint location, GLsizei bufSize, GLdouble * params));
-typedef void (APIENTRY PFNGLGETNUNIFORMFV_PROC (GLuint program, GLint location, GLsizei bufSize, GLfloat * params));
-typedef void (APIENTRY PFNGLGETNUNIFORMIV_PROC (GLuint program, GLint location, GLsizei bufSize, GLint * params));
-typedef void (APIENTRY PFNGLGETNUNIFORMUIV_PROC (GLuint program, GLint location, GLsizei bufSize, GLuint * params));
-typedef void (APIENTRY PFNGLINVALIDATENAMEDFRAMEBUFFERDATA_PROC (GLuint framebuffer, GLsizei numAttachments, const GLenum * attachments));
-typedef void (APIENTRY PFNGLINVALIDATENAMEDFRAMEBUFFERSUBDATA_PROC (GLuint framebuffer, GLsizei numAttachments, const GLenum * attachments, GLint x, GLint y, GLsizei width, GLsizei height));
-typedef void * (APIENTRY PFNGLMAPNAMEDBUFFER_PROC (GLuint buffer, GLenum access));
-typedef void * (APIENTRY PFNGLMAPNAMEDBUFFERRANGE_PROC (GLuint buffer, GLintptr offset, GLsizeiptr length, GLbitfield access));
-typedef void (APIENTRY PFNGLMEMORYBARRIERBYREGION_PROC (GLbitfield barriers));
-typedef void (APIENTRY PFNGLNAMEDBUFFERDATA_PROC (GLuint buffer, GLsizeiptr size, const void * data, GLenum usage));
-typedef void (APIENTRY PFNGLNAMEDBUFFERSTORAGE_PROC (GLuint buffer, GLsizeiptr size, const void * data, GLbitfield flags));
-typedef void (APIENTRY PFNGLNAMEDBUFFERSUBDATA_PROC (GLuint buffer, GLintptr offset, GLsizeiptr size, const void * data));
-typedef void (APIENTRY PFNGLNAMEDFRAMEBUFFERDRAWBUFFER_PROC (GLuint framebuffer, GLenum buf));
-typedef void (APIENTRY PFNGLNAMEDFRAMEBUFFERDRAWBUFFERS_PROC (GLuint framebuffer, GLsizei n, const GLenum * bufs));
-typedef void (APIENTRY PFNGLNAMEDFRAMEBUFFERPARAMETERI_PROC (GLuint framebuffer, GLenum pname, GLint param));
-typedef void (APIENTRY PFNGLNAMEDFRAMEBUFFERREADBUFFER_PROC (GLuint framebuffer, GLenum src));
-typedef void (APIENTRY PFNGLNAMEDFRAMEBUFFERRENDERBUFFER_PROC (GLuint framebuffer, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer));
-typedef void (APIENTRY PFNGLNAMEDFRAMEBUFFERTEXTURE_PROC (GLuint framebuffer, GLenum attachment, GLuint texture, GLint level));
-typedef void (APIENTRY PFNGLNAMEDFRAMEBUFFERTEXTURELAYER_PROC (GLuint framebuffer, GLenum attachment, GLuint texture, GLint level, GLint layer));
-typedef void (APIENTRY PFNGLNAMEDRENDERBUFFERSTORAGE_PROC (GLuint renderbuffer, GLenum internalformat, GLsizei width, GLsizei height));
-typedef void (APIENTRY PFNGLNAMEDRENDERBUFFERSTORAGEMULTISAMPLE_PROC (GLuint renderbuffer, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height));
-typedef void (APIENTRY PFNGLREADNPIXELS_PROC (GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, void * data));
-typedef void (APIENTRY PFNGLTEXTUREBARRIER_PROC (void));
-typedef void (APIENTRY PFNGLTEXTUREBUFFER_PROC (GLuint texture, GLenum internalformat, GLuint buffer));
-typedef void (APIENTRY PFNGLTEXTUREBUFFERRANGE_PROC (GLuint texture, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size));
-typedef void (APIENTRY PFNGLTEXTUREPARAMETERIIV_PROC (GLuint texture, GLenum pname, const GLint * params));
-typedef void (APIENTRY PFNGLTEXTUREPARAMETERIUIV_PROC (GLuint texture, GLenum pname, const GLuint * params));
-typedef void (APIENTRY PFNGLTEXTUREPARAMETERF_PROC (GLuint texture, GLenum pname, GLfloat param));
-typedef void (APIENTRY PFNGLTEXTUREPARAMETERFV_PROC (GLuint texture, GLenum pname, const GLfloat * param));
-typedef void (APIENTRY PFNGLTEXTUREPARAMETERI_PROC (GLuint texture, GLenum pname, GLint param));
-typedef void (APIENTRY PFNGLTEXTUREPARAMETERIV_PROC (GLuint texture, GLenum pname, const GLint * param));
-typedef void (APIENTRY PFNGLTEXTURESTORAGE1D_PROC (GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width));
-typedef void (APIENTRY PFNGLTEXTURESTORAGE2D_PROC (GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height));
-typedef void (APIENTRY PFNGLTEXTURESTORAGE2DMULTISAMPLE_PROC (GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations));
-typedef void (APIENTRY PFNGLTEXTURESTORAGE3D_PROC (GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth));
-typedef void (APIENTRY PFNGLTEXTURESTORAGE3DMULTISAMPLE_PROC (GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations));
-typedef void (APIENTRY PFNGLTEXTURESUBIMAGE1D_PROC (GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const void * pixels));
-typedef void (APIENTRY PFNGLTEXTURESUBIMAGE2D_PROC (GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const void * pixels));
-typedef void (APIENTRY PFNGLTEXTURESUBIMAGE3D_PROC (GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void * pixels));
-typedef void (APIENTRY PFNGLTRANSFORMFEEDBACKBUFFERBASE_PROC (GLuint xfb, GLuint index, GLuint buffer));
-typedef void (APIENTRY PFNGLTRANSFORMFEEDBACKBUFFERRANGE_PROC (GLuint xfb, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size));
-typedef GLboolean (APIENTRY PFNGLUNMAPNAMEDBUFFER_PROC (GLuint buffer));
-typedef void (APIENTRY PFNGLVERTEXARRAYATTRIBBINDING_PROC (GLuint vaobj, GLuint attribindex, GLuint bindingindex));
-typedef void (APIENTRY PFNGLVERTEXARRAYATTRIBFORMAT_PROC (GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset));
-typedef void (APIENTRY PFNGLVERTEXARRAYATTRIBIFORMAT_PROC (GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset));
-typedef void (APIENTRY PFNGLVERTEXARRAYATTRIBLFORMAT_PROC (GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset));
-typedef void (APIENTRY PFNGLVERTEXARRAYBINDINGDIVISOR_PROC (GLuint vaobj, GLuint bindingindex, GLuint divisor));
-typedef void (APIENTRY PFNGLVERTEXARRAYELEMENTBUFFER_PROC (GLuint vaobj, GLuint buffer));
-typedef void (APIENTRY PFNGLVERTEXARRAYVERTEXBUFFER_PROC (GLuint vaobj, GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride));
-typedef void (APIENTRY PFNGLVERTEXARRAYVERTEXBUFFERS_PROC (GLuint vaobj, GLuint first, GLsizei count, const GLuint * buffers, const GLintptr * offsets, const GLsizei * strides));
-
-GLAPI PFNGLBINDTEXTUREUNIT_PROC* glpfBindTextureUnit;
-GLAPI PFNGLBLITNAMEDFRAMEBUFFER_PROC* glpfBlitNamedFramebuffer;
-GLAPI PFNGLCHECKNAMEDFRAMEBUFFERSTATUS_PROC* glpfCheckNamedFramebufferStatus;
-GLAPI PFNGLCLEARNAMEDBUFFERDATA_PROC* glpfClearNamedBufferData;
-GLAPI PFNGLCLEARNAMEDBUFFERSUBDATA_PROC* glpfClearNamedBufferSubData;
-GLAPI PFNGLCLEARNAMEDFRAMEBUFFERFI_PROC* glpfClearNamedFramebufferfi;
-GLAPI PFNGLCLEARNAMEDFRAMEBUFFERFV_PROC* glpfClearNamedFramebufferfv;
-GLAPI PFNGLCLEARNAMEDFRAMEBUFFERIV_PROC* glpfClearNamedFramebufferiv;
-GLAPI PFNGLCLEARNAMEDFRAMEBUFFERUIV_PROC* glpfClearNamedFramebufferuiv;
-GLAPI PFNGLCLIPCONTROL_PROC* glpfClipControl;
-GLAPI PFNGLCOMPRESSEDTEXTURESUBIMAGE1D_PROC* glpfCompressedTextureSubImage1D;
-GLAPI PFNGLCOMPRESSEDTEXTURESUBIMAGE2D_PROC* glpfCompressedTextureSubImage2D;
-GLAPI PFNGLCOMPRESSEDTEXTURESUBIMAGE3D_PROC* glpfCompressedTextureSubImage3D;
-GLAPI PFNGLCOPYNAMEDBUFFERSUBDATA_PROC* glpfCopyNamedBufferSubData;
-GLAPI PFNGLCOPYTEXTURESUBIMAGE1D_PROC* glpfCopyTextureSubImage1D;
-GLAPI PFNGLCOPYTEXTURESUBIMAGE2D_PROC* glpfCopyTextureSubImage2D;
-GLAPI PFNGLCOPYTEXTURESUBIMAGE3D_PROC* glpfCopyTextureSubImage3D;
-GLAPI PFNGLCREATEBUFFERS_PROC* glpfCreateBuffers;
-GLAPI PFNGLCREATEFRAMEBUFFERS_PROC* glpfCreateFramebuffers;
-GLAPI PFNGLCREATEPROGRAMPIPELINES_PROC* glpfCreateProgramPipelines;
-GLAPI PFNGLCREATEQUERIES_PROC* glpfCreateQueries;
-GLAPI PFNGLCREATERENDERBUFFERS_PROC* glpfCreateRenderbuffers;
-GLAPI PFNGLCREATESAMPLERS_PROC* glpfCreateSamplers;
-GLAPI PFNGLCREATETEXTURES_PROC* glpfCreateTextures;
-GLAPI PFNGLCREATETRANSFORMFEEDBACKS_PROC* glpfCreateTransformFeedbacks;
-GLAPI PFNGLCREATEVERTEXARRAYS_PROC* glpfCreateVertexArrays;
-GLAPI PFNGLDISABLEVERTEXARRAYATTRIB_PROC* glpfDisableVertexArrayAttrib;
-GLAPI PFNGLENABLEVERTEXARRAYATTRIB_PROC* glpfEnableVertexArrayAttrib;
-GLAPI PFNGLFLUSHMAPPEDNAMEDBUFFERRANGE_PROC* glpfFlushMappedNamedBufferRange;
-GLAPI PFNGLGENERATETEXTUREMIPMAP_PROC* glpfGenerateTextureMipmap;
-GLAPI PFNGLGETCOMPRESSEDTEXTUREIMAGE_PROC* glpfGetCompressedTextureImage;
-GLAPI PFNGLGETCOMPRESSEDTEXTURESUBIMAGE_PROC* glpfGetCompressedTextureSubImage;
-GLAPI PFNGLGETGRAPHICSRESETSTATUS_PROC* glpfGetGraphicsResetStatus;
-GLAPI PFNGLGETNAMEDBUFFERPARAMETERI64V_PROC* glpfGetNamedBufferParameteri64v;
-GLAPI PFNGLGETNAMEDBUFFERPARAMETERIV_PROC* glpfGetNamedBufferParameteriv;
-GLAPI PFNGLGETNAMEDBUFFERPOINTERV_PROC* glpfGetNamedBufferPointerv;
-GLAPI PFNGLGETNAMEDBUFFERSUBDATA_PROC* glpfGetNamedBufferSubData;
-GLAPI PFNGLGETNAMEDFRAMEBUFFERATTACHMENTPARAMETERIV_PROC* glpfGetNamedFramebufferAttachmentParameteriv;
-GLAPI PFNGLGETNAMEDFRAMEBUFFERPARAMETERIV_PROC* glpfGetNamedFramebufferParameteriv;
-GLAPI PFNGLGETNAMEDRENDERBUFFERPARAMETERIV_PROC* glpfGetNamedRenderbufferParameteriv;
-GLAPI PFNGLGETQUERYBUFFEROBJECTI64V_PROC* glpfGetQueryBufferObjecti64v;
-GLAPI PFNGLGETQUERYBUFFEROBJECTIV_PROC* glpfGetQueryBufferObjectiv;
-GLAPI PFNGLGETQUERYBUFFEROBJECTUI64V_PROC* glpfGetQueryBufferObjectui64v;
-GLAPI PFNGLGETQUERYBUFFEROBJECTUIV_PROC* glpfGetQueryBufferObjectuiv;
-GLAPI PFNGLGETTEXTUREIMAGE_PROC* glpfGetTextureImage;
-GLAPI PFNGLGETTEXTURELEVELPARAMETERFV_PROC* glpfGetTextureLevelParameterfv;
-GLAPI PFNGLGETTEXTURELEVELPARAMETERIV_PROC* glpfGetTextureLevelParameteriv;
-GLAPI PFNGLGETTEXTUREPARAMETERIIV_PROC* glpfGetTextureParameterIiv;
-GLAPI PFNGLGETTEXTUREPARAMETERIUIV_PROC* glpfGetTextureParameterIuiv;
-GLAPI PFNGLGETTEXTUREPARAMETERFV_PROC* glpfGetTextureParameterfv;
-GLAPI PFNGLGETTEXTUREPARAMETERIV_PROC* glpfGetTextureParameteriv;
-GLAPI PFNGLGETTEXTURESUBIMAGE_PROC* glpfGetTextureSubImage;
-GLAPI PFNGLGETTRANSFORMFEEDBACKI64_V_PROC* glpfGetTransformFeedbacki64_v;
-GLAPI PFNGLGETTRANSFORMFEEDBACKI_V_PROC* glpfGetTransformFeedbacki_v;
-GLAPI PFNGLGETTRANSFORMFEEDBACKIV_PROC* glpfGetTransformFeedbackiv;
-GLAPI PFNGLGETVERTEXARRAYINDEXED64IV_PROC* glpfGetVertexArrayIndexed64iv;
-GLAPI PFNGLGETVERTEXARRAYINDEXEDIV_PROC* glpfGetVertexArrayIndexediv;
-GLAPI PFNGLGETVERTEXARRAYIV_PROC* glpfGetVertexArrayiv;
-GLAPI PFNGLGETNCOMPRESSEDTEXIMAGE_PROC* glpfGetnCompressedTexImage;
-GLAPI PFNGLGETNTEXIMAGE_PROC* glpfGetnTexImage;
-GLAPI PFNGLGETNUNIFORMDV_PROC* glpfGetnUniformdv;
-GLAPI PFNGLGETNUNIFORMFV_PROC* glpfGetnUniformfv;
-GLAPI PFNGLGETNUNIFORMIV_PROC* glpfGetnUniformiv;
-GLAPI PFNGLGETNUNIFORMUIV_PROC* glpfGetnUniformuiv;
-GLAPI PFNGLINVALIDATENAMEDFRAMEBUFFERDATA_PROC* glpfInvalidateNamedFramebufferData;
-GLAPI PFNGLINVALIDATENAMEDFRAMEBUFFERSUBDATA_PROC* glpfInvalidateNamedFramebufferSubData;
-GLAPI PFNGLMAPNAMEDBUFFER_PROC* glpfMapNamedBuffer;
-GLAPI PFNGLMAPNAMEDBUFFERRANGE_PROC* glpfMapNamedBufferRange;
-GLAPI PFNGLMEMORYBARRIERBYREGION_PROC* glpfMemoryBarrierByRegion;
-GLAPI PFNGLNAMEDBUFFERDATA_PROC* glpfNamedBufferData;
-GLAPI PFNGLNAMEDBUFFERSTORAGE_PROC* glpfNamedBufferStorage;
-GLAPI PFNGLNAMEDBUFFERSUBDATA_PROC* glpfNamedBufferSubData;
-GLAPI PFNGLNAMEDFRAMEBUFFERDRAWBUFFER_PROC* glpfNamedFramebufferDrawBuffer;
-GLAPI PFNGLNAMEDFRAMEBUFFERDRAWBUFFERS_PROC* glpfNamedFramebufferDrawBuffers;
-GLAPI PFNGLNAMEDFRAMEBUFFERPARAMETERI_PROC* glpfNamedFramebufferParameteri;
-GLAPI PFNGLNAMEDFRAMEBUFFERREADBUFFER_PROC* glpfNamedFramebufferReadBuffer;
-GLAPI PFNGLNAMEDFRAMEBUFFERRENDERBUFFER_PROC* glpfNamedFramebufferRenderbuffer;
-GLAPI PFNGLNAMEDFRAMEBUFFERTEXTURE_PROC* glpfNamedFramebufferTexture;
-GLAPI PFNGLNAMEDFRAMEBUFFERTEXTURELAYER_PROC* glpfNamedFramebufferTextureLayer;
-GLAPI PFNGLNAMEDRENDERBUFFERSTORAGE_PROC* glpfNamedRenderbufferStorage;
-GLAPI PFNGLNAMEDRENDERBUFFERSTORAGEMULTISAMPLE_PROC* glpfNamedRenderbufferStorageMultisample;
-GLAPI PFNGLREADNPIXELS_PROC* glpfReadnPixels;
-GLAPI PFNGLTEXTUREBARRIER_PROC* glpfTextureBarrier;
-GLAPI PFNGLTEXTUREBUFFER_PROC* glpfTextureBuffer;
-GLAPI PFNGLTEXTUREBUFFERRANGE_PROC* glpfTextureBufferRange;
-GLAPI PFNGLTEXTUREPARAMETERIIV_PROC* glpfTextureParameterIiv;
-GLAPI PFNGLTEXTUREPARAMETERIUIV_PROC* glpfTextureParameterIuiv;
-GLAPI PFNGLTEXTUREPARAMETERF_PROC* glpfTextureParameterf;
-GLAPI PFNGLTEXTUREPARAMETERFV_PROC* glpfTextureParameterfv;
-GLAPI PFNGLTEXTUREPARAMETERI_PROC* glpfTextureParameteri;
-GLAPI PFNGLTEXTUREPARAMETERIV_PROC* glpfTextureParameteriv;
-GLAPI PFNGLTEXTURESTORAGE1D_PROC* glpfTextureStorage1D;
-GLAPI PFNGLTEXTURESTORAGE2D_PROC* glpfTextureStorage2D;
-GLAPI PFNGLTEXTURESTORAGE2DMULTISAMPLE_PROC* glpfTextureStorage2DMultisample;
-GLAPI PFNGLTEXTURESTORAGE3D_PROC* glpfTextureStorage3D;
-GLAPI PFNGLTEXTURESTORAGE3DMULTISAMPLE_PROC* glpfTextureStorage3DMultisample;
-GLAPI PFNGLTEXTURESUBIMAGE1D_PROC* glpfTextureSubImage1D;
-GLAPI PFNGLTEXTURESUBIMAGE2D_PROC* glpfTextureSubImage2D;
-GLAPI PFNGLTEXTURESUBIMAGE3D_PROC* glpfTextureSubImage3D;
-GLAPI PFNGLTRANSFORMFEEDBACKBUFFERBASE_PROC* glpfTransformFeedbackBufferBase;
-GLAPI PFNGLTRANSFORMFEEDBACKBUFFERRANGE_PROC* glpfTransformFeedbackBufferRange;
-GLAPI PFNGLUNMAPNAMEDBUFFER_PROC* glpfUnmapNamedBuffer;
-GLAPI PFNGLVERTEXARRAYATTRIBBINDING_PROC* glpfVertexArrayAttribBinding;
-GLAPI PFNGLVERTEXARRAYATTRIBFORMAT_PROC* glpfVertexArrayAttribFormat;
-GLAPI PFNGLVERTEXARRAYATTRIBIFORMAT_PROC* glpfVertexArrayAttribIFormat;
-GLAPI PFNGLVERTEXARRAYATTRIBLFORMAT_PROC* glpfVertexArrayAttribLFormat;
-GLAPI PFNGLVERTEXARRAYBINDINGDIVISOR_PROC* glpfVertexArrayBindingDivisor;
-GLAPI PFNGLVERTEXARRAYELEMENTBUFFER_PROC* glpfVertexArrayElementBuffer;
-GLAPI PFNGLVERTEXARRAYVERTEXBUFFER_PROC* glpfVertexArrayVertexBuffer;
-GLAPI PFNGLVERTEXARRAYVERTEXBUFFERS_PROC* glpfVertexArrayVertexBuffers;
-
-#define glBindTextureUnit glpfBindTextureUnit
-#define glBlitNamedFramebuffer glpfBlitNamedFramebuffer
-#define glCheckNamedFramebufferStatus glpfCheckNamedFramebufferStatus
-#define glClearNamedBufferData glpfClearNamedBufferData
-#define glClearNamedBufferSubData glpfClearNamedBufferSubData
-#define glClearNamedFramebufferfi glpfClearNamedFramebufferfi
-#define glClearNamedFramebufferfv glpfClearNamedFramebufferfv
-#define glClearNamedFramebufferiv glpfClearNamedFramebufferiv
-#define glClearNamedFramebufferuiv glpfClearNamedFramebufferuiv
-#define glClipControl glpfClipControl
-#define glCompressedTextureSubImage1D glpfCompressedTextureSubImage1D
-#define glCompressedTextureSubImage2D glpfCompressedTextureSubImage2D
-#define glCompressedTextureSubImage3D glpfCompressedTextureSubImage3D
-#define glCopyNamedBufferSubData glpfCopyNamedBufferSubData
-#define glCopyTextureSubImage1D glpfCopyTextureSubImage1D
-#define glCopyTextureSubImage2D glpfCopyTextureSubImage2D
-#define glCopyTextureSubImage3D glpfCopyTextureSubImage3D
-#define glCreateBuffers glpfCreateBuffers
-#define glCreateFramebuffers glpfCreateFramebuffers
-#define glCreateProgramPipelines glpfCreateProgramPipelines
-#define glCreateQueries glpfCreateQueries
-#define glCreateRenderbuffers glpfCreateRenderbuffers
-#define glCreateSamplers glpfCreateSamplers
-#define glCreateTextures glpfCreateTextures
-#define glCreateTransformFeedbacks glpfCreateTransformFeedbacks
-#define glCreateVertexArrays glpfCreateVertexArrays
-#define glDisableVertexArrayAttrib glpfDisableVertexArrayAttrib
-#define glEnableVertexArrayAttrib glpfEnableVertexArrayAttrib
-#define glFlushMappedNamedBufferRange glpfFlushMappedNamedBufferRange
-#define glGenerateTextureMipmap glpfGenerateTextureMipmap
-#define glGetCompressedTextureImage glpfGetCompressedTextureImage
-#define glGetCompressedTextureSubImage glpfGetCompressedTextureSubImage
-#define glGetGraphicsResetStatus glpfGetGraphicsResetStatus
-#define glGetNamedBufferParameteri64v glpfGetNamedBufferParameteri64v
-#define glGetNamedBufferParameteriv glpfGetNamedBufferParameteriv
-#define glGetNamedBufferPointerv glpfGetNamedBufferPointerv
-#define glGetNamedBufferSubData glpfGetNamedBufferSubData
-#define glGetNamedFramebufferAttachmentParameteriv glpfGetNamedFramebufferAttachmentParameteriv
-#define glGetNamedFramebufferParameteriv glpfGetNamedFramebufferParameteriv
-#define glGetNamedRenderbufferParameteriv glpfGetNamedRenderbufferParameteriv
-#define glGetQueryBufferObjecti64v glpfGetQueryBufferObjecti64v
-#define glGetQueryBufferObjectiv glpfGetQueryBufferObjectiv
-#define glGetQueryBufferObjectui64v glpfGetQueryBufferObjectui64v
-#define glGetQueryBufferObjectuiv glpfGetQueryBufferObjectuiv
-#define glGetTextureImage glpfGetTextureImage
-#define glGetTextureLevelParameterfv glpfGetTextureLevelParameterfv
-#define glGetTextureLevelParameteriv glpfGetTextureLevelParameteriv
-#define glGetTextureParameterIiv glpfGetTextureParameterIiv
-#define glGetTextureParameterIuiv glpfGetTextureParameterIuiv
-#define glGetTextureParameterfv glpfGetTextureParameterfv
-#define glGetTextureParameteriv glpfGetTextureParameteriv
-#define glGetTextureSubImage glpfGetTextureSubImage
-#define glGetTransformFeedbacki64_v glpfGetTransformFeedbacki64_v
-#define glGetTransformFeedbacki_v glpfGetTransformFeedbacki_v
-#define glGetTransformFeedbackiv glpfGetTransformFeedbackiv
-#define glGetVertexArrayIndexed64iv glpfGetVertexArrayIndexed64iv
-#define glGetVertexArrayIndexediv glpfGetVertexArrayIndexediv
-#define glGetVertexArrayiv glpfGetVertexArrayiv
-#define glGetnCompressedTexImage glpfGetnCompressedTexImage
-#define glGetnTexImage glpfGetnTexImage
-#define glGetnUniformdv glpfGetnUniformdv
-#define glGetnUniformfv glpfGetnUniformfv
-#define glGetnUniformiv glpfGetnUniformiv
-#define glGetnUniformuiv glpfGetnUniformuiv
-#define glInvalidateNamedFramebufferData glpfInvalidateNamedFramebufferData
-#define glInvalidateNamedFramebufferSubData glpfInvalidateNamedFramebufferSubData
-#define glMapNamedBuffer glpfMapNamedBuffer
-#define glMapNamedBufferRange glpfMapNamedBufferRange
-#define glMemoryBarrierByRegion glpfMemoryBarrierByRegion
-#define glNamedBufferData glpfNamedBufferData
-#define glNamedBufferStorage glpfNamedBufferStorage
-#define glNamedBufferSubData glpfNamedBufferSubData
-#define glNamedFramebufferDrawBuffer glpfNamedFramebufferDrawBuffer
-#define glNamedFramebufferDrawBuffers glpfNamedFramebufferDrawBuffers
-#define glNamedFramebufferParameteri glpfNamedFramebufferParameteri
-#define glNamedFramebufferReadBuffer glpfNamedFramebufferReadBuffer
-#define glNamedFramebufferRenderbuffer glpfNamedFramebufferRenderbuffer
-#define glNamedFramebufferTexture glpfNamedFramebufferTexture
-#define glNamedFramebufferTextureLayer glpfNamedFramebufferTextureLayer
-#define glNamedRenderbufferStorage glpfNamedRenderbufferStorage
-#define glNamedRenderbufferStorageMultisample glpfNamedRenderbufferStorageMultisample
-#define glReadnPixels glpfReadnPixels
-#define glTextureBarrier glpfTextureBarrier
-#define glTextureBuffer glpfTextureBuffer
-#define glTextureBufferRange glpfTextureBufferRange
-#define glTextureParameterIiv glpfTextureParameterIiv
-#define glTextureParameterIuiv glpfTextureParameterIuiv
-#define glTextureParameterf glpfTextureParameterf
-#define glTextureParameterfv glpfTextureParameterfv
-#define glTextureParameteri glpfTextureParameteri
-#define glTextureParameteriv glpfTextureParameteriv
-#define glTextureStorage1D glpfTextureStorage1D
-#define glTextureStorage2D glpfTextureStorage2D
-#define glTextureStorage2DMultisample glpfTextureStorage2DMultisample
-#define glTextureStorage3D glpfTextureStorage3D
-#define glTextureStorage3DMultisample glpfTextureStorage3DMultisample
-#define glTextureSubImage1D glpfTextureSubImage1D
-#define glTextureSubImage2D glpfTextureSubImage2D
-#define glTextureSubImage3D glpfTextureSubImage3D
-#define glTransformFeedbackBufferBase glpfTransformFeedbackBufferBase
-#define glTransformFeedbackBufferRange glpfTransformFeedbackBufferRange
-#define glUnmapNamedBuffer glpfUnmapNamedBuffer
-#define glVertexArrayAttribBinding glpfVertexArrayAttribBinding
-#define glVertexArrayAttribFormat glpfVertexArrayAttribFormat
-#define glVertexArrayAttribIFormat glpfVertexArrayAttribIFormat
-#define glVertexArrayAttribLFormat glpfVertexArrayAttribLFormat
-#define glVertexArrayBindingDivisor glpfVertexArrayBindingDivisor
-#define glVertexArrayElementBuffer glpfVertexArrayElementBuffer
-#define glVertexArrayVertexBuffer glpfVertexArrayVertexBuffer
-#define glVertexArrayVertexBuffers glpfVertexArrayVertexBuffers
+namespace flextGL
+{
+    /* GL_ARB_shading_language_include */
+    extern void (*glCompileShaderIncludeARB)(GLuint shader, GLsizei count, const GLchar *const* path, const GLint * length);
+    extern void (*glDeleteNamedStringARB)(GLint namelen, const GLchar * name);
+    extern void (*glGetNamedStringARB)(GLint namelen, const GLchar * name, GLsizei bufSize, GLint * stringlen, GLchar * string);
+    extern void (*glGetNamedStringivARB)(GLint namelen, const GLchar * name, GLenum pname, GLint * params);
+    extern GLboolean (*glIsNamedStringARB)(GLint namelen, const GLchar * name);
+    extern void (*glNamedStringARB)(GLenum type, GLint namelen, const GLchar * name, GLint stringlen, const GLchar * string);
+
+    /* GL_VERSION_1_2 */
+    extern void (*glCopyTexSubImage3D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height);
+    extern void (*glDrawRangeElements)(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const void * indices);
+    extern void (*glTexImage3D)(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const void * pixels);
+    extern void (*glTexSubImage3D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void * pixels);
+
+    /* GL_VERSION_1_3 */
+    extern void (*glActiveTexture)(GLenum texture);
+    extern void (*glCompressedTexImage1D)(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, const void * data);
+    extern void (*glCompressedTexImage2D)(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const void * data);
+    extern void (*glCompressedTexImage3D)(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, const void * data);
+    extern void (*glCompressedTexSubImage1D)(GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const void * data);
+    extern void (*glCompressedTexSubImage2D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void * data);
+    extern void (*glCompressedTexSubImage3D)(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const void * data);
+    extern void (*glGetCompressedTexImage)(GLenum target, GLint level, void * img);
+    extern void (*glSampleCoverage)(GLfloat value, GLboolean invert);
+
+    /* GL_VERSION_1_4 */
+    extern void (*glBlendColor)(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
+    extern void (*glBlendEquation)(GLenum mode);
+    extern void (*glBlendFuncSeparate)(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha);
+    extern void (*glMultiDrawArrays)(GLenum mode, const GLint * first, const GLsizei * count, GLsizei drawcount);
+    extern void (*glMultiDrawElements)(GLenum mode, const GLsizei * count, GLenum type, const void *const* indices, GLsizei drawcount);
+    extern void (*glPointParameterf)(GLenum pname, GLfloat param);
+    extern void (*glPointParameterfv)(GLenum pname, const GLfloat * params);
+    extern void (*glPointParameteri)(GLenum pname, GLint param);
+    extern void (*glPointParameteriv)(GLenum pname, const GLint * params);
+
+    /* GL_VERSION_1_5 */
+    extern void (*glBeginQuery)(GLenum target, GLuint id);
+    extern void (*glBindBuffer)(GLenum target, GLuint buffer);
+    extern void (*glBufferData)(GLenum target, GLsizeiptr size, const void * data, GLenum usage);
+    extern void (*glBufferSubData)(GLenum target, GLintptr offset, GLsizeiptr size, const void * data);
+    extern void (*glDeleteBuffers)(GLsizei n, const GLuint * buffers);
+    extern void (*glDeleteQueries)(GLsizei n, const GLuint * ids);
+    extern void (*glEndQuery)(GLenum target);
+    extern void (*glGenBuffers)(GLsizei n, GLuint * buffers);
+    extern void (*glGenQueries)(GLsizei n, GLuint * ids);
+    extern void (*glGetBufferParameteriv)(GLenum target, GLenum pname, GLint * params);
+    extern void (*glGetBufferPointerv)(GLenum target, GLenum pname, void ** params);
+    extern void (*glGetBufferSubData)(GLenum target, GLintptr offset, GLsizeiptr size, void * data);
+    extern void (*glGetQueryObjectiv)(GLuint id, GLenum pname, GLint * params);
+    extern void (*glGetQueryObjectuiv)(GLuint id, GLenum pname, GLuint * params);
+    extern void (*glGetQueryiv)(GLenum target, GLenum pname, GLint * params);
+    extern GLboolean (*glIsBuffer)(GLuint buffer);
+    extern GLboolean (*glIsQuery)(GLuint id);
+    extern void * (*glMapBuffer)(GLenum target, GLenum access);
+    extern GLboolean (*glUnmapBuffer)(GLenum target);
+
+    /* GL_VERSION_2_0 */
+    extern void (*glAttachShader)(GLuint program, GLuint shader);
+    extern void (*glBindAttribLocation)(GLuint program, GLuint index, const GLchar * name);
+    extern void (*glBlendEquationSeparate)(GLenum modeRGB, GLenum modeAlpha);
+    extern void (*glCompileShader)(GLuint shader);
+    extern GLuint (*glCreateProgram)(void);
+    extern GLuint (*glCreateShader)(GLenum type);
+    extern void (*glDeleteProgram)(GLuint program);
+    extern void (*glDeleteShader)(GLuint shader);
+    extern void (*glDetachShader)(GLuint program, GLuint shader);
+    extern void (*glDisableVertexAttribArray)(GLuint index);
+    extern void (*glDrawBuffers)(GLsizei n, const GLenum * bufs);
+    extern void (*glEnableVertexAttribArray)(GLuint index);
+    extern void (*glGetActiveAttrib)(GLuint program, GLuint index, GLsizei bufSize, GLsizei * length, GLint * size, GLenum * type, GLchar * name);
+    extern void (*glGetActiveUniform)(GLuint program, GLuint index, GLsizei bufSize, GLsizei * length, GLint * size, GLenum * type, GLchar * name);
+    extern void (*glGetAttachedShaders)(GLuint program, GLsizei maxCount, GLsizei * count, GLuint * shaders);
+    extern GLint (*glGetAttribLocation)(GLuint program, const GLchar * name);
+    extern void (*glGetProgramInfoLog)(GLuint program, GLsizei bufSize, GLsizei * length, GLchar * infoLog);
+    extern void (*glGetProgramiv)(GLuint program, GLenum pname, GLint * params);
+    extern void (*glGetShaderInfoLog)(GLuint shader, GLsizei bufSize, GLsizei * length, GLchar * infoLog);
+    extern void (*glGetShaderSource)(GLuint shader, GLsizei bufSize, GLsizei * length, GLchar * source);
+    extern void (*glGetShaderiv)(GLuint shader, GLenum pname, GLint * params);
+    extern GLint (*glGetUniformLocation)(GLuint program, const GLchar * name);
+    extern void (*glGetUniformfv)(GLuint program, GLint location, GLfloat * params);
+    extern void (*glGetUniformiv)(GLuint program, GLint location, GLint * params);
+    extern void (*glGetVertexAttribPointerv)(GLuint index, GLenum pname, void ** pointer);
+    extern void (*glGetVertexAttribdv)(GLuint index, GLenum pname, GLdouble * params);
+    extern void (*glGetVertexAttribfv)(GLuint index, GLenum pname, GLfloat * params);
+    extern void (*glGetVertexAttribiv)(GLuint index, GLenum pname, GLint * params);
+    extern GLboolean (*glIsProgram)(GLuint program);
+    extern GLboolean (*glIsShader)(GLuint shader);
+    extern void (*glLinkProgram)(GLuint program);
+    extern void (*glShaderSource)(GLuint shader, GLsizei count, const GLchar *const* string, const GLint * length);
+    extern void (*glStencilFuncSeparate)(GLenum face, GLenum func, GLint ref, GLuint mask);
+    extern void (*glStencilMaskSeparate)(GLenum face, GLuint mask);
+    extern void (*glStencilOpSeparate)(GLenum face, GLenum sfail, GLenum dpfail, GLenum dppass);
+    extern void (*glUniform1f)(GLint location, GLfloat v0);
+    extern void (*glUniform1fv)(GLint location, GLsizei count, const GLfloat * value);
+    extern void (*glUniform1i)(GLint location, GLint v0);
+    extern void (*glUniform1iv)(GLint location, GLsizei count, const GLint * value);
+    extern void (*glUniform2f)(GLint location, GLfloat v0, GLfloat v1);
+    extern void (*glUniform2fv)(GLint location, GLsizei count, const GLfloat * value);
+    extern void (*glUniform2i)(GLint location, GLint v0, GLint v1);
+    extern void (*glUniform2iv)(GLint location, GLsizei count, const GLint * value);
+    extern void (*glUniform3f)(GLint location, GLfloat v0, GLfloat v1, GLfloat v2);
+    extern void (*glUniform3fv)(GLint location, GLsizei count, const GLfloat * value);
+    extern void (*glUniform3i)(GLint location, GLint v0, GLint v1, GLint v2);
+    extern void (*glUniform3iv)(GLint location, GLsizei count, const GLint * value);
+    extern void (*glUniform4f)(GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
+    extern void (*glUniform4fv)(GLint location, GLsizei count, const GLfloat * value);
+    extern void (*glUniform4i)(GLint location, GLint v0, GLint v1, GLint v2, GLint v3);
+    extern void (*glUniform4iv)(GLint location, GLsizei count, const GLint * value);
+    extern void (*glUniformMatrix2fv)(GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glUniformMatrix3fv)(GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glUniformMatrix4fv)(GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glUseProgram)(GLuint program);
+    extern void (*glValidateProgram)(GLuint program);
+    extern void (*glVertexAttrib1d)(GLuint index, GLdouble x);
+    extern void (*glVertexAttrib1dv)(GLuint index, const GLdouble * v);
+    extern void (*glVertexAttrib1f)(GLuint index, GLfloat x);
+    extern void (*glVertexAttrib1fv)(GLuint index, const GLfloat * v);
+    extern void (*glVertexAttrib1s)(GLuint index, GLshort x);
+    extern void (*glVertexAttrib1sv)(GLuint index, const GLshort * v);
+    extern void (*glVertexAttrib2d)(GLuint index, GLdouble x, GLdouble y);
+    extern void (*glVertexAttrib2dv)(GLuint index, const GLdouble * v);
+    extern void (*glVertexAttrib2f)(GLuint index, GLfloat x, GLfloat y);
+    extern void (*glVertexAttrib2fv)(GLuint index, const GLfloat * v);
+    extern void (*glVertexAttrib2s)(GLuint index, GLshort x, GLshort y);
+    extern void (*glVertexAttrib2sv)(GLuint index, const GLshort * v);
+    extern void (*glVertexAttrib3d)(GLuint index, GLdouble x, GLdouble y, GLdouble z);
+    extern void (*glVertexAttrib3dv)(GLuint index, const GLdouble * v);
+    extern void (*glVertexAttrib3f)(GLuint index, GLfloat x, GLfloat y, GLfloat z);
+    extern void (*glVertexAttrib3fv)(GLuint index, const GLfloat * v);
+    extern void (*glVertexAttrib3s)(GLuint index, GLshort x, GLshort y, GLshort z);
+    extern void (*glVertexAttrib3sv)(GLuint index, const GLshort * v);
+    extern void (*glVertexAttrib4Nbv)(GLuint index, const GLbyte * v);
+    extern void (*glVertexAttrib4Niv)(GLuint index, const GLint * v);
+    extern void (*glVertexAttrib4Nsv)(GLuint index, const GLshort * v);
+    extern void (*glVertexAttrib4Nub)(GLuint index, GLubyte x, GLubyte y, GLubyte z, GLubyte w);
+    extern void (*glVertexAttrib4Nubv)(GLuint index, const GLubyte * v);
+    extern void (*glVertexAttrib4Nuiv)(GLuint index, const GLuint * v);
+    extern void (*glVertexAttrib4Nusv)(GLuint index, const GLushort * v);
+    extern void (*glVertexAttrib4bv)(GLuint index, const GLbyte * v);
+    extern void (*glVertexAttrib4d)(GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w);
+    extern void (*glVertexAttrib4dv)(GLuint index, const GLdouble * v);
+    extern void (*glVertexAttrib4f)(GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
+    extern void (*glVertexAttrib4fv)(GLuint index, const GLfloat * v);
+    extern void (*glVertexAttrib4iv)(GLuint index, const GLint * v);
+    extern void (*glVertexAttrib4s)(GLuint index, GLshort x, GLshort y, GLshort z, GLshort w);
+    extern void (*glVertexAttrib4sv)(GLuint index, const GLshort * v);
+    extern void (*glVertexAttrib4ubv)(GLuint index, const GLubyte * v);
+    extern void (*glVertexAttrib4uiv)(GLuint index, const GLuint * v);
+    extern void (*glVertexAttrib4usv)(GLuint index, const GLushort * v);
+    extern void (*glVertexAttribPointer)(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void * pointer);
+
+    /* GL_VERSION_2_1 */
+    extern void (*glUniformMatrix2x3fv)(GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glUniformMatrix2x4fv)(GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glUniformMatrix3x2fv)(GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glUniformMatrix3x4fv)(GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glUniformMatrix4x2fv)(GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glUniformMatrix4x3fv)(GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+
+    /* GL_VERSION_3_0 */
+    extern void (*glBeginConditionalRender)(GLuint id, GLenum mode);
+    extern void (*glBeginTransformFeedback)(GLenum primitiveMode);
+    extern void (*glBindBufferBase)(GLenum target, GLuint index, GLuint buffer);
+    extern void (*glBindBufferRange)(GLenum target, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size);
+    extern void (*glBindFragDataLocation)(GLuint program, GLuint color, const GLchar * name);
+    extern void (*glBindFramebuffer)(GLenum target, GLuint framebuffer);
+    extern void (*glBindRenderbuffer)(GLenum target, GLuint renderbuffer);
+    extern void (*glBindVertexArray)(GLuint array);
+    extern void (*glBlitFramebuffer)(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter);
+    extern GLenum (*glCheckFramebufferStatus)(GLenum target);
+    extern void (*glClampColor)(GLenum target, GLenum clamp);
+    extern void (*glClearBufferfi)(GLenum buffer, GLint drawbuffer, GLfloat depth, GLint stencil);
+    extern void (*glClearBufferfv)(GLenum buffer, GLint drawbuffer, const GLfloat * value);
+    extern void (*glClearBufferiv)(GLenum buffer, GLint drawbuffer, const GLint * value);
+    extern void (*glClearBufferuiv)(GLenum buffer, GLint drawbuffer, const GLuint * value);
+    extern void (*glColorMaski)(GLuint index, GLboolean r, GLboolean g, GLboolean b, GLboolean a);
+    extern void (*glDeleteFramebuffers)(GLsizei n, const GLuint * framebuffers);
+    extern void (*glDeleteRenderbuffers)(GLsizei n, const GLuint * renderbuffers);
+    extern void (*glDeleteVertexArrays)(GLsizei n, const GLuint * arrays);
+    extern void (*glDisablei)(GLenum target, GLuint index);
+    extern void (*glEnablei)(GLenum target, GLuint index);
+    extern void (*glEndConditionalRender)(void);
+    extern void (*glEndTransformFeedback)(void);
+    extern void (*glFlushMappedBufferRange)(GLenum target, GLintptr offset, GLsizeiptr length);
+    extern void (*glFramebufferRenderbuffer)(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
+    extern void (*glFramebufferTexture1D)(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+    extern void (*glFramebufferTexture2D)(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+    extern void (*glFramebufferTexture3D)(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset);
+    extern void (*glFramebufferTextureLayer)(GLenum target, GLenum attachment, GLuint texture, GLint level, GLint layer);
+    extern void (*glGenFramebuffers)(GLsizei n, GLuint * framebuffers);
+    extern void (*glGenRenderbuffers)(GLsizei n, GLuint * renderbuffers);
+    extern void (*glGenVertexArrays)(GLsizei n, GLuint * arrays);
+    extern void (*glGenerateMipmap)(GLenum target);
+    extern void (*glGetBooleani_v)(GLenum target, GLuint index, GLboolean * data);
+    extern GLint (*glGetFragDataLocation)(GLuint program, const GLchar * name);
+    extern void (*glGetFramebufferAttachmentParameteriv)(GLenum target, GLenum attachment, GLenum pname, GLint * params);
+    extern void (*glGetIntegeri_v)(GLenum target, GLuint index, GLint * data);
+    extern void (*glGetRenderbufferParameteriv)(GLenum target, GLenum pname, GLint * params);
+    extern const GLubyte * (*glGetStringi)(GLenum name, GLuint index);
+    extern void (*glGetTexParameterIiv)(GLenum target, GLenum pname, GLint * params);
+    extern void (*glGetTexParameterIuiv)(GLenum target, GLenum pname, GLuint * params);
+    extern void (*glGetTransformFeedbackVarying)(GLuint program, GLuint index, GLsizei bufSize, GLsizei * length, GLsizei * size, GLenum * type, GLchar * name);
+    extern void (*glGetUniformuiv)(GLuint program, GLint location, GLuint * params);
+    extern void (*glGetVertexAttribIiv)(GLuint index, GLenum pname, GLint * params);
+    extern void (*glGetVertexAttribIuiv)(GLuint index, GLenum pname, GLuint * params);
+    extern GLboolean (*glIsEnabledi)(GLenum target, GLuint index);
+    extern GLboolean (*glIsFramebuffer)(GLuint framebuffer);
+    extern GLboolean (*glIsRenderbuffer)(GLuint renderbuffer);
+    extern GLboolean (*glIsVertexArray)(GLuint array);
+    extern void * (*glMapBufferRange)(GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access);
+    extern void (*glRenderbufferStorage)(GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
+    extern void (*glRenderbufferStorageMultisample)(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
+    extern void (*glTexParameterIiv)(GLenum target, GLenum pname, const GLint * params);
+    extern void (*glTexParameterIuiv)(GLenum target, GLenum pname, const GLuint * params);
+    extern void (*glTransformFeedbackVaryings)(GLuint program, GLsizei count, const GLchar *const* varyings, GLenum bufferMode);
+    extern void (*glUniform1ui)(GLint location, GLuint v0);
+    extern void (*glUniform1uiv)(GLint location, GLsizei count, const GLuint * value);
+    extern void (*glUniform2ui)(GLint location, GLuint v0, GLuint v1);
+    extern void (*glUniform2uiv)(GLint location, GLsizei count, const GLuint * value);
+    extern void (*glUniform3ui)(GLint location, GLuint v0, GLuint v1, GLuint v2);
+    extern void (*glUniform3uiv)(GLint location, GLsizei count, const GLuint * value);
+    extern void (*glUniform4ui)(GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3);
+    extern void (*glUniform4uiv)(GLint location, GLsizei count, const GLuint * value);
+    extern void (*glVertexAttribI1i)(GLuint index, GLint x);
+    extern void (*glVertexAttribI1iv)(GLuint index, const GLint * v);
+    extern void (*glVertexAttribI1ui)(GLuint index, GLuint x);
+    extern void (*glVertexAttribI1uiv)(GLuint index, const GLuint * v);
+    extern void (*glVertexAttribI2i)(GLuint index, GLint x, GLint y);
+    extern void (*glVertexAttribI2iv)(GLuint index, const GLint * v);
+    extern void (*glVertexAttribI2ui)(GLuint index, GLuint x, GLuint y);
+    extern void (*glVertexAttribI2uiv)(GLuint index, const GLuint * v);
+    extern void (*glVertexAttribI3i)(GLuint index, GLint x, GLint y, GLint z);
+    extern void (*glVertexAttribI3iv)(GLuint index, const GLint * v);
+    extern void (*glVertexAttribI3ui)(GLuint index, GLuint x, GLuint y, GLuint z);
+    extern void (*glVertexAttribI3uiv)(GLuint index, const GLuint * v);
+    extern void (*glVertexAttribI4bv)(GLuint index, const GLbyte * v);
+    extern void (*glVertexAttribI4i)(GLuint index, GLint x, GLint y, GLint z, GLint w);
+    extern void (*glVertexAttribI4iv)(GLuint index, const GLint * v);
+    extern void (*glVertexAttribI4sv)(GLuint index, const GLshort * v);
+    extern void (*glVertexAttribI4ubv)(GLuint index, const GLubyte * v);
+    extern void (*glVertexAttribI4ui)(GLuint index, GLuint x, GLuint y, GLuint z, GLuint w);
+    extern void (*glVertexAttribI4uiv)(GLuint index, const GLuint * v);
+    extern void (*glVertexAttribI4usv)(GLuint index, const GLushort * v);
+    extern void (*glVertexAttribIPointer)(GLuint index, GLint size, GLenum type, GLsizei stride, const void * pointer);
+
+    /* GL_VERSION_3_1 */
+    extern void (*glCopyBufferSubData)(GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
+    extern void (*glDrawArraysInstanced)(GLenum mode, GLint first, GLsizei count, GLsizei instancecount);
+    extern void (*glDrawElementsInstanced)(GLenum mode, GLsizei count, GLenum type, const void * indices, GLsizei instancecount);
+    extern void (*glGetActiveUniformBlockName)(GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei * length, GLchar * uniformBlockName);
+    extern void (*glGetActiveUniformBlockiv)(GLuint program, GLuint uniformBlockIndex, GLenum pname, GLint * params);
+    extern void (*glGetActiveUniformName)(GLuint program, GLuint uniformIndex, GLsizei bufSize, GLsizei * length, GLchar * uniformName);
+    extern void (*glGetActiveUniformsiv)(GLuint program, GLsizei uniformCount, const GLuint * uniformIndices, GLenum pname, GLint * params);
+    extern GLuint (*glGetUniformBlockIndex)(GLuint program, const GLchar * uniformBlockName);
+    extern void (*glGetUniformIndices)(GLuint program, GLsizei uniformCount, const GLchar *const* uniformNames, GLuint * uniformIndices);
+    extern void (*glPrimitiveRestartIndex)(GLuint index);
+    extern void (*glTexBuffer)(GLenum target, GLenum internalformat, GLuint buffer);
+    extern void (*glUniformBlockBinding)(GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding);
+
+    /* GL_VERSION_3_2 */
+    extern GLenum (*glClientWaitSync)(GLsync sync, GLbitfield flags, GLuint64 timeout);
+    extern void (*glDeleteSync)(GLsync sync);
+    extern void (*glDrawElementsBaseVertex)(GLenum mode, GLsizei count, GLenum type, const void * indices, GLint basevertex);
+    extern void (*glDrawElementsInstancedBaseVertex)(GLenum mode, GLsizei count, GLenum type, const void * indices, GLsizei instancecount, GLint basevertex);
+    extern void (*glDrawRangeElementsBaseVertex)(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const void * indices, GLint basevertex);
+    extern GLsync (*glFenceSync)(GLenum condition, GLbitfield flags);
+    extern void (*glFramebufferTexture)(GLenum target, GLenum attachment, GLuint texture, GLint level);
+    extern void (*glGetBufferParameteri64v)(GLenum target, GLenum pname, GLint64 * params);
+    extern void (*glGetInteger64i_v)(GLenum target, GLuint index, GLint64 * data);
+    extern void (*glGetInteger64v)(GLenum pname, GLint64 * data);
+    extern void (*glGetMultisamplefv)(GLenum pname, GLuint index, GLfloat * val);
+    extern void (*glGetSynciv)(GLsync sync, GLenum pname, GLsizei count, GLsizei * length, GLint * values);
+    extern GLboolean (*glIsSync)(GLsync sync);
+    extern void (*glMultiDrawElementsBaseVertex)(GLenum mode, const GLsizei * count, GLenum type, const void *const* indices, GLsizei drawcount, const GLint * basevertex);
+    extern void (*glProvokingVertex)(GLenum mode);
+    extern void (*glSampleMaski)(GLuint maskNumber, GLbitfield mask);
+    extern void (*glTexImage2DMultisample)(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations);
+    extern void (*glTexImage3DMultisample)(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations);
+    extern void (*glWaitSync)(GLsync sync, GLbitfield flags, GLuint64 timeout);
+
+    /* GL_VERSION_3_3 */
+    extern void (*glBindFragDataLocationIndexed)(GLuint program, GLuint colorNumber, GLuint index, const GLchar * name);
+    extern void (*glBindSampler)(GLuint unit, GLuint sampler);
+    extern void (*glDeleteSamplers)(GLsizei count, const GLuint * samplers);
+    extern void (*glGenSamplers)(GLsizei count, GLuint * samplers);
+    extern GLint (*glGetFragDataIndex)(GLuint program, const GLchar * name);
+    extern void (*glGetQueryObjecti64v)(GLuint id, GLenum pname, GLint64 * params);
+    extern void (*glGetQueryObjectui64v)(GLuint id, GLenum pname, GLuint64 * params);
+    extern void (*glGetSamplerParameterIiv)(GLuint sampler, GLenum pname, GLint * params);
+    extern void (*glGetSamplerParameterIuiv)(GLuint sampler, GLenum pname, GLuint * params);
+    extern void (*glGetSamplerParameterfv)(GLuint sampler, GLenum pname, GLfloat * params);
+    extern void (*glGetSamplerParameteriv)(GLuint sampler, GLenum pname, GLint * params);
+    extern GLboolean (*glIsSampler)(GLuint sampler);
+    extern void (*glQueryCounter)(GLuint id, GLenum target);
+    extern void (*glSamplerParameterIiv)(GLuint sampler, GLenum pname, const GLint * param);
+    extern void (*glSamplerParameterIuiv)(GLuint sampler, GLenum pname, const GLuint * param);
+    extern void (*glSamplerParameterf)(GLuint sampler, GLenum pname, GLfloat param);
+    extern void (*glSamplerParameterfv)(GLuint sampler, GLenum pname, const GLfloat * param);
+    extern void (*glSamplerParameteri)(GLuint sampler, GLenum pname, GLint param);
+    extern void (*glSamplerParameteriv)(GLuint sampler, GLenum pname, const GLint * param);
+    extern void (*glVertexAttribDivisor)(GLuint index, GLuint divisor);
+    extern void (*glVertexAttribP1ui)(GLuint index, GLenum type, GLboolean normalized, GLuint value);
+    extern void (*glVertexAttribP1uiv)(GLuint index, GLenum type, GLboolean normalized, const GLuint * value);
+    extern void (*glVertexAttribP2ui)(GLuint index, GLenum type, GLboolean normalized, GLuint value);
+    extern void (*glVertexAttribP2uiv)(GLuint index, GLenum type, GLboolean normalized, const GLuint * value);
+    extern void (*glVertexAttribP3ui)(GLuint index, GLenum type, GLboolean normalized, GLuint value);
+    extern void (*glVertexAttribP3uiv)(GLuint index, GLenum type, GLboolean normalized, const GLuint * value);
+    extern void (*glVertexAttribP4ui)(GLuint index, GLenum type, GLboolean normalized, GLuint value);
+    extern void (*glVertexAttribP4uiv)(GLuint index, GLenum type, GLboolean normalized, const GLuint * value);
+
+    /* GL_VERSION_4_0 */
+    extern void (*glBeginQueryIndexed)(GLenum target, GLuint index, GLuint id);
+    extern void (*glBindTransformFeedback)(GLenum target, GLuint id);
+    extern void (*glBlendEquationSeparatei)(GLuint buf, GLenum modeRGB, GLenum modeAlpha);
+    extern void (*glBlendEquationi)(GLuint buf, GLenum mode);
+    extern void (*glBlendFuncSeparatei)(GLuint buf, GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha, GLenum dstAlpha);
+    extern void (*glBlendFunci)(GLuint buf, GLenum src, GLenum dst);
+    extern void (*glDeleteTransformFeedbacks)(GLsizei n, const GLuint * ids);
+    extern void (*glDrawArraysIndirect)(GLenum mode, const void * indirect);
+    extern void (*glDrawElementsIndirect)(GLenum mode, GLenum type, const void * indirect);
+    extern void (*glDrawTransformFeedback)(GLenum mode, GLuint id);
+    extern void (*glDrawTransformFeedbackStream)(GLenum mode, GLuint id, GLuint stream);
+    extern void (*glEndQueryIndexed)(GLenum target, GLuint index);
+    extern void (*glGenTransformFeedbacks)(GLsizei n, GLuint * ids);
+    extern void (*glGetActiveSubroutineName)(GLuint program, GLenum shadertype, GLuint index, GLsizei bufSize, GLsizei * length, GLchar * name);
+    extern void (*glGetActiveSubroutineUniformName)(GLuint program, GLenum shadertype, GLuint index, GLsizei bufSize, GLsizei * length, GLchar * name);
+    extern void (*glGetActiveSubroutineUniformiv)(GLuint program, GLenum shadertype, GLuint index, GLenum pname, GLint * values);
+    extern void (*glGetProgramStageiv)(GLuint program, GLenum shadertype, GLenum pname, GLint * values);
+    extern void (*glGetQueryIndexediv)(GLenum target, GLuint index, GLenum pname, GLint * params);
+    extern GLuint (*glGetSubroutineIndex)(GLuint program, GLenum shadertype, const GLchar * name);
+    extern GLint (*glGetSubroutineUniformLocation)(GLuint program, GLenum shadertype, const GLchar * name);
+    extern void (*glGetUniformSubroutineuiv)(GLenum shadertype, GLint location, GLuint * params);
+    extern void (*glGetUniformdv)(GLuint program, GLint location, GLdouble * params);
+    extern GLboolean (*glIsTransformFeedback)(GLuint id);
+    extern void (*glMinSampleShading)(GLfloat value);
+    extern void (*glPatchParameterfv)(GLenum pname, const GLfloat * values);
+    extern void (*glPatchParameteri)(GLenum pname, GLint value);
+    extern void (*glPauseTransformFeedback)(void);
+    extern void (*glResumeTransformFeedback)(void);
+    extern void (*glUniform1d)(GLint location, GLdouble x);
+    extern void (*glUniform1dv)(GLint location, GLsizei count, const GLdouble * value);
+    extern void (*glUniform2d)(GLint location, GLdouble x, GLdouble y);
+    extern void (*glUniform2dv)(GLint location, GLsizei count, const GLdouble * value);
+    extern void (*glUniform3d)(GLint location, GLdouble x, GLdouble y, GLdouble z);
+    extern void (*glUniform3dv)(GLint location, GLsizei count, const GLdouble * value);
+    extern void (*glUniform4d)(GLint location, GLdouble x, GLdouble y, GLdouble z, GLdouble w);
+    extern void (*glUniform4dv)(GLint location, GLsizei count, const GLdouble * value);
+    extern void (*glUniformMatrix2dv)(GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glUniformMatrix2x3dv)(GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glUniformMatrix2x4dv)(GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glUniformMatrix3dv)(GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glUniformMatrix3x2dv)(GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glUniformMatrix3x4dv)(GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glUniformMatrix4dv)(GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glUniformMatrix4x2dv)(GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glUniformMatrix4x3dv)(GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glUniformSubroutinesuiv)(GLenum shadertype, GLsizei count, const GLuint * indices);
+
+    /* GL_VERSION_4_1 */
+    extern void (*glActiveShaderProgram)(GLuint pipeline, GLuint program);
+    extern void (*glBindProgramPipeline)(GLuint pipeline);
+    extern void (*glClearDepthf)(GLfloat d);
+    extern GLuint (*glCreateShaderProgramv)(GLenum type, GLsizei count, const GLchar *const* strings);
+    extern void (*glDeleteProgramPipelines)(GLsizei n, const GLuint * pipelines);
+    extern void (*glDepthRangeArrayv)(GLuint first, GLsizei count, const GLdouble * v);
+    extern void (*glDepthRangeIndexed)(GLuint index, GLdouble n, GLdouble f);
+    extern void (*glDepthRangef)(GLfloat n, GLfloat f);
+    extern void (*glGenProgramPipelines)(GLsizei n, GLuint * pipelines);
+    extern void (*glGetDoublei_v)(GLenum target, GLuint index, GLdouble * data);
+    extern void (*glGetFloati_v)(GLenum target, GLuint index, GLfloat * data);
+    extern void (*glGetProgramBinary)(GLuint program, GLsizei bufSize, GLsizei * length, GLenum * binaryFormat, void * binary);
+    extern void (*glGetProgramPipelineInfoLog)(GLuint pipeline, GLsizei bufSize, GLsizei * length, GLchar * infoLog);
+    extern void (*glGetProgramPipelineiv)(GLuint pipeline, GLenum pname, GLint * params);
+    extern void (*glGetShaderPrecisionFormat)(GLenum shadertype, GLenum precisiontype, GLint * range, GLint * precision);
+    extern void (*glGetVertexAttribLdv)(GLuint index, GLenum pname, GLdouble * params);
+    extern GLboolean (*glIsProgramPipeline)(GLuint pipeline);
+    extern void (*glProgramBinary)(GLuint program, GLenum binaryFormat, const void * binary, GLsizei length);
+    extern void (*glProgramParameteri)(GLuint program, GLenum pname, GLint value);
+    extern void (*glProgramUniform1d)(GLuint program, GLint location, GLdouble v0);
+    extern void (*glProgramUniform1dv)(GLuint program, GLint location, GLsizei count, const GLdouble * value);
+    extern void (*glProgramUniform1f)(GLuint program, GLint location, GLfloat v0);
+    extern void (*glProgramUniform1fv)(GLuint program, GLint location, GLsizei count, const GLfloat * value);
+    extern void (*glProgramUniform1i)(GLuint program, GLint location, GLint v0);
+    extern void (*glProgramUniform1iv)(GLuint program, GLint location, GLsizei count, const GLint * value);
+    extern void (*glProgramUniform1ui)(GLuint program, GLint location, GLuint v0);
+    extern void (*glProgramUniform1uiv)(GLuint program, GLint location, GLsizei count, const GLuint * value);
+    extern void (*glProgramUniform2d)(GLuint program, GLint location, GLdouble v0, GLdouble v1);
+    extern void (*glProgramUniform2dv)(GLuint program, GLint location, GLsizei count, const GLdouble * value);
+    extern void (*glProgramUniform2f)(GLuint program, GLint location, GLfloat v0, GLfloat v1);
+    extern void (*glProgramUniform2fv)(GLuint program, GLint location, GLsizei count, const GLfloat * value);
+    extern void (*glProgramUniform2i)(GLuint program, GLint location, GLint v0, GLint v1);
+    extern void (*glProgramUniform2iv)(GLuint program, GLint location, GLsizei count, const GLint * value);
+    extern void (*glProgramUniform2ui)(GLuint program, GLint location, GLuint v0, GLuint v1);
+    extern void (*glProgramUniform2uiv)(GLuint program, GLint location, GLsizei count, const GLuint * value);
+    extern void (*glProgramUniform3d)(GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2);
+    extern void (*glProgramUniform3dv)(GLuint program, GLint location, GLsizei count, const GLdouble * value);
+    extern void (*glProgramUniform3f)(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2);
+    extern void (*glProgramUniform3fv)(GLuint program, GLint location, GLsizei count, const GLfloat * value);
+    extern void (*glProgramUniform3i)(GLuint program, GLint location, GLint v0, GLint v1, GLint v2);
+    extern void (*glProgramUniform3iv)(GLuint program, GLint location, GLsizei count, const GLint * value);
+    extern void (*glProgramUniform3ui)(GLuint program, GLint location, GLuint v0, GLuint v1, GLuint v2);
+    extern void (*glProgramUniform3uiv)(GLuint program, GLint location, GLsizei count, const GLuint * value);
+    extern void (*glProgramUniform4d)(GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2, GLdouble v3);
+    extern void (*glProgramUniform4dv)(GLuint program, GLint location, GLsizei count, const GLdouble * value);
+    extern void (*glProgramUniform4f)(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
+    extern void (*glProgramUniform4fv)(GLuint program, GLint location, GLsizei count, const GLfloat * value);
+    extern void (*glProgramUniform4i)(GLuint program, GLint location, GLint v0, GLint v1, GLint v2, GLint v3);
+    extern void (*glProgramUniform4iv)(GLuint program, GLint location, GLsizei count, const GLint * value);
+    extern void (*glProgramUniform4ui)(GLuint program, GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3);
+    extern void (*glProgramUniform4uiv)(GLuint program, GLint location, GLsizei count, const GLuint * value);
+    extern void (*glProgramUniformMatrix2dv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glProgramUniformMatrix2fv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glProgramUniformMatrix2x3dv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glProgramUniformMatrix2x3fv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glProgramUniformMatrix2x4dv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glProgramUniformMatrix2x4fv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glProgramUniformMatrix3dv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glProgramUniformMatrix3fv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glProgramUniformMatrix3x2dv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glProgramUniformMatrix3x2fv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glProgramUniformMatrix3x4dv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glProgramUniformMatrix3x4fv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glProgramUniformMatrix4dv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glProgramUniformMatrix4fv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glProgramUniformMatrix4x2dv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glProgramUniformMatrix4x2fv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glProgramUniformMatrix4x3dv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLdouble * value);
+    extern void (*glProgramUniformMatrix4x3fv)(GLuint program, GLint location, GLsizei count, GLboolean transpose, const GLfloat * value);
+    extern void (*glReleaseShaderCompiler)(void);
+    extern void (*glScissorArrayv)(GLuint first, GLsizei count, const GLint * v);
+    extern void (*glScissorIndexed)(GLuint index, GLint left, GLint bottom, GLsizei width, GLsizei height);
+    extern void (*glScissorIndexedv)(GLuint index, const GLint * v);
+    extern void (*glShaderBinary)(GLsizei count, const GLuint * shaders, GLenum binaryFormat, const void * binary, GLsizei length);
+    extern void (*glUseProgramStages)(GLuint pipeline, GLbitfield stages, GLuint program);
+    extern void (*glValidateProgramPipeline)(GLuint pipeline);
+    extern void (*glVertexAttribL1d)(GLuint index, GLdouble x);
+    extern void (*glVertexAttribL1dv)(GLuint index, const GLdouble * v);
+    extern void (*glVertexAttribL2d)(GLuint index, GLdouble x, GLdouble y);
+    extern void (*glVertexAttribL2dv)(GLuint index, const GLdouble * v);
+    extern void (*glVertexAttribL3d)(GLuint index, GLdouble x, GLdouble y, GLdouble z);
+    extern void (*glVertexAttribL3dv)(GLuint index, const GLdouble * v);
+    extern void (*glVertexAttribL4d)(GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w);
+    extern void (*glVertexAttribL4dv)(GLuint index, const GLdouble * v);
+    extern void (*glVertexAttribLPointer)(GLuint index, GLint size, GLenum type, GLsizei stride, const void * pointer);
+    extern void (*glViewportArrayv)(GLuint first, GLsizei count, const GLfloat * v);
+    extern void (*glViewportIndexedf)(GLuint index, GLfloat x, GLfloat y, GLfloat w, GLfloat h);
+    extern void (*glViewportIndexedfv)(GLuint index, const GLfloat * v);
+
+    /* GL_VERSION_4_2 */
+    extern void (*glBindImageTexture)(GLuint unit, GLuint texture, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format);
+    extern void (*glDrawArraysInstancedBaseInstance)(GLenum mode, GLint first, GLsizei count, GLsizei instancecount, GLuint baseinstance);
+    extern void (*glDrawElementsInstancedBaseInstance)(GLenum mode, GLsizei count, GLenum type, const void * indices, GLsizei instancecount, GLuint baseinstance);
+    extern void (*glDrawElementsInstancedBaseVertexBaseInstance)(GLenum mode, GLsizei count, GLenum type, const void * indices, GLsizei instancecount, GLint basevertex, GLuint baseinstance);
+    extern void (*glDrawTransformFeedbackInstanced)(GLenum mode, GLuint id, GLsizei instancecount);
+    extern void (*glDrawTransformFeedbackStreamInstanced)(GLenum mode, GLuint id, GLuint stream, GLsizei instancecount);
+    extern void (*glGetActiveAtomicCounterBufferiv)(GLuint program, GLuint bufferIndex, GLenum pname, GLint * params);
+    extern void (*glGetInternalformativ)(GLenum target, GLenum internalformat, GLenum pname, GLsizei count, GLint * params);
+    extern void (*glMemoryBarrier)(GLbitfield barriers);
+    extern void (*glTexStorage1D)(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width);
+    extern void (*glTexStorage2D)(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height);
+    extern void (*glTexStorage3D)(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth);
+
+    /* GL_VERSION_4_3 */
+    extern void (*glBindVertexBuffer)(GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride);
+    extern void (*glClearBufferData)(GLenum target, GLenum internalformat, GLenum format, GLenum type, const void * data);
+    extern void (*glClearBufferSubData)(GLenum target, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data);
+    extern void (*glCopyImageSubData)(GLuint srcName, GLenum srcTarget, GLint srcLevel, GLint srcX, GLint srcY, GLint srcZ, GLuint dstName, GLenum dstTarget, GLint dstLevel, GLint dstX, GLint dstY, GLint dstZ, GLsizei srcWidth, GLsizei srcHeight, GLsizei srcDepth);
+    extern void (*glDebugMessageCallback)(GLDEBUGPROC callback, const void * userParam);
+    extern void (*glDebugMessageControl)(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint * ids, GLboolean enabled);
+    extern void (*glDebugMessageInsert)(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar * buf);
+    extern void (*glDispatchCompute)(GLuint num_groups_x, GLuint num_groups_y, GLuint num_groups_z);
+    extern void (*glDispatchComputeIndirect)(GLintptr indirect);
+    extern void (*glFramebufferParameteri)(GLenum target, GLenum pname, GLint param);
+    extern GLuint (*glGetDebugMessageLog)(GLuint count, GLsizei bufSize, GLenum * sources, GLenum * types, GLuint * ids, GLenum * severities, GLsizei * lengths, GLchar * messageLog);
+    extern void (*glGetFramebufferParameteriv)(GLenum target, GLenum pname, GLint * params);
+    extern void (*glGetInternalformati64v)(GLenum target, GLenum internalformat, GLenum pname, GLsizei count, GLint64 * params);
+    extern void (*glGetObjectLabel)(GLenum identifier, GLuint name, GLsizei bufSize, GLsizei * length, GLchar * label);
+    extern void (*glGetObjectPtrLabel)(const void * ptr, GLsizei bufSize, GLsizei * length, GLchar * label);
+    extern void (*glGetPointerv)(GLenum pname, void ** params);
+    extern void (*glGetProgramInterfaceiv)(GLuint program, GLenum programInterface, GLenum pname, GLint * params);
+    extern GLuint (*glGetProgramResourceIndex)(GLuint program, GLenum programInterface, const GLchar * name);
+    extern GLint (*glGetProgramResourceLocation)(GLuint program, GLenum programInterface, const GLchar * name);
+    extern GLint (*glGetProgramResourceLocationIndex)(GLuint program, GLenum programInterface, const GLchar * name);
+    extern void (*glGetProgramResourceName)(GLuint program, GLenum programInterface, GLuint index, GLsizei bufSize, GLsizei * length, GLchar * name);
+    extern void (*glGetProgramResourceiv)(GLuint program, GLenum programInterface, GLuint index, GLsizei propCount, const GLenum * props, GLsizei count, GLsizei * length, GLint * params);
+    extern void (*glInvalidateBufferData)(GLuint buffer);
+    extern void (*glInvalidateBufferSubData)(GLuint buffer, GLintptr offset, GLsizeiptr length);
+    extern void (*glInvalidateFramebuffer)(GLenum target, GLsizei numAttachments, const GLenum * attachments);
+    extern void (*glInvalidateSubFramebuffer)(GLenum target, GLsizei numAttachments, const GLenum * attachments, GLint x, GLint y, GLsizei width, GLsizei height);
+    extern void (*glInvalidateTexImage)(GLuint texture, GLint level);
+    extern void (*glInvalidateTexSubImage)(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth);
+    extern void (*glMultiDrawArraysIndirect)(GLenum mode, const void * indirect, GLsizei drawcount, GLsizei stride);
+    extern void (*glMultiDrawElementsIndirect)(GLenum mode, GLenum type, const void * indirect, GLsizei drawcount, GLsizei stride);
+    extern void (*glObjectLabel)(GLenum identifier, GLuint name, GLsizei length, const GLchar * label);
+    extern void (*glObjectPtrLabel)(const void * ptr, GLsizei length, const GLchar * label);
+    extern void (*glPopDebugGroup)(void);
+    extern void (*glPushDebugGroup)(GLenum source, GLuint id, GLsizei length, const GLchar * message);
+    extern void (*glShaderStorageBlockBinding)(GLuint program, GLuint storageBlockIndex, GLuint storageBlockBinding);
+    extern void (*glTexBufferRange)(GLenum target, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size);
+    extern void (*glTexStorage2DMultisample)(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations);
+    extern void (*glTexStorage3DMultisample)(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations);
+    extern void (*glTextureView)(GLuint texture, GLenum target, GLuint origtexture, GLenum internalformat, GLuint minlevel, GLuint numlevels, GLuint minlayer, GLuint numlayers);
+    extern void (*glVertexAttribBinding)(GLuint attribindex, GLuint bindingindex);
+    extern void (*glVertexAttribFormat)(GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
+    extern void (*glVertexAttribIFormat)(GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
+    extern void (*glVertexAttribLFormat)(GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
+    extern void (*glVertexBindingDivisor)(GLuint bindingindex, GLuint divisor);
+
+    /* GL_VERSION_4_4 */
+    extern void (*glBindBuffersBase)(GLenum target, GLuint first, GLsizei count, const GLuint * buffers);
+    extern void (*glBindBuffersRange)(GLenum target, GLuint first, GLsizei count, const GLuint * buffers, const GLintptr * offsets, const GLsizeiptr * sizes);
+    extern void (*glBindImageTextures)(GLuint first, GLsizei count, const GLuint * textures);
+    extern void (*glBindSamplers)(GLuint first, GLsizei count, const GLuint * samplers);
+    extern void (*glBindTextures)(GLuint first, GLsizei count, const GLuint * textures);
+    extern void (*glBindVertexBuffers)(GLuint first, GLsizei count, const GLuint * buffers, const GLintptr * offsets, const GLsizei * strides);
+    extern void (*glBufferStorage)(GLenum target, GLsizeiptr size, const void * data, GLbitfield flags);
+    extern void (*glClearTexImage)(GLuint texture, GLint level, GLenum format, GLenum type, const void * data);
+    extern void (*glClearTexSubImage)(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void * data);
+
+    /* GL_VERSION_4_5 */
+    extern void (*glBindTextureUnit)(GLuint unit, GLuint texture);
+    extern void (*glBlitNamedFramebuffer)(GLuint readFramebuffer, GLuint drawFramebuffer, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter);
+    extern GLenum (*glCheckNamedFramebufferStatus)(GLuint framebuffer, GLenum target);
+    extern void (*glClearNamedBufferData)(GLuint buffer, GLenum internalformat, GLenum format, GLenum type, const void * data);
+    extern void (*glClearNamedBufferSubData)(GLuint buffer, GLenum internalformat, GLintptr offset, GLsizeiptr size, GLenum format, GLenum type, const void * data);
+    extern void (*glClearNamedFramebufferfi)(GLuint framebuffer, GLenum buffer, GLint drawbuffer, GLfloat depth, GLint stencil);
+    extern void (*glClearNamedFramebufferfv)(GLuint framebuffer, GLenum buffer, GLint drawbuffer, const GLfloat * value);
+    extern void (*glClearNamedFramebufferiv)(GLuint framebuffer, GLenum buffer, GLint drawbuffer, const GLint * value);
+    extern void (*glClearNamedFramebufferuiv)(GLuint framebuffer, GLenum buffer, GLint drawbuffer, const GLuint * value);
+    extern void (*glClipControl)(GLenum origin, GLenum depth);
+    extern void (*glCompressedTextureSubImage1D)(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, const void * data);
+    extern void (*glCompressedTextureSubImage2D)(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, const void * data);
+    extern void (*glCompressedTextureSubImage3D)(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, const void * data);
+    extern void (*glCopyNamedBufferSubData)(GLuint readBuffer, GLuint writeBuffer, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size);
+    extern void (*glCopyTextureSubImage1D)(GLuint texture, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width);
+    extern void (*glCopyTextureSubImage2D)(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height);
+    extern void (*glCopyTextureSubImage3D)(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height);
+    extern void (*glCreateBuffers)(GLsizei n, GLuint * buffers);
+    extern void (*glCreateFramebuffers)(GLsizei n, GLuint * framebuffers);
+    extern void (*glCreateProgramPipelines)(GLsizei n, GLuint * pipelines);
+    extern void (*glCreateQueries)(GLenum target, GLsizei n, GLuint * ids);
+    extern void (*glCreateRenderbuffers)(GLsizei n, GLuint * renderbuffers);
+    extern void (*glCreateSamplers)(GLsizei n, GLuint * samplers);
+    extern void (*glCreateTextures)(GLenum target, GLsizei n, GLuint * textures);
+    extern void (*glCreateTransformFeedbacks)(GLsizei n, GLuint * ids);
+    extern void (*glCreateVertexArrays)(GLsizei n, GLuint * arrays);
+    extern void (*glDisableVertexArrayAttrib)(GLuint vaobj, GLuint index);
+    extern void (*glEnableVertexArrayAttrib)(GLuint vaobj, GLuint index);
+    extern void (*glFlushMappedNamedBufferRange)(GLuint buffer, GLintptr offset, GLsizeiptr length);
+    extern void (*glGenerateTextureMipmap)(GLuint texture);
+    extern void (*glGetCompressedTextureImage)(GLuint texture, GLint level, GLsizei bufSize, void * pixels);
+    extern void (*glGetCompressedTextureSubImage)(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLsizei bufSize, void * pixels);
+    extern GLenum (*glGetGraphicsResetStatus)(void);
+    extern void (*glGetNamedBufferParameteri64v)(GLuint buffer, GLenum pname, GLint64 * params);
+    extern void (*glGetNamedBufferParameteriv)(GLuint buffer, GLenum pname, GLint * params);
+    extern void (*glGetNamedBufferPointerv)(GLuint buffer, GLenum pname, void ** params);
+    extern void (*glGetNamedBufferSubData)(GLuint buffer, GLintptr offset, GLsizeiptr size, void * data);
+    extern void (*glGetNamedFramebufferAttachmentParameteriv)(GLuint framebuffer, GLenum attachment, GLenum pname, GLint * params);
+    extern void (*glGetNamedFramebufferParameteriv)(GLuint framebuffer, GLenum pname, GLint * param);
+    extern void (*glGetNamedRenderbufferParameteriv)(GLuint renderbuffer, GLenum pname, GLint * params);
+    extern void (*glGetQueryBufferObjecti64v)(GLuint id, GLuint buffer, GLenum pname, GLintptr offset);
+    extern void (*glGetQueryBufferObjectiv)(GLuint id, GLuint buffer, GLenum pname, GLintptr offset);
+    extern void (*glGetQueryBufferObjectui64v)(GLuint id, GLuint buffer, GLenum pname, GLintptr offset);
+    extern void (*glGetQueryBufferObjectuiv)(GLuint id, GLuint buffer, GLenum pname, GLintptr offset);
+    extern void (*glGetTextureImage)(GLuint texture, GLint level, GLenum format, GLenum type, GLsizei bufSize, void * pixels);
+    extern void (*glGetTextureLevelParameterfv)(GLuint texture, GLint level, GLenum pname, GLfloat * params);
+    extern void (*glGetTextureLevelParameteriv)(GLuint texture, GLint level, GLenum pname, GLint * params);
+    extern void (*glGetTextureParameterIiv)(GLuint texture, GLenum pname, GLint * params);
+    extern void (*glGetTextureParameterIuiv)(GLuint texture, GLenum pname, GLuint * params);
+    extern void (*glGetTextureParameterfv)(GLuint texture, GLenum pname, GLfloat * params);
+    extern void (*glGetTextureParameteriv)(GLuint texture, GLenum pname, GLint * params);
+    extern void (*glGetTextureSubImage)(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, GLsizei bufSize, void * pixels);
+    extern void (*glGetTransformFeedbacki64_v)(GLuint xfb, GLenum pname, GLuint index, GLint64 * param);
+    extern void (*glGetTransformFeedbacki_v)(GLuint xfb, GLenum pname, GLuint index, GLint * param);
+    extern void (*glGetTransformFeedbackiv)(GLuint xfb, GLenum pname, GLint * param);
+    extern void (*glGetVertexArrayIndexed64iv)(GLuint vaobj, GLuint index, GLenum pname, GLint64 * param);
+    extern void (*glGetVertexArrayIndexediv)(GLuint vaobj, GLuint index, GLenum pname, GLint * param);
+    extern void (*glGetVertexArrayiv)(GLuint vaobj, GLenum pname, GLint * param);
+    extern void (*glGetnCompressedTexImage)(GLenum target, GLint lod, GLsizei bufSize, void * pixels);
+    extern void (*glGetnTexImage)(GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize, void * pixels);
+    extern void (*glGetnUniformdv)(GLuint program, GLint location, GLsizei bufSize, GLdouble * params);
+    extern void (*glGetnUniformfv)(GLuint program, GLint location, GLsizei bufSize, GLfloat * params);
+    extern void (*glGetnUniformiv)(GLuint program, GLint location, GLsizei bufSize, GLint * params);
+    extern void (*glGetnUniformuiv)(GLuint program, GLint location, GLsizei bufSize, GLuint * params);
+    extern void (*glInvalidateNamedFramebufferData)(GLuint framebuffer, GLsizei numAttachments, const GLenum * attachments);
+    extern void (*glInvalidateNamedFramebufferSubData)(GLuint framebuffer, GLsizei numAttachments, const GLenum * attachments, GLint x, GLint y, GLsizei width, GLsizei height);
+    extern void * (*glMapNamedBuffer)(GLuint buffer, GLenum access);
+    extern void * (*glMapNamedBufferRange)(GLuint buffer, GLintptr offset, GLsizeiptr length, GLbitfield access);
+    extern void (*glMemoryBarrierByRegion)(GLbitfield barriers);
+    extern void (*glNamedBufferData)(GLuint buffer, GLsizeiptr size, const void * data, GLenum usage);
+    extern void (*glNamedBufferStorage)(GLuint buffer, GLsizeiptr size, const void * data, GLbitfield flags);
+    extern void (*glNamedBufferSubData)(GLuint buffer, GLintptr offset, GLsizeiptr size, const void * data);
+    extern void (*glNamedFramebufferDrawBuffer)(GLuint framebuffer, GLenum buf);
+    extern void (*glNamedFramebufferDrawBuffers)(GLuint framebuffer, GLsizei n, const GLenum * bufs);
+    extern void (*glNamedFramebufferParameteri)(GLuint framebuffer, GLenum pname, GLint param);
+    extern void (*glNamedFramebufferReadBuffer)(GLuint framebuffer, GLenum src);
+    extern void (*glNamedFramebufferRenderbuffer)(GLuint framebuffer, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
+    extern void (*glNamedFramebufferTexture)(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level);
+    extern void (*glNamedFramebufferTextureLayer)(GLuint framebuffer, GLenum attachment, GLuint texture, GLint level, GLint layer);
+    extern void (*glNamedRenderbufferStorage)(GLuint renderbuffer, GLenum internalformat, GLsizei width, GLsizei height);
+    extern void (*glNamedRenderbufferStorageMultisample)(GLuint renderbuffer, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height);
+    extern void (*glReadnPixels)(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, void * data);
+    extern void (*glTextureBarrier)(void);
+    extern void (*glTextureBuffer)(GLuint texture, GLenum internalformat, GLuint buffer);
+    extern void (*glTextureBufferRange)(GLuint texture, GLenum internalformat, GLuint buffer, GLintptr offset, GLsizeiptr size);
+    extern void (*glTextureParameterIiv)(GLuint texture, GLenum pname, const GLint * params);
+    extern void (*glTextureParameterIuiv)(GLuint texture, GLenum pname, const GLuint * params);
+    extern void (*glTextureParameterf)(GLuint texture, GLenum pname, GLfloat param);
+    extern void (*glTextureParameterfv)(GLuint texture, GLenum pname, const GLfloat * param);
+    extern void (*glTextureParameteri)(GLuint texture, GLenum pname, GLint param);
+    extern void (*glTextureParameteriv)(GLuint texture, GLenum pname, const GLint * param);
+    extern void (*glTextureStorage1D)(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width);
+    extern void (*glTextureStorage2D)(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height);
+    extern void (*glTextureStorage2DMultisample)(GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations);
+    extern void (*glTextureStorage3D)(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth);
+    extern void (*glTextureStorage3DMultisample)(GLuint texture, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations);
+    extern void (*glTextureSubImage1D)(GLuint texture, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const void * pixels);
+    extern void (*glTextureSubImage2D)(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const void * pixels);
+    extern void (*glTextureSubImage3D)(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const void * pixels);
+    extern void (*glTransformFeedbackBufferBase)(GLuint xfb, GLuint index, GLuint buffer);
+    extern void (*glTransformFeedbackBufferRange)(GLuint xfb, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size);
+    extern GLboolean (*glUnmapNamedBuffer)(GLuint buffer);
+    extern void (*glVertexArrayAttribBinding)(GLuint vaobj, GLuint attribindex, GLuint bindingindex);
+    extern void (*glVertexArrayAttribFormat)(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLboolean normalized, GLuint relativeoffset);
+    extern void (*glVertexArrayAttribIFormat)(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
+    extern void (*glVertexArrayAttribLFormat)(GLuint vaobj, GLuint attribindex, GLint size, GLenum type, GLuint relativeoffset);
+    extern void (*glVertexArrayBindingDivisor)(GLuint vaobj, GLuint bindingindex, GLuint divisor);
+    extern void (*glVertexArrayElementBuffer)(GLuint vaobj, GLuint buffer);
+    extern void (*glVertexArrayVertexBuffer)(GLuint vaobj, GLuint bindingindex, GLuint buffer, GLintptr offset, GLsizei stride);
+    extern void (*glVertexArrayVertexBuffers)(GLuint vaobj, GLuint first, GLsizei count, const GLuint * buffers, const GLintptr * offsets, const GLsizei * strides);
+
+}
+using namespace flextGL;
 
 /* -------------------------- CATEGORY DEFINES ----------------------------- */
 
+#define GL_ARB_shading_language_include
 #define GL_VERSION_1_0
 #define GL_VERSION_1_1
 #define GL_VERSION_1_2
@@ -3429,17 +2217,14 @@ GLAPI PFNGLVERTEXARRAYVERTEXBUFFERS_PROC* glpfVertexArrayVertexBuffers;
 #define GL_VERSION_4_4
 #define GL_VERSION_4_5
 
+/* --------------------- FLAGS FOR OPTIONAL EXTENSIONS --------------------- */
+
+extern int FLEXT_ARB_shading_language_include;
+
+
 struct GLFWwindow;
-typedef struct GLFWwindow GLFWwindow;
+bool flextInit(GLFWwindow* window);
 
-int flextInit(GLFWwindow* window);
-
-#define FLEXT_MAJOR_VERSION 4
-#define FLEXT_MINOR_VERSION 5
-#define FLEXT_CORE_PROFILE 1
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
+constexpr int FLEXT_MAJOR_VERSION = 4;
+constexpr int FLEXT_MINOR_VERSION = 5;
+constexpr bool FLEXT_CORE_PROFILE = true;
