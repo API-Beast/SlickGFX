@@ -185,6 +185,22 @@ namespace sGFX
 		glNamedStringARB(GL_SHADER_INCLUDE_ARB, std::strlen(path), path, data_length, data);
 	}
 	
+	void RenderAPIContext::bind_shader_storage(int id, const AttributeBuffer& b, bool whole_buffer) 
+	{
+		if(whole_buffer)
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, id, b.id);
+		else
+			glBindBufferRange(GL_SHADER_STORAGE_BUFFER, id, b.id, 0, b.write_offset);
+	}
+	
+	void RenderAPIContext::bind_uniform_buffer(int id, const AttributeBuffer& b, bool whole_buffer) 
+	{
+		if(whole_buffer)
+			glBindBufferBase(GL_UNIFORM_BUFFER, id, b.id);
+		else
+			glBindBufferRange(GL_UNIFORM_BUFFER, id, b.id, 0, b.write_offset);
+	}
+	
 	bool RenderAPIContext::has_error() 
 	{
 		return glGetError() != GL_NO_ERROR;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sGFX/Core/Types.hpp>
+#include <sGFX/Core/AttributeBuffer.hpp>
 
 struct GLFWwindow;
 
@@ -40,6 +41,9 @@ namespace sGFX
 
 		void prepare_shader_include(const char* path, const char* bind_to = nullptr);
 		void prepare_shader_include_data(const char* path, const char* data, int data_length);
+
+		void bind_shader_storage(int id, const AttributeBuffer& b, bool whole_buffer = false);
+		void bind_uniform_buffer(int id, const AttributeBuffer& b, bool whole_buffer = false);
 
 		bool has_error();
 		
