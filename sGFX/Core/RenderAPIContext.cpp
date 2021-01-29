@@ -4,11 +4,14 @@
 
 #include <vector>
 #include <cstdio>
+#include <cstring>
 #include <string>
 
 // WHY DOES IT INCLUDE OPENGL HEADERS
 #define GLFW_INCLUDE_NONE
 #include <glfw/glfw3.h>
+
+#include <slick/slick.hpp>
 
 namespace
 {
@@ -164,6 +167,27 @@ namespace sGFX
 	void RenderAPIContext::make_active() 
 	{
 		glfwMakeContextCurrent(d->window);
+	}
+	
+	void RenderAPIContext::prepare_shader_include(const char* path, const char* bind_to) 
+	{
+		if(bind_to == nullptr)
+			bind_to = path;
+		std::string target_path(bind_to);
+		if(target_path.front() != '/')
+			target_path.insert(0, 1, '/');
+		std::string contents = slick::import_file(path);
+		glNamedStringARB(GL_SHADER_INCLUDE_ARB, std::strlen(bind_to), bind_to, contents.size(), contents.c_str());
+	}
+	
+	void RenderAPIContext::prepare_shader_include_data(const char* path, const char* data, int data_length) 
+	{
+		glNamedStringARB(GL_SHADER_INCLUDE_ARB, std::strlen(path), path, data_length, data);
+	}
+	
+	bool RenderAPIContext::has_error() 
+	{
+		return glGetError() != GL_NO_ERROR;
 	}
 	
 	GLFWwindow* RenderAPIContext::get_glfw_window_handle() 

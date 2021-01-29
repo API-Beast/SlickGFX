@@ -37,6 +37,11 @@ namespace sGFX
 		static RenderAPIContext SetupOffscreen(int flags = None, RenderAPIContext* share_resources = nullptr);
 
 		void make_active();
+
+		void prepare_shader_include(const char* path, const char* bind_to = nullptr);
+		void prepare_shader_include_data(const char* path, const char* data, int data_length);
+
+		bool has_error();
 		
 		GLFWwindow* get_glfw_window_handle();
 

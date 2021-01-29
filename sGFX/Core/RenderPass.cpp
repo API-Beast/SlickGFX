@@ -42,8 +42,6 @@ namespace sGFX
 		char* sources_vert[] = {(char*)spec.shader_vertex.data()};
 		int frag_sources_lengths[] = {spec.shader_fragment.size()};
 		int vert_sources_lengths[] = {spec.shader_vertex.size()};
-		//std::string sources_frag = preprocess_shader(std::string_view((char*)spec.shader_fragment.data(), spec.shader_fragment.size()));
-		//std::string sources_vert = preprocess_shader(std::string_view((char*)spec.shader_vertex.data(),   spec.shader_vertex.size()));
 
 		GLuint program = glCreateProgram();
 		GLuint frag_shader = glCreateShader(GL_VERTEX_SHADER);
