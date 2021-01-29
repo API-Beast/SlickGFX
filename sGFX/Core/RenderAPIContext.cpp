@@ -1,6 +1,6 @@
 
 #include "RenderAPIContext.hpp"
-#include "GL/flextGL.h"
+#include <sGFX/Core/GL/flextGL.h>
 
 #include <vector>
 #include <cstdio>

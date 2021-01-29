@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Types.hpp"
+#include <sGFX/Core/Types.hpp>
 
 #include <new>
 #include <cstring>
@@ -59,7 +59,7 @@ struct [[nodiscard]] ImageData
 	const T& at(Vec2I pos) const{ return at(pos[0], pos[1]); }
 	      T& at(Vec2I pos)      { return at(pos[0], pos[1]); }
 
-	T* row(int y){ return data + std::max(std::min(y, size[1]), 0) * size[0]; };
+	T* row(int y){ return data + std::fmax(std::fmin(y, size[1]), 0) * size[0]; };
 	int row_offset(){ return size[0]; };
 
 	T* begin(){ return data; };

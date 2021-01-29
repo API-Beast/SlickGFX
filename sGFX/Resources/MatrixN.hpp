@@ -34,6 +34,18 @@ struct [[slick::tuple]] MatrixN
 		return result;
 	}
 
+	static constexpr MatrixN<NInput, NOutput, T> Scale(VectorN<std::min(NInput, NOutput), T> scale)
+	{
+		MatrixN<NInput, NOutput, T> result;
+		for(int i = 0; i<NOutput; i++)
+		{
+			result.rows[i] = VectorN<NInput, T>(0);
+			if((i < NInput) && (i < NOutput))
+				result.rows[i][i] = scale[i];
+		}
+		return result;
+	}
+
 	constexpr VectorN<NOutput, T> column(int x)
 	{
 		VectorN<NOutput, T> result;

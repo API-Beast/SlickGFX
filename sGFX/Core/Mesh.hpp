@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Types.hpp"
+#include <sGFX/Core/Types.hpp>
 #include <vector>
 
 namespace sGFX

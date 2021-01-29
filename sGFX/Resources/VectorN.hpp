@@ -1,14 +1,26 @@
 #pragma once
-#include <type_traits>
+
 #include <cmath>
 
 namespace sGFX
 {
 
+namespace detail
+{
+	template<bool B, typename>
+	struct enable_if{};
+
+	template<typename T>
+	struct enable_if<true, T>{ using type = T; };
+}
+
+template<bool B, typename T = void>
+using enable_if_t = typename detail::enable_if<B, T>::type;
+
 template<int N, typename T>
 struct [[slick::tuple]] VectorN
 {
-	template <typename... Args, typename = typename std::enable_if<sizeof...(Args) == N>::type>
+	template <typename... Args, typename = enable_if_t<sizeof...(Args) == N> >
 	constexpr VectorN(Args&&... args) : elements{args...}{};
 	constexpr VectorN(T scalar){ for(int i = 0; i < N; i++) elements[i] = scalar; };
 

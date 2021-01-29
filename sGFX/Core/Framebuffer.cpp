@@ -1,4 +1,4 @@
-#include "GL/flextGL.h"
+#include <sGFX/Core/GL/flextGL.h>
 #include "Framebuffer.hpp"
 
 namespace sGFX

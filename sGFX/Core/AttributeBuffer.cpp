@@ -1,6 +1,6 @@
 #include "AttributeBuffer.hpp"
 
-#include "GL/flextGL.h"
+#include <sGFX/Core/GL/flextGL.h>
 
 namespace sGFX
 {

@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "Types.hpp"
+#include <sGFX/Core/Types.hpp>
 #include "Framebuffer.hpp"
 #include "Mesh.hpp"
 #include "ShaderProgram.hpp"

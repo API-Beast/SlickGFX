@@ -1,5 +1,5 @@
 #pragma once
-#include "Types.hpp"
+#include <sGFX/Core/Types.hpp>
 #include "ImageData.h"
 
 namespace sGFX

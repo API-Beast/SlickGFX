@@ -6,6 +6,7 @@
 #include <cfloat>
 #include <string>
 #include <algorithm>
+#include <cmath>
 
 #define YES_TEST(CATEGORY,NAME)\
 static void yes_test_run_##CATEGORY##_##NAME(int* yes_test_errors);\
@@ -126,7 +127,7 @@ namespace YesTest
 		float diff = std::abs(a - b);
 		// We calculate both bitwise ULP difference as well as EPSILON difference.
 		// This is because the bitwise difference can be enormous for numbers very close to 0.
-		return std::min(std::abs(ai - bi), int(diff / FLT_EPSILON) / 5);
+		return std::fmin(std::abs(ai - bi), int(diff / FLT_EPSILON) / 5);
 	}
 };
 
@@ -159,8 +160,8 @@ namespace YesTest
 	using YesTest::print_value;\
 	auto& val_a = (x); auto& val_b = (y);\
 	auto size_a = std::distance(std::begin(val_a), std::end(val_a)); auto size_b = std::distance(std::begin(val_b), std::end(val_b));\
-	size_t smaller_size = std::min(size_a, size_b);\
-	size_t larger_size = std::max(size_a, size_b);\
+	size_t smaller_size = std::fmin(size_a, size_b);\
+	size_t larger_size = std::fmax(size_a, size_b);\
 	std::vector<bool> is_success(larger_size, false);\
 	auto it_a = std::begin(val_a);\
 	auto it_b = std::begin(val_b);\

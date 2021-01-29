@@ -1,5 +1,5 @@
-#include "Types.hpp"
-#include "GL/flextGL.h"
+#include <sGFX/Core/Types.hpp>
+#include <sGFX/Core/GL/flextGL.h>
 
 namespace sGFX
 {
