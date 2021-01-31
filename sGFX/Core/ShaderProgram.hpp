@@ -1,5 +1,6 @@
 #pragma once
 
+#include <sGFX/Core/Texture.hpp>
 #include <sGFX/Core/Types.hpp>
 
 namespace sGFX

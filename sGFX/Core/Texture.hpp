@@ -26,6 +26,8 @@ namespace sGFX
 		constexpr Texture(){};
 		constexpr Texture(uint32_t _id, Vec2I _size){ id = _id; size = _size; };
 		static Texture Setup(TextureFormat format, int width, int height, int mip_map_levels = 8);
+		static Texture Placeholder(int width, int height, int mip_map_levels = 8);
+		static Texture ImportEXR(const char* path, int mip_levels = 8);
 
 		// NOTE: This is more expensive than calling Framebuffer::clear
 		void clear(Vec4F color);

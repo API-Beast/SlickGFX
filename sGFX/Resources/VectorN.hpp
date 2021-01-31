@@ -23,6 +23,9 @@ struct [[slick::tuple]] VectorN
 	template <typename... Args, typename = enable_if_t<sizeof...(Args) == N> >
 	constexpr VectorN(Args&&... args) : elements{args...}{};
 	constexpr VectorN(T scalar){ for(int i = 0; i < N; i++) elements[i] = scalar; };
+	template<typename OtherT>
+	constexpr VectorN(const VectorN<N, OtherT>& vector){ for(int i = 0; i < N; i++) elements[i] = vector[i]; };
+	constexpr VectorN(){ for(int i = 0; i < N; i++) elements[i] = T(0); };
 
 	T elements[N];
 	constexpr T& operator[](int i){ return elements[i]; };
@@ -70,9 +73,16 @@ struct [[slick::tuple]] VectorN
 	constexpr T length()                { return std::sqrt(square_length());       };
 	constexpr T dot(VectorN<N, T> other){ return sum([](T a, T b){ return a*b; }); };
 
+	/* Set of components specific functions */
+	constexpr T min(){ return compare([](T a, T b){ return a < b; }); };
+	constexpr T max(){ return compare([](T a, T b){ return a > b; }); };
+	constexpr VectorN<N, float> min_aspect(){ return VectorN<N, float>(*this) / min(); };
+	constexpr VectorN<N, float> max_aspect(){ return VectorN<N, float>(*this) / max(); };
+
 	/* Different ways of calling functions per component. */
 	template<typename Func, typename... Args>                  constexpr VectorN<N, T> visit(Func f, Args&&... args);
 	template<typename Func, typename... Args>                  constexpr T sum(Func f, Args&&... args);
+	template<typename Func>                                    constexpr T compare(Func f);
 	template<typename Func, typename... Args>                  constexpr void for_each(Func f, Args&&... args);
 	template<typename Func, typename... Args>                  constexpr bool all(Func f, Args&&... args);
 	template<typename Func, typename... Args>                  constexpr bool any(Func f, Args&&... args);
@@ -114,6 +124,18 @@ constexpr T VectorN<N, T>::sum(Func f, Args&&... args)
 	T result = static_cast<T>(0);
 	for(int i = 0; i < N; i++)
 		result += f(elements[i], subscript<N, T>(args, i)...);
+	return result;
+}
+
+template<int N, typename T>
+template<typename Func>
+constexpr T VectorN<N, T>::compare(Func f)
+{
+	using namespace VectorN_detail;
+	T result = elements[0];
+	for(int i = 1; i < N; i++)
+		if(f(elements[i], result))
+			result = elements[i];
 	return result;
 }
 

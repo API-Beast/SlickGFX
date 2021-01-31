@@ -5,22 +5,22 @@ namespace sGFX
 {
 	void ShaderProgram::set_uniform(uint32_t location, int val) 
 	{
-		glProgramUniform1f(id, location, val);
+		glProgramUniform1i(id, location, val);
 	}
 	
 	void ShaderProgram::set_uniform(uint32_t location, Vec2I val) 
 	{
-		glProgramUniform2f(id, location, val[0], val[1]);
+		glProgramUniform2i(id, location, val[0], val[1]);
 	}
 	
 	void ShaderProgram::set_uniform(uint32_t location, Vec3I val) 
 	{
-		glProgramUniform3f(id, location, val[0], val[1], val[2]);
+		glProgramUniform3i(id, location, val[0], val[1], val[2]);
 	}
 	
 	void ShaderProgram::set_uniform(uint32_t location, Vec4I val) 
 	{
-		glProgramUniform4f(id, location, val[0], val[1], val[2], val[3]);
+		glProgramUniform4i(id, location, val[0], val[1], val[2], val[3]);
 	}
 	
 	void ShaderProgram::set_uniform(uint32_t location, float val) 

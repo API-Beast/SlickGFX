@@ -22,17 +22,17 @@ void resize_loop(GLFWwindow* window, int width, int height)
 
 int main()
 {
-	sGFX::RenderAPIContext ctx = sGFX::RenderAPIContext::SetupWindowGLFW("sGFX Screenspace Test", 800, 600, sGFX::RenderAPIContext::Resizable | sGFX::RenderAPIContext::VSync);
+	sGFX::RenderAPIContext ctx = sGFX::RenderAPIContext::SetupWindowGLFW("sGFX Texture Test", 800, 600, sGFX::RenderAPIContext::Resizable | sGFX::RenderAPIContext::VSync);
 	GLFWwindow* window = ctx.get_glfw_window_handle();
 
-	auto frag_shader = slick::import_file("screen_fragment.glsl");
+	auto frag_shader = slick::import_file("screen_texture.fragment.glsl");
 	auto vert_shader = slick::import_file("screen_vertex.glsl");
 	sGFX::RenderPassSpec spec = {
 		frag_shader, /* fragment shader */
 		vert_shader, /* vertex shader */
 		{sGFX::TextureFormat::None}, /* depth attachment */
 		{sGFX::TextureFormat::None}, /* stencil attachment */
-		{{sGFX::TextureFormat::RGB_f16}}, /* color attachments */
+		{{sGFX::TextureFormat::RGB_f16}}, /* color attachments */ // TODO: Switch to uint8, currently not supported
 
 		{}, /* vertex attributes */
 		{}, /* instance attributes */
@@ -41,6 +41,13 @@ int main()
 	};
 	pass.create_from_spec(spec, 800, 600);
 	pass.shader.set_uniform(0, sGFX::Vec2F(800, 600));
+
+	sGFX::Texture image = sGFX::Texture::ImportEXR("sample.exr");
+	//sGFX::Texture image = sGFX::Texture::Placeholder(512, 512);
+	pass.shader.set_uniform(1, image.size.max_aspect());
+
+	ctx.bind_texture(0, image);
+	pass.shader.set_uniform(2, 0);
 
 	glfwSetWindowSizeCallback(window, resize_loop);
 	while(!glfwWindowShouldClose(window))

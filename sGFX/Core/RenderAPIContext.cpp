@@ -21,10 +21,13 @@ void DebugOpenGL(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei
 	static std::vector<std::string> current_context;
 	static int last_printed_context_id = 0;
 	static int current_context_id = 0;
+	static int last_message_id = 0;
+	static int message_streak = 0;
 
 	const char* _type;
 	const char* _severity;
 	const char* _color = "";
+	const char* _highlight = "\u001B[93m";
 	const char* _color_reset = "\u001b[0m";
 
 	if(msg[length - 1] == '\n' || msg[length - 1] == '\0')
@@ -84,6 +87,15 @@ void DebugOpenGL(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei
 			break;
 	}
 
+	if(last_message_id == id)
+	{
+		message_streak++;
+		if(message_streak == 4)
+			printf("... Message is repeated, ignore further. \n");
+		if(message_streak >= 4)
+			return;
+	}
+
 	if(current_context_id != last_printed_context_id && current_context.size() > 0)
 	{
 		int max_stack_depth = 4;
@@ -93,7 +105,7 @@ void DebugOpenGL(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei
 		for(int i = 0; i < max_stack_depth; i++)
 		{
 			if(i == 0)
-				printf("[OpenGL] In %s\n", current_context[i].c_str());
+				printf("%s[OpenGL] In %s%s\n", _highlight, current_context[i].c_str(), _color_reset);
 			else
 				printf("[    ->] called by %s\n", current_context[i].c_str());
 		}
@@ -104,6 +116,8 @@ void DebugOpenGL(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei
 	else
 		printf("[------]");
 	printf(" %s%s %s%s: %.*s\n", _color, _severity, _type, _color_reset, length, msg);
+	fflush(stdout);
+	last_message_id = id;
 };
 
 void SetupOpenGL(GLFWwindow* window)
@@ -199,6 +213,12 @@ namespace sGFX
 			glBindBufferBase(GL_UNIFORM_BUFFER, id, b.id);
 		else
 			glBindBufferRange(GL_UNIFORM_BUFFER, id, b.id, 0, b.write_offset);
+	}
+	
+	void RenderAPIContext::bind_texture(int idx, const Texture& t) 
+	{
+		glActiveTexture(GL_TEXTURE0 + idx);
+		glBindTexture(GL_TEXTURE_2D, t.id);
 	}
 	
 	bool RenderAPIContext::has_error() 
