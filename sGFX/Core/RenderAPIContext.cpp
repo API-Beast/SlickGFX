@@ -218,7 +218,7 @@ namespace sGFX
 	void RenderAPIContext::bind_texture(int idx, const Texture& t) 
 	{
 		glActiveTexture(GL_TEXTURE0 + idx);
-		glBindTexture(GL_TEXTURE_2D, t.id);
+		glBindTextureUnit(idx, t.id);
 	}
 	
 	bool RenderAPIContext::has_error() 

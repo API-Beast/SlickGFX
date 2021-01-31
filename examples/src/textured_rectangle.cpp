@@ -43,7 +43,6 @@ int main()
 	pass.shader.set_uniform(0, sGFX::Vec2F(800, 600));
 
 	sGFX::Texture image = sGFX::Texture::ImportEXR("sample.exr");
-	//sGFX::Texture image = sGFX::Texture::Placeholder(512, 512);
 	pass.shader.set_uniform(1, image.size.max_aspect());
 
 	ctx.bind_texture(0, image);
