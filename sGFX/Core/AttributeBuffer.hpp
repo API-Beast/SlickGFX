@@ -15,7 +15,7 @@ namespace sGFX
 
 		uint32_t id = 0;
 		int capacity = 0;
-		int format_hash = 0;
+		uint32_t format_hash = 0;
 		int stride = 0;
 		int write_offset = 0;
 		int access = Neither;

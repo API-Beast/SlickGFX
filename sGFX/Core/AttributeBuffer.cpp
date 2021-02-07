@@ -79,6 +79,6 @@ namespace sGFX
 	
 	bool AttributeBuffer::unmap() 
 	{
-		glUnmapNamedBuffer(id);
+		return glUnmapNamedBuffer(id);
 	}
 }

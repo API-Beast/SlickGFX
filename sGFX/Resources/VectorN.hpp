@@ -21,7 +21,7 @@ template<int N, typename T>
 struct [[slick::tuple]] VectorN
 {
 	template <typename... Args, typename = enable_if_t<sizeof...(Args) == N> >
-	constexpr VectorN(Args&&... args) : elements{args...}{};
+	constexpr VectorN(Args&&... args) : elements{(T)args...}{};
 	constexpr VectorN(T scalar){ for(int i = 0; i < N; i++) elements[i] = scalar; };
 	template<typename OtherT>
 	constexpr VectorN(const VectorN<N, OtherT>& vector){ for(int i = 0; i < N; i++) elements[i] = vector[i]; };
