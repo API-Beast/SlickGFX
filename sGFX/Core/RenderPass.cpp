@@ -6,15 +6,15 @@
 
 namespace sGFX
 {
-	void RenderPass::create_from_spec(const RenderPassSpec& _spec, int width, int height) 
+	void RenderPass::create_from_spec(Framebuffer* target_buffer, const RenderPassSpec& _spec) 
 	{
 		const char context_name[] = "create_from_spec()";
 		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, __LINE__, sizeof(context_name), context_name);
 
 		this->spec = _spec;
+		this->fbo = target_buffer;
 
 		recreate_shader();
-		recreate_framebuffer(width, height);
 		recreate_attribute_buffers(spec.max_vertices, spec.max_indices, spec.max_instances);
 
 		glPopDebugGroup();
@@ -24,7 +24,6 @@ namespace sGFX
 	{
 		if(vertex_array_id) glDeleteVertexArrays(1, &vertex_array_id);
 		if(shader) glDeleteProgram(shader.id);
-		fbo.free_data();
 	}
 
 	void RenderPass::recreate_shader() 
@@ -40,8 +39,8 @@ namespace sGFX
 
 		char* sources_frag[] = {(char*)spec.shader_fragment.data()};
 		char* sources_vert[] = {(char*)spec.shader_vertex.data()};
-		int frag_sources_lengths[] = {spec.shader_fragment.size()};
-		int vert_sources_lengths[] = {spec.shader_vertex.size()};
+		int frag_sources_lengths[] = {(int)spec.shader_fragment.size()};
+		int vert_sources_lengths[] = {(int)spec.shader_vertex.size()};
 
 		GLuint program = glCreateProgram();
 		GLuint frag_shader = glCreateShader(GL_VERTEX_SHADER);
@@ -82,43 +81,6 @@ namespace sGFX
 		glDeleteShader(vert_shader);
 
 		shader = {program};
-
-		glPopDebugGroup();
-	}
-
-	void RenderPass::recreate_framebuffer(int width, int height)
-	{
-		const char context_name[] = "recreate_framebuffer()";
-		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, __LINE__, sizeof(context_name), context_name);
-
-		fbo.free_data();
-
-		// Frame buffer
-		GLuint fbo_name = 0;
-		glCreateFramebuffers(1, &fbo_name);
-		fbo.id = fbo_name;
-		fbo.size = Vec2I(width, height);
-
-		int num_attachments = spec.color_attachments.size();
-		GLenum slot = GL_COLOR_ATTACHMENT0;
-		for(const RenderAttachment& r : spec.color_attachments)
-		{
-			Texture t = Texture::Setup(r.format, width, height, r.mip_levels);
-			glNamedFramebufferTexture(fbo_name, slot, t.id, 0);
-			fbo.color.push_back(t);
-			slot += 1;
-		}
-
-		fbo.depth = Texture::Setup(spec.depth_attachment.format, width, height, spec.depth_attachment.mip_levels);
-		if(fbo.depth.id) glNamedFramebufferTexture(fbo_name, GL_DEPTH_ATTACHMENT, fbo.depth.id, 0);
-
-		fbo.stencil = Texture::Setup(spec.stencil_attachment.format, width, height, spec.stencil_attachment.mip_levels);
-		if(fbo.stencil.id) glNamedFramebufferTexture(fbo_name, GL_STENCIL_ATTACHMENT, fbo.stencil.id, 0);
-
-		std::vector<GLenum> buffers(spec.color_attachments.size());
-		for(int i = 0; i<buffers.size(); i++)
-			buffers[i] = GL_COLOR_ATTACHMENT0 + i;
-		glNamedFramebufferDrawBuffers(fbo_name, buffers.size(), buffers.data());
 
 		glPopDebugGroup();
 	}
@@ -261,22 +223,17 @@ namespace sGFX
 		return retVal;
 	}
 
-	void RenderPass::draw(int num_indices, int num_instances, int index_offset, int instance_offset, int vertex_offset)
+	void RenderPass::draw(RenderAPIContext& ctxt, int num_indices, int num_instances, int index_offset, int instance_offset, int vertex_offset)
 	{
 		const char context_name[] = "draw()";
 		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, __LINE__, sizeof(context_name), context_name);
 		
 		glMemoryBarrier(GL_CLIENT_MAPPED_BUFFER_BARRIER_BIT | GL_SHADER_STORAGE_BARRIER_BIT);
-		glViewport(0, 0, fbo.size[0], fbo.size[1]);
-		glBindVertexArray(vertex_array_id);
-		glUseProgram(shader.id);
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo.id);
-		glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, transform_buffer_id);
 
-		int i = 0;
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-		for(AttributeBuffer& buf : shader_storage_buffers)
-			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, i++, buf.id);
+		if(fbo) ctxt.bind_framebuffer(*fbo);
+		ctxt.bind_shader_program(shader);
+		ctxt.bind_vertex_array(vertex_array_id);
+		ctxt.bind_transform_feedback_buffer(transform_buffer_id);
 
 		// Do we have a index buffer?
 		if(indices.id)
@@ -287,14 +244,14 @@ namespace sGFX
 		glPopDebugGroup();
 	}
 	
-	void RenderPass::draw(const GPU_MeshData& mesh, int num_instances, int instance_offset) 
+	void RenderPass::draw(RenderAPIContext& ctxt, const GPU_MeshData& mesh, int num_instances, int instance_offset) 
 	{
-		draw(mesh.num_indices, num_instances, mesh.index_offset, instance_offset, mesh.vertex_offset);
+		draw(ctxt, mesh.num_indices, num_instances, mesh.index_offset, instance_offset, mesh.vertex_offset);
 	}
 	
-	void RenderPass::draw(const GPU_MeshData& mesh, const GPU_InstanceData& instances) 
+	void RenderPass::draw(RenderAPIContext& ctxt, const GPU_MeshData& mesh, const GPU_InstanceData& instances) 
 	{
-		draw(mesh.num_indices, instances.num_instances, mesh.index_offset, instances.instance_offset, mesh.vertex_offset);
+		draw(ctxt, mesh.num_indices, instances.num_instances, mesh.index_offset, instances.instance_offset, mesh.vertex_offset);
 	}
 	
 }

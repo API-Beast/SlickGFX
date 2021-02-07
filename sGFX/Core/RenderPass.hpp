@@ -11,6 +11,8 @@
 #include <initializer_list>
 #include <string>
 #include <string_view>
+#include <sGFX/Resources/Signal.hpp>
+#include <sGFX/Core/RenderAPIContext.hpp>
 
 namespace sGFX
 {
@@ -31,12 +33,6 @@ enum class UsageHint
 	InstanceTextureUVFactor,
 };
 
-struct [[slick::tuple]] RenderAttachment
-{
-	TextureFormat format;
-	int mip_levels = 1;
-};
-
 struct [[slick::tuple]] ShaderAttribute
 {
 	DataFormat format;
@@ -49,10 +45,6 @@ struct [[slick::object]] RenderPassSpec
 	[[slick::import_file]] std::string shader_vertex;
 	[[slick::import_file]] std::string shader_fragment;
 
-	RenderAttachment depth_attachment = {TextureFormat::None};
-	RenderAttachment stencil_attachment = {TextureFormat::None};
-
-	std::vector<RenderAttachment> color_attachments;
 	std::vector<ShaderAttribute>  vertex_attributes;
 	std::vector<ShaderAttribute>  instance_attributes;
 
@@ -77,13 +69,12 @@ struct RenderPass
 	RenderPass(RenderPass&) = delete;
 	RenderPass& operator=(RenderPass&) = delete;
 
-	void draw(int num_indices, int num_instances, int index_offset = 0, int instance_offset = 0, int vertex_offset = 0);
-	void draw(const GPU_MeshData& mesh, int num_instances = 1, int instance_offset = 0);
-	void draw(const GPU_MeshData& mesh, const GPU_InstanceData& instances);
+	void draw(RenderAPIContext& ctxt, int num_indices, int num_instances, int index_offset = 0, int instance_offset = 0, int vertex_offset = 0);
+	void draw(RenderAPIContext& ctxt, const GPU_MeshData& mesh, int num_instances = 1, int instance_offset = 0);
+	void draw(RenderAPIContext& ctxt, const GPU_MeshData& mesh, const GPU_InstanceData& instances);
 
-	void create_from_spec(const RenderPassSpec& spec, int width, int height);
+	void create_from_spec(Framebuffer* target_buffer, const RenderPassSpec& spec);
 	void recreate_shader();
-	void recreate_framebuffer(int width, int height);
 	void recreate_attribute_buffers(int max_vertices = -1, int max_indices = -1, int max_instances = -1, bool preserve_data = false);
 
 	void setup_transform_feedback(const std::vector<AttributeBuffer>& buffers);
@@ -96,13 +87,12 @@ struct RenderPass
 
 	RenderPassSpec spec;
 	ShaderProgram shader;
-	Framebuffer fbo;
+	Framebuffer* fbo = nullptr;
 	AttributeBuffer indices;
 	AttributeBuffer vertex_attributes;
 	AttributeBuffer instance_attributes;
 	uint32_t vertex_array_id = 0;
 	uint32_t transform_buffer_id = 0;
-	std::vector<AttributeBuffer> shader_storage_buffers;
 
 	std::multimap<UsageHint,   AttributeSpec> vattribute_specs;
 };

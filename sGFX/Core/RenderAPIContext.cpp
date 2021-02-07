@@ -1,6 +1,8 @@
 
 #include "RenderAPIContext.hpp"
 #include <sGFX/Core/GL/flextGL.h>
+#include <sGFX/Core/ShaderProgram.hpp>
+#include <sGFX/Core/Framebuffer.hpp>
 
 #include <vector>
 #include <cstdio>
@@ -12,6 +14,12 @@
 #include <glfw/glfw3.h>
 
 #include <slick/slick.hpp>
+
+struct sGFX::RenderAPIContextData
+{
+	GLFWwindow* window = nullptr;
+	Vec2I size = Vec2I(0, 0);
+};
 
 namespace
 {
@@ -129,20 +137,49 @@ void SetupOpenGL(GLFWwindow* window)
 	//glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, true);
 };
 
+void Callback_OnBufferResize(GLFWwindow* win, int x, int y)
+{
+	sGFX::RenderAPIContext* ctx = (sGFX::RenderAPIContext*)glfwGetWindowUserPointer(win);
+	ctx->d->size = sGFX::Vec2I(x, y);
+	ctx->on_screen_buffer_resize.call(x, y);
+};
+
 }
 
 namespace sGFX
 {
-	struct RenderAPIContextData
+	RenderAPIContext::RenderAPIContext(void* win_ref) 
 	{
-		GLFWwindow* window;
-	};
-
+		d = new RenderAPIContextData;
+		d->window = (GLFWwindow*)win_ref;
+		glfwSetWindowUserPointer(d->window, (void*)this);
+	}
+	
+	RenderAPIContext::RenderAPIContext(RenderAPIContext&& other) 
+	{
+		d = other.d;
+		other.d = nullptr;
+		glfwSetWindowUserPointer(d->window, (void*)this);
+	}
+	
+	RenderAPIContext::RenderAPIContext() 
+	{
+		d = nullptr;
+	}
+	
 	RenderAPIContext::~RenderAPIContext() 
 	{
 		if(d && d->window)
 			glfwDestroyWindow(d->window);
 		delete d;
+	}
+	
+	RenderAPIContext& RenderAPIContext::operator=(RenderAPIContext&& other) 
+	{
+		d = other.d;
+		other.d = nullptr;
+		glfwSetWindowUserPointer(d->window, (void*)this);
+		return *this;
 	}
 
 	RenderAPIContext RenderAPIContext::SetupWindowGLFW(const char* name, int width, int height, int flags, RenderAPIContext* share_resources) 
@@ -160,7 +197,10 @@ namespace sGFX
 			glfwSwapInterval(1);
 		SetupOpenGL(window);
 
-		return {new RenderAPIContextData{window}};
+		RenderAPIContext retVal(window);
+		retVal.d->size = Vec2I(width, height);
+		glfwSetFramebufferSizeCallback(window, Callback_OnBufferResize);
+		return retVal;
 	}
 	
 	RenderAPIContext RenderAPIContext::SetupOffscreen(int flags, RenderAPIContext* share_resources) 
@@ -175,7 +215,10 @@ namespace sGFX
 		window = glfwCreateWindow(1, 1, "sGFX Offscreen Context", NULL, share_resources ? share_resources->d->window : nullptr);
 		SetupOpenGL(window);
 
-		return {new RenderAPIContextData{window}};
+		RenderAPIContext retVal(window);
+		retVal.d->size = Vec2I(1, 1);
+		glfwSetFramebufferSizeCallback(window, Callback_OnBufferResize);
+		return retVal;
 	}
 	
 	void RenderAPIContext::make_active() 
@@ -221,9 +264,59 @@ namespace sGFX
 		glBindTextureUnit(idx, t.id);
 	}
 	
+	void RenderAPIContext::bind_framebuffer(const Framebuffer& fbo) 
+	{
+		glViewport(0, 0, fbo.size[0], fbo.size[1]);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo.id);
+	}
+	
+	void RenderAPIContext::bind_shader_program(const ShaderProgram& shader) 
+	{
+		glUseProgram(shader.id);
+	}
+	
+	void RenderAPIContext::bind_vertex_array(uint32_t vertex_array) 
+	{
+		glBindVertexArray(vertex_array);
+	}
+	
+	void RenderAPIContext::bind_transform_feedback_buffer(uint32_t transform_feedback_buffer) 
+	{
+		glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, transform_feedback_buffer);
+	}
+	
+	Framebuffer& RenderAPIContext::screen_buffer() 
+	{
+		static Framebuffer screen;
+		screen.id = 0;
+		screen.size = d->size;
+		return screen;
+	}
+	
+	
 	bool RenderAPIContext::has_error() 
 	{
 		return glGetError() != GL_NO_ERROR;
+	}
+	
+	bool RenderAPIContext::termination_requested() 
+	{
+		return glfwWindowShouldClose(d->window);
+	}
+	
+	void RenderAPIContext::request_termination(bool request) 
+	{
+		glfwSetWindowShouldClose(d->window, request);
+	}
+	
+	void RenderAPIContext::swap_buffers() 
+	{
+		glfwSwapBuffers(d->window);
+	}
+	
+	void RenderAPIContext::poll_events() 
+	{
+		glfwPollEvents();
 	}
 	
 	GLFWwindow* RenderAPIContext::get_glfw_window_handle() 
