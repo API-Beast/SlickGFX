@@ -1,5 +1,5 @@
 add_executable(sgfx_test renderpass_test.cpp test_main.cpp yestest.cpp)
-target_link_libraries(sgfx_test SlickGFX)
+target_link_libraries(textured_rectangle PUBLIC SlickGFX PRIVATE -static)
 set_target_properties(sgfx_test PROPERTIES
 	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
 	OUTPUT_NAME run_tests)
