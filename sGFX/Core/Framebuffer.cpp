@@ -6,7 +6,7 @@ namespace sGFX
 
 void Framebuffer::recreate(int w, int h) 
 {
-	create_from_spec(w, h, spec);
+	create_from_spec(spec, w, h);
 }
 
 void Framebuffer::free_data(bool keep_textures)
@@ -26,7 +26,7 @@ void Framebuffer::free_data(bool keep_textures)
 	id = 0;
 }
 
-void Framebuffer::create_from_spec(int width, int height, const FramebufferSpec& spec)
+void Framebuffer::create_from_spec(const FramebufferSpec& spec, int width, int height)
 {
 	const char context_name[] = "Framebuffer::create_from_spec()";
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, __LINE__, sizeof(context_name), context_name);
