@@ -36,6 +36,7 @@ endif()
 # -------
 add_library(SlickGFX slick/slick.hpp)
 target_link_libraries(SlickGFX sGFXCore sGFXResources)
+target_include_directories(SlickGFX INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 set_target_properties(SlickGFX PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 install(TARGETS SlickGFX)
