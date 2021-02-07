@@ -1,7 +1,6 @@
 #include <sGFX/Core.hpp>
 #include <sGFX/Core/GL/flextGL.h>
 #include <slick/slick.hpp>
-#include <glfw/glfw3.h>
 
 sGFX::RenderPass pass;
 sGFX::Framebuffer fbo;
