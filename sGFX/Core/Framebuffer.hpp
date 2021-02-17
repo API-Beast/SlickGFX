@@ -33,7 +33,7 @@ struct Framebuffer
 	void recreate(int w, int h);
 	void create_from_spec(const FramebufferSpec& spec, int width, int height);
 	void clear_attachments(Vec4F color = Vec4F(0.0), float depth = 0.0, int stencil = 0);
-	void copy_color_to(Framebuffer& other);
+	void copy_color_to(Framebuffer& other, int index);
 	void free_data(bool keep_textures = false);
 	void set_attachment_bindings(std::vector<int> list); // For default constructed framebuffers: binding[N] = color[N]
 };

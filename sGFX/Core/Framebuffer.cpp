@@ -100,8 +100,9 @@ void Framebuffer::clear_attachments(Vec4F _color, float _depth, int _stencil)
 	prev_stencil = _stencil;
 }
 
-void Framebuffer::copy_color_to(Framebuffer& other)
+void Framebuffer::copy_color_to(Framebuffer& other, int index)
 {
+	glNamedFramebufferReadBuffer(id, GL_COLOR_ATTACHMENT0 + index);
 	glBlitNamedFramebuffer(id, other.id, 0, 0, size[0], size[1], 0, 0, other.size[0], other.size[1], GL_COLOR_BUFFER_BIT, GL_NEAREST);
 }
 
