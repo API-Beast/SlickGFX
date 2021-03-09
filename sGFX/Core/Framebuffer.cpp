@@ -92,7 +92,11 @@ void Framebuffer::clear_attachments(Vec4F _color, float _depth, int _stencil)
 	if(prev_depth != _depth) glClearDepthf(_depth);
 	if(prev_stencil != _stencil) glClearStencil(_stencil);
 
-	glClear(GL_COLOR | GL_DEPTH | GL_STENCIL);
+	GLbitfield clear_bits = GL_COLOR;
+	if(depth) clear_bits |= GL_DEPTH;
+	if(stencil) clear_bits |= GL_STENCIL;
+
+	glClear(clear_bits);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, prev_framebuffer);
 
 	prev_color = _color;
