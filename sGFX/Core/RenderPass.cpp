@@ -43,37 +43,38 @@ namespace sGFX
 		int vert_sources_lengths[] = {(int)spec.shader_vertex.size()};
 
 		GLuint program = glCreateProgram();
-		GLuint frag_shader = glCreateShader(GL_VERTEX_SHADER);
-		GLuint vert_shader = glCreateShader(GL_FRAGMENT_SHADER);
+		GLuint frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
+		GLuint vert_shader = glCreateShader(GL_VERTEX_SHADER);
 		GLsizei infoLogSize = 0;
-		static char infoLog[1024 * 24];
+		char infoLog[1024];
+
+		auto pipe_shader_log = [&infoLog, &infoLogSize](GLuint shader)
+		{
+			glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLogSize);
+			int i = 0;
+			if(infoLogSize > 0)
+			{
+				glGetShaderInfoLog(shader, sizeof(infoLog), &infoLogSize, infoLog);
+				glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_ERROR, 666000 + i++, GL_DEBUG_SEVERITY_HIGH, infoLogSize, infoLog);
+			}
+		};
 
 		glShaderSource(frag_shader, 1, sources_frag, frag_sources_lengths);
 		glCompileShader(frag_shader);
 		glAttachShader(program, frag_shader);
-		glGetShaderiv(frag_shader, GL_INFO_LOG_LENGTH, &infoLogSize);
-		if(infoLogSize > 0)
-		{
-			glGetShaderInfoLog(frag_shader, sizeof(infoLog), &infoLogSize, infoLog);
-			glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_ERROR, 0, GL_DEBUG_SEVERITY_HIGH, infoLogSize, infoLog);
-		}
+		pipe_shader_log(frag_shader);
 
 		glShaderSource(vert_shader, 1, sources_vert, vert_sources_lengths);
 		glCompileShader(vert_shader);
 		glAttachShader(program, vert_shader);
-		glGetShaderiv(vert_shader, GL_INFO_LOG_LENGTH, &infoLogSize);
-		if(infoLogSize > 0)
-		{
-			glGetShaderInfoLog(vert_shader, sizeof(infoLog), &infoLogSize, infoLog);
-			glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_ERROR, 0, GL_DEBUG_SEVERITY_HIGH, infoLogSize, infoLog);
-		}
+		pipe_shader_log(vert_shader);
 
 		glLinkProgram(program);
 		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogSize);
 		if(infoLogSize > 0)
 		{
 			glGetProgramInfoLog(program, sizeof(infoLog), &infoLogSize, infoLog);
-			glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_ERROR, 0, GL_DEBUG_SEVERITY_HIGH, infoLogSize, infoLog);
+			glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_ERROR, 666444, GL_DEBUG_SEVERITY_HIGH, infoLogSize, infoLog);
 		}
 
 		// Flag for deletion, will only happen if the program actually get deleted
