@@ -234,7 +234,10 @@ namespace sGFX
 		if(target_path.front() != '/')
 			target_path.insert(0, 1, '/');
 		std::string contents = slick::import_file(path);
-		glNamedStringARB(GL_SHADER_INCLUDE_ARB, std::strlen(bind_to), bind_to, contents.size(), contents.c_str());
+		//std::printf("%s", target_path.c_str());
+		if(glIsNamedStringARB(target_path.size(), target_path.c_str()))
+			glDeleteNamedStringARB(target_path.size(), target_path.c_str());
+		glNamedStringARB(GL_SHADER_INCLUDE_ARB, target_path.size(), target_path.c_str(), contents.size(), contents.c_str());
 	}
 	
 	void RenderAPIContext::prepare_shader_include_data(const char* path, const char* data, int data_length) 
