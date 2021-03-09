@@ -31,7 +31,7 @@ struct Framebuffer
 	FramebufferSpec spec;
 
 	void recreate(int w, int h);
-	void create_from_spec(int width, int height, const FramebufferSpec& spec);
+	void create_from_spec(const FramebufferSpec& spec, int width, int height);
 	void clear_attachments(Vec4F color = Vec4F(0.0), float depth = 0.0, int stencil = 0);
 	void copy_color_to(Framebuffer& other, int index);
 	void free_data(bool keep_textures = false);

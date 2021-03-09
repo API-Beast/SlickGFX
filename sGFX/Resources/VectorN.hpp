@@ -38,11 +38,15 @@ struct [[slick::tuple]] VectorN
 	constexpr const T* begin() const { return elements; };
 	constexpr const T* end()   const { return elements + N; };
 
+	/* x Vector */
+	constexpr VectorN<N, T>  operator-() const { return visit([](T a){ return -a;  }); };
+	constexpr VectorN<N, T>  operator+() const { return *this; };
+
 	/* Vector x Vector */
-	constexpr VectorN<N, T>  operator +(VectorN<N, T> other){ return visit([](T  a, T b){ return a + b;  }, other); };
-	constexpr VectorN<N, T>  operator -(VectorN<N, T> other){ return visit([](T  a, T b){ return a - b;  }, other); };
-	constexpr VectorN<N, T>  operator *(VectorN<N, T> other){ return visit([](T  a, T b){ return a * b;  }, other); };
-	constexpr VectorN<N, T>  operator /(VectorN<N, T> other){ return visit([](T  a, T b){ return a / b;  }, other); };
+	constexpr VectorN<N, T>  operator +(VectorN<N, T> other) const { return visit([](T  a, T b){ return a + b;  }, other); };
+	constexpr VectorN<N, T>  operator -(VectorN<N, T> other) const { return visit([](T  a, T b){ return a - b;  }, other); };
+	constexpr VectorN<N, T>  operator *(VectorN<N, T> other) const { return visit([](T  a, T b){ return a * b;  }, other); };
+	constexpr VectorN<N, T>  operator /(VectorN<N, T> other) const { return visit([](T  a, T b){ return a / b;  }, other); };
 
 	constexpr VectorN<N, T>& operator+=(VectorN<N, T> other){     for_each([](T& a, T b){ return a += b; }, other); return *this; };
 	constexpr VectorN<N, T>& operator-=(VectorN<N, T> other){     for_each([](T& a, T b){ return a -= b; }, other); return *this; };
@@ -50,10 +54,10 @@ struct [[slick::tuple]] VectorN
 	constexpr VectorN<N, T>& operator/=(VectorN<N, T> other){     for_each([](T& a, T b){ return a /= b; }, other); return *this; };
 
 	/* Vector x Scalar */
-	constexpr VectorN<N, T>  operator -(T scalar){ return visit([](T  a, T b){ return a - b;  }, scalar); };
-	constexpr VectorN<N, T>  operator *(T scalar){ return visit([](T  a, T b){ return a * b;  }, scalar); };
-	constexpr VectorN<N, T>  operator +(T scalar){ return visit([](T  a, T b){ return a + b;  }, scalar); };
-	constexpr VectorN<N, T>  operator /(T scalar){ return visit([](T  a, T b){ return a / b;  }, scalar); };
+	constexpr VectorN<N, T>  operator -(T scalar) const { return visit([](T  a, T b){ return a - b;  }, scalar); };
+	constexpr VectorN<N, T>  operator *(T scalar) const { return visit([](T  a, T b){ return a * b;  }, scalar); };
+	constexpr VectorN<N, T>  operator +(T scalar) const { return visit([](T  a, T b){ return a + b;  }, scalar); };
+	constexpr VectorN<N, T>  operator /(T scalar) const { return visit([](T  a, T b){ return a / b;  }, scalar); };
 
 	constexpr VectorN<N, T>& operator+=(T scalar){     for_each([](T& a, T b){ return a += b; }, scalar); return *this; };
 	constexpr VectorN<N, T>& operator-=(T scalar){     for_each([](T& a, T b){ return a -= b; }, scalar); return *this; };
@@ -80,8 +84,8 @@ struct [[slick::tuple]] VectorN
 	constexpr VectorN<N, float> max_aspect(){ return VectorN<N, float>(*this) / max(); };
 
 	/* Different ways of calling functions per component. */
-	template<typename Func, typename... Args>                  constexpr VectorN<N, T> visit(Func f, Args&&... args);
-	template<typename Func, typename... Args>                  constexpr T sum(Func f, Args&&... args);
+	template<typename Func, typename... Args>                  constexpr VectorN<N, T> visit(Func f, Args&&... args) const;
+	template<typename Func, typename... Args>                  constexpr T sum(Func f, Args&&... args) const;
 	template<typename Func>                                    constexpr T compare(Func f);
 	template<typename Func, typename... Args>                  constexpr void for_each(Func f, Args&&... args);
 	template<typename Func, typename... Args>                  constexpr bool all(Func f, Args&&... args);
@@ -107,7 +111,7 @@ namespace VectorN_detail
 
 template<int N, typename T>
 template<typename Func, typename... Args>
-constexpr VectorN<N, T> VectorN<N, T>::visit(Func f, Args&&... args)
+constexpr VectorN<N, T> VectorN<N, T>::visit(Func f, Args&&... args) const
 {
 	using namespace VectorN_detail;
 	VectorN<N, T> result;
@@ -118,7 +122,7 @@ constexpr VectorN<N, T> VectorN<N, T>::visit(Func f, Args&&... args)
 
 template<int N, typename T>
 template<typename Func, typename... Args>
-constexpr T VectorN<N, T>::sum(Func f, Args&&... args)
+constexpr T VectorN<N, T>::sum(Func f, Args&&... args) const
 {
 	using namespace VectorN_detail;
 	T result = static_cast<T>(0);

@@ -42,7 +42,7 @@ int main()
 		0,  /* vertex attribute buffer length */
 		0   /* instance attribute buffer length */
 	};
-	fbo.create_from_spec(800, 600, fb_spec);
+	fbo.create_from_spec(fb_spec, 800, 600);
 	pass.create_from_spec(&fbo, spec);
 	pass.shader.set_uniform(0, sGFX::Vec2F(800, 600));
 

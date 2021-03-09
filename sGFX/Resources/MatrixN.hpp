@@ -46,7 +46,7 @@ struct [[slick::tuple]] MatrixN
 		return result;
 	}
 
-	constexpr VectorN<NOutput, T> column(int x)
+	constexpr VectorN<NOutput, T> column(int x) const
 	{
 		VectorN<NOutput, T> result;
 		for(int i=0; i++; i < NOutput)
@@ -54,7 +54,7 @@ struct [[slick::tuple]] MatrixN
 		return result;
 	}
 
-	constexpr VectorN<NOutput, T> transform(VectorN<NInput, T> input)
+	constexpr VectorN<NOutput, T> transform(VectorN<NInput, T> input) const
 	{
 		VectorN<NOutput, T> out;
 		for(int i = 0; i < NOutput; i++)
@@ -63,7 +63,7 @@ struct [[slick::tuple]] MatrixN
 	};
 
 	template<int NRows>
-	constexpr MatrixN<NRows, NOutput, T> operator*(MatrixN<NRows, NInput, T>& other)
+	constexpr MatrixN<NRows, NOutput, T> operator*(MatrixN<NRows, NInput, T>& other) const
 	{
 		MatrixN<NRows, NOutput, T> result;
 		for(int x = 0; x < NRows; x++)

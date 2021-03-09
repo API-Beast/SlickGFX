@@ -19,7 +19,7 @@ YES_TEST(RenderPass, screenspace)
 	};
 	RenderPass pass;
 	Framebuffer fbo;
-	fbo.create_from_spec(2, 2, {{TextureFormat::None}, {TextureFormat::None}, {{TextureFormat::RGBA_f16}}});
+	fbo.create_from_spec({{TextureFormat::None}, {TextureFormat::None}, {{TextureFormat::RGBA_f16}}}, 2, 2);
 	pass.create_from_spec(&fbo, spec);
 	pass.draw(ctx, 3, 1);
 	auto result = fbo.color[0].download();
@@ -45,7 +45,7 @@ YES_TEST(RenderPass, include)
 	ctx.prepare_shader_include_data("/test.glsl", test_glsl, sizeof(test_glsl));
 	RenderPass pass;
 	Framebuffer fbo;
-	fbo.create_from_spec(2, 2, {{TextureFormat::None}, {TextureFormat::None}, {{TextureFormat::RGBA_f16}}});
+	fbo.create_from_spec({{TextureFormat::None}, {TextureFormat::None}, {{TextureFormat::RGBA_f16}}}, 2, 2);
 	pass.create_from_spec(&fbo, spec);
 	pass.draw(ctx, 3, 1);
 	EXPECT_EQ(ctx.has_error(), false);
@@ -89,7 +89,7 @@ YES_TEST(RenderPass, bind_shader_buffers)
 
 	RenderPass pass;
 	Framebuffer fbo;
-	fbo.create_from_spec(2, 2, {{TextureFormat::None}, {TextureFormat::None}, {{TextureFormat::RGBA_f16}}});
+	fbo.create_from_spec({{TextureFormat::None}, {TextureFormat::None}, {{TextureFormat::RGBA_f16}}}, 2, 2);
 	pass.create_from_spec(&fbo, spec);
 	pass.draw(ctx, 3, 1);
 
